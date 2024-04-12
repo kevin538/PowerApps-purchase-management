@@ -1,0 +1,168 @@
+{
+  "intents": [
+    {
+      "triggerQueries": [
+        "centre de cout",
+        "direction",
+        "departement",
+        "entete",
+        "information addtionnel"
+      ],
+      "dialogId": "new_topic_0ee5c397546d4874829bb004ac2f7000",
+      "isTriggeringEnabled": true,
+      "id": "new_topic_0ee5c397546d4874829bb004ac2f7000",
+      "displayName": "Informations d'entête",
+      "description": "",
+      "createdTime": "2021-10-25T20:41:20.2578455Z",
+      "updatedTime": "2022-01-25T14:37:53.1725083Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    }
+  ],
+  "namedEntities": [
+    {
+      "synonyms": [
+        "pas de departement",
+        "rien"
+      ],
+      "id": "f8d45a19-f625-44a5-a649-1cb006a48cf7",
+      "displayName": "aucun",
+      "createdTime": "2021-10-26T10:50:41.6366471Z",
+      "updatedTime": "2021-10-26T10:50:41.6366471Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "id": "b33b0c1f-2298-4906-bd0a-7c1e68d1d621",
+      "displayName": "Agence Kribi",
+      "createdTime": "2021-10-25T18:50:58.4446361Z",
+      "updatedTime": "2021-10-26T10:50:41.6366471Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "id": "cdf68395-35ea-41af-a712-42acb855fc21",
+      "displayName": "Transit Hinterland General Cargo",
+      "createdTime": "2021-10-25T18:50:58.4446361Z",
+      "updatedTime": "2021-10-26T10:50:41.6366471Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "id": "768b09db-7b63-4007-88a4-93573e90f77a",
+      "displayName": "Douane",
+      "createdTime": "2021-10-25T18:50:58.4446361Z",
+      "updatedTime": "2021-10-26T10:50:41.6366471Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "id": "2487726a-80f6-4be5-a1ae-1a90348d93d7",
+      "displayName": "Contrôle Opérationnel",
+      "createdTime": "2021-10-25T18:50:58.4446361Z",
+      "updatedTime": "2021-10-26T10:50:41.6366471Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    }
+  ],
+  "dialogs": [
+    {
+      "rootNodeId": "eff962ea-4a0c-4a28-abd7-d18f83891b54",
+      "questionNodes": [
+        {
+          "contextVariableId": "new_variable_48bcf79f05264a4abbdca8ef44a81e3d_85d10138dfed4811b0f8339d2425f22d",
+          "nodeType": "QuestionNode",
+          "id": "eff962ea-4a0c-4a28-abd7-d18f83891b54",
+          "defaultTargetNodeId": "2f3c9d40-4d53-4b36-b069-faf266d4618b"
+        },
+        {
+          "contextVariableId": "1825f73f-ae96-4e86-8561-c8024e294b88",
+          "nodeType": "QuestionNode",
+          "id": "2f3c9d40-4d53-4b36-b069-faf266d4618b",
+          "defaultTargetNodeId": "cafc7c9d-5ef7-448a-b53d-f6ce8765c83d"
+        },
+        {
+          "contextVariableId": "new_variable_48bcf79f05264a4abbdca8ef44a81e3d_d6dc6489604f4517b3414bb9acd52b7f",
+          "nodeType": "QuestionNode",
+          "id": "cafc7c9d-5ef7-448a-b53d-f6ce8765c83d"
+        }
+      ],
+      "id": "new_topic_0ee5c397546d4874829bb004ac2f7000",
+      "displayName": "Dialog for Informations d'entête",
+      "createdTime": "2021-10-25T20:41:20.2578455Z",
+      "updatedTime": "2022-01-25T14:37:53.1725083Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    }
+  ],
+  "botMessages": [
+    {
+      "channelContent": {
+        "web": {
+          "contentFormat": "Markdown",
+          "content": "Pour quelle direction est émis le besoin ?"
+        }
+      },
+      "id": "48ff7619-546c-416c-a3fc-ec5c79c1b10a",
+      "createdTime": "2021-10-25T20:42:00.584Z",
+      "updatedTime": "2021-10-25T20:42:00.584Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "user-0"
+    },
+    {
+      "channelContent": {
+        "web": {
+          "contentFormat": "Markdown",
+          "content": "{new\\_variable\\_48bcf79f05264a4abbdca8ef44a81e3d\\_85d10138dfed4811b0f8339d2425f22d}, c'est noté. Quelle est le département ?"
+        }
+      },
+      "id": "9c075119-a16d-48b2-bce3-bda73616aaf7",
+      "createdTime": "2021-10-25T20:47:01.006Z",
+      "updatedTime": "2021-10-25T20:47:01.006Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "user-0"
+    },
+    {
+      "channelContent": {
+        "web": {
+          "contentFormat": "Markdown",
+          "content": "D'accord, quel est le centre de coût à rattacher à votre expression de besoin?"
+        }
+      },
+      "id": "a5861c3a-189e-466e-873d-fdad1843c076",
+      "createdTime": "2021-10-25T20:50:28.538Z",
+      "updatedTime": "2021-10-25T20:50:28.538Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "user-0"
+    }
+  ],
+  "contextVariables": [
+    {
+      "customTypeId": "new_customtype_2a390cf8b51642e4aed2fa6d68c7a06c",
+      "initializerType": "UserQuestion",
+      "scope": "Dialog",
+      "greedySlotFillingEnabled": true,
+      "isInput": false,
+      "externalInitializationAllowed": false,
+      "namedEntityOptions": [
+        "f8d45a19-f625-44a5-a649-1cb006a48cf7",
+        "b33b0c1f-2298-4906-bd0a-7c1e68d1d621",
+        "cdf68395-35ea-41af-a712-42acb855fc21",
+        "768b09db-7b63-4007-88a4-93573e90f77a",
+        "2487726a-80f6-4be5-a1ae-1a90348d93d7"
+      ],
+      "messages": {
+        "GetValue": [
+          "9c075119-a16d-48b2-bce3-bda73616aaf7"
+        ]
+      },
+      "isGlobal": false,
+      "id": "1825f73f-ae96-4e86-8561-c8024e294b88",
+      "displayName": "departement",
+      "createdTime": "2021-10-25T20:47:01.006Z",
+      "updatedTime": "2022-01-25T14:37:53.1725083Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_SharePoint_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_List_Utilisateur (cm237_Ev_Con_List_Utilisateur)": {
+          "defaultValue": "60fc3dfa-5efc-479b-8bdc-492f217c6303",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_Utilisateur",
+            "description": "Connexion à la liste sharepoint des utilisateurs"
+          }
+        },
+        "Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)": {
+          "defaultValue": "https://teamsite.msc.com/sites/NL001-SITE_ACHAT",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Site_ZulaaDev",
+            "description": "Site de la dev où sont stockés les templates des documents de bon de commande, expression de besoin, réception et sortie de stock"
+          }
+        }
+      },
+      "triggers": {
+        "Lorsqu’un_élément_est_créé": {
+          "recurrence": {
+            "frequency": "Minute",
+            "interval": 1
+          },
+          "splitOn": "@triggerOutputs()?['body/value']",
+          "metadata": {
+            "operationMetadataId": "2a916507-5fc1-425a-a133-00d4b9c73d7f"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline",
+              "operationId": "GetOnNewItems"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_Utilisateur (cm237_Ev_Con_List_Utilisateur)')"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "Mettre_à_jour_l'élément": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "68f2849e-c514-4be8-b4b6-ef0829a572cf"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline",
+              "operationId": "PatchItem"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_Utilisateur (cm237_Ev_Con_List_Utilisateur)')",
+              "id": "@triggerOutputs()?['body/ID']",
+              "item/Title": "@triggerOutputs()?['body/Personne/Email']",
+              "item/Nom": "@triggerOutputs()?['body/Personne/DisplayName']",
+              "item/Actif": true
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

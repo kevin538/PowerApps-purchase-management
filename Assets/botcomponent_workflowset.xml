@@ -1,0 +1,32 @@
+<botcomponent_workflowset>
+  <botcomponent_workflow botcomponentid.schemaname="new_topic_96a2518ebfaf4b02b2acb82c48a32ac5" workflowid.workflowid="166072b6-ad32-ec11-b6e6-000d3aa82b12">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_workflow>
+  <botcomponent_workflow botcomponentid.schemaname="new_topic_a55ab61cfc3f4fe396dd0d72024eca3c" workflowid.workflowid="15c47426-3dfd-ec11-82e5-000d3a47d5c9">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_workflow>
+  <botcomponent_workflow botcomponentid.schemaname="new_topic_a55ab61cfc3f4fe396dd0d72024eca3c" workflowid.workflowid="c7e4afb4-81ae-ec11-9840-002248812bc7">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_workflow>
+  <botcomponent_workflow botcomponentid.schemaname="new_topic_a55ab61cfc3f4fe396dd0d72024eca3c" workflowid.workflowid="f9ed3e09-4afd-ec11-82e5-000d3a47d5c9">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_workflow>
+  <botcomponent_workflow botcomponentid.schemaname="new_topic_e0efac576498451d99dc0b3ac02bee25" workflowid.workflowid="0352dda4-88ae-ec11-9840-0022488125b3">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_workflow>
+  <botcomponent_workflow botcomponentid.schemaname="new_topic_e0efac576498451d99dc0b3ac02bee25" workflowid.workflowid="2940c187-43af-ec11-9840-0022488125b3">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_workflow>
+  <botcomponent_workflow botcomponentid.schemaname="new_topic_e0efac576498451d99dc0b3ac02bee25" workflowid.workflowid="68fe4761-86aa-ec11-983f-6045bd8d2865">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_workflow>
+  <botcomponent_workflow botcomponentid.schemaname="new_topic_e0efac576498451d99dc0b3ac02bee25" workflowid.workflowid="7f7126b8-32b0-ec11-9840-0022488125b3">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_workflow>
+  <botcomponent_workflow botcomponentid.schemaname="new_topic_e0efac576498451d99dc0b3ac02bee25" workflowid.workflowid="8a8d5304-742f-ec11-b6e6-000d3aa82b12">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_workflow>
+  <botcomponent_workflow botcomponentid.schemaname="new_topic_e0efac576498451d99dc0b3ac02bee25" workflowid.workflowid="c7e4afb4-81ae-ec11-9840-002248812bc7">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_workflow>
+</botcomponent_workflowset>

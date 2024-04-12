@@ -1,0 +1,8 @@
+<botcomponent schemaname="new_customtype_0146b750ff9f4870969101b580deddc2">
+  <componenttype>3</componenttype>
+  <description>La liste des entités </description>
+  <iscustomizable>1</iscustomizable>
+  <name>Entités</name>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</botcomponent>

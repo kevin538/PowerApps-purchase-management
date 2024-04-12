@@ -1,0 +1,453 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline_1": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_SharePoint_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_List_KCTFlowRM (cm237_Ev_Con_List_KCTFlowRM)": {
+          "defaultValue": "4f7470af-b8cf-4729-a71f-5528325db6df",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_KCTFlowRM",
+            "description": "KCT_Flow_Responsablemetier"
+          }
+        },
+        "Ev_Con_List_FlowPAZulaaDA1ResponsableMetier (cm237_Ev_Con_List_FlowPAZulaaDA1ResponsableMetier)": {
+          "defaultValue": "61c9ad5c-05cd-435c-b4e6-39c59797b315",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_FlowPAZulaaDA1ResponsableMetier",
+            "description": "FlowPAZulaaDA1ResponsableMetierV2"
+          }
+        },
+        "Ev_Con_List_SOCOPAOFlowRM (cm237_Ev_Con_List_SOCOPAOFlowRM)": {
+          "defaultValue": "cb89dfd5-a6a4-4305-b154-d46ec199d38f",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_SOCOPAOFlowRM",
+            "description": "SOCOPAO_Flow_ResponsableMetier"
+          }
+        },
+        "Ev_Con_List_Trigger_SEPBC_ResponsableMetier (cm237_Ev_Con_List_Trigger_SEPBC_ResponsableMetier)": {
+          "defaultValue": "196941e1-a737-4a4b-8574-ad49238adcbf",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_Trigger_SEPBC_ResponsableMetier",
+            "description": "Trigger_SEPBC_ResponsableMetier"
+          }
+        },
+        "Ev_Con_List_CAMRAILFlowRM (cm237_Ev_Con_List_CAMRAILFlowRM)": {
+          "defaultValue": "649400c4-db32-4e59-95da-e1a70c3b61ac",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_CAMRAILFlowRM",
+            "description": "CAMRAIL_Flow_ResponsableMetier"
+          }
+        },
+        "Ev_Con_List_DIT_Flow_ResponsableMetier (cm237_Ev_Con_List_DIT_Flow_ResponsableMetier)": {
+          "defaultValue": "54d0272e-5ca0-4154-b227-e6ffdf115fe8",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_DIT_Flow_ResponsableMetier",
+            "description": "DIT_Flow_ResponsableMetier"
+          }
+        },
+        "Ev_Con_List_BTLCF_Flow_ResponsableMetier (cm237_Ev_Con_List_BTLCF_Flow_ResponsableMetier)": {
+          "defaultValue": "f50131d4-751c-448c-9557-1fbfab74eb0e",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_BTLCF_Flow_ResponsableMetier"
+          }
+        },
+        "Ev_Con_List_Trigger_PPK_ResponsableMetier (cm237_Ev_Con_List_Trigger_PPK_ResponsableMetier)": {
+          "defaultValue": "75f4888e-29e0-4398-beb5-f34f109cdcb6",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_Trigger_PPK_ResponsableMetier",
+            "description": "Trigger_PPK_ResponsableMetier"
+          }
+        },
+        "Ev_Con_Zulaa (cm237_Ev_Con_Zulaa)": {
+          "defaultValue": "https://teamsite.msc.com/sites/NL001-SITE_ACHAT",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Zulaa",
+            "description": "Site Sharepoint de production de ZULAA"
+          }
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "fe8ae849-92ac-4687-9add-5cf5500b7952"
+          },
+          "type": "Request",
+          "kind": "PowerApp",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Initialiserlavariable_Valeur": {
+                  "type": "integer",
+                  "description": "Entrer la valeur initiale",
+                  "x-ms-powerflows-param-ispartial": false
+                },
+                "Initialiserlavariable2_Valeur": {
+                  "type": "string",
+                  "description": "Entrer la valeur initiale",
+                  "x-ms-powerflows-param-ispartial": false
+                },
+                "Initialiserlavariable3_Valeur": {
+                  "type": "string",
+                  "description": "Entrer la valeur initiale",
+                  "x-ms-powerflows-param-ispartial": false
+                }
+              },
+              "required": [
+                "Initialiserlavariable_Valeur",
+                "Initialiserlavariable2_Valeur",
+                "Initialiserlavariable3_Valeur"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Initialiser_la_variable": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "54b25fc9-6914-4b0c-987b-fcb0e4073406"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ID",
+                "type": "integer",
+                "value": "@triggerBody()['Initialiserlavariable_Valeur']"
+              }
+            ]
+          }
+        },
+        "Initialiser_la_variable_2": {
+          "runAfter": {
+            "Initialiser_la_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f7de4f7e-a59f-41ff-bbbd-bc6006c2340d"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Entite",
+                "type": "string",
+                "value": "@{triggerBody()['Initialiserlavariable2_Valeur']}"
+              }
+            ]
+          }
+        },
+        "Commutateur": {
+          "runAfter": {
+            "Initialiser_la_variable_3": [
+              "Succeeded"
+            ]
+          },
+          "cases": {
+            "Casse": {
+              "case": "BTLCM",
+              "actions": {
+                "Créer_un_élément": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "ff065770-3382-4ade-969d-882ea5a7e044"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                      "connectionName": "shared_sharepointonline_1",
+                      "operationId": "PostItem"
+                    },
+                    "parameters": {
+                      "dataset": "@parameters('Ev_Con_Zulaa (cm237_Ev_Con_Zulaa)')",
+                      "table": "@parameters('Ev_Con_List_FlowPAZulaaDA1ResponsableMetier (cm237_Ev_Con_List_FlowPAZulaaDA1ResponsableMetier)')",
+                      "item/Title": "\"RELANCER FLUX BTLCM RM\"",
+                      "item/IdDemandeAchat": "@variables('ID')",
+                      "item/EmailRelance": "@variables('EmailRelance')"
+                    },
+                    "authentication": {
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                      "type": "Raw"
+                    }
+                  }
+                }
+              }
+            },
+            "Casse_2": {
+              "case": "SOCOPAO",
+              "actions": {
+                "Créer_un_élément_2": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "63e16b70-86ef-49ab-8392-9f566632de52"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                      "connectionName": "shared_sharepointonline_1",
+                      "operationId": "PostItem"
+                    },
+                    "parameters": {
+                      "dataset": "@parameters('Ev_Con_Zulaa (cm237_Ev_Con_Zulaa)')",
+                      "table": "@parameters('Ev_Con_List_SOCOPAOFlowRM (cm237_Ev_Con_List_SOCOPAOFlowRM)')",
+                      "item/Title": "\"RELANCER FLUX SOCOPAO RM\"",
+                      "item/IdDemandeAchat": "@variables('ID')",
+                      "item/EmailRelance": "@variables('EmailRelance')"
+                    },
+                    "authentication": {
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                      "type": "Raw"
+                    }
+                  }
+                }
+              }
+            },
+            "Casse_3": {
+              "case": "KCT",
+              "actions": {
+                "Créer_un_élément_3": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "986bc345-e02d-474c-af4d-35c7f77ec301"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                      "connectionName": "shared_sharepointonline_1",
+                      "operationId": "PostItem"
+                    },
+                    "parameters": {
+                      "dataset": "@parameters('Ev_Con_Zulaa (cm237_Ev_Con_Zulaa)')",
+                      "table": "@parameters('Ev_Con_List_KCTFlowRM (cm237_Ev_Con_List_KCTFlowRM)')",
+                      "item/Title": "\"RELANCER FLUX KCT RM\"",
+                      "item/IdDemandeAchat": "@variables('ID')",
+                      "item/EmailRelance": "@variables('EmailRelance')"
+                    },
+                    "authentication": {
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                      "type": "Raw"
+                    }
+                  }
+                }
+              }
+            },
+            "Casse_4": {
+              "case": "TBPD",
+              "actions": {
+                "Créer_un_élément_4": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "a08044b4-f318-4331-bd23-01d85103debf"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                      "connectionName": "shared_sharepointonline_1",
+                      "operationId": "PostItem"
+                    },
+                    "parameters": {
+                      "dataset": "@parameters('Ev_Con_Zulaa (cm237_Ev_Con_Zulaa)')",
+                      "table": "@parameters('Ev_Con_List_Trigger_SEPBC_ResponsableMetier (cm237_Ev_Con_List_Trigger_SEPBC_ResponsableMetier)')",
+                      "item/Title": "\"RELANCER FLUX TBPD RM\"",
+                      "item/idElement": "@variables('ID')",
+                      "item/EmailRelance": "@variables('EmailRelance')"
+                    },
+                    "authentication": {
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                      "type": "Raw"
+                    }
+                  }
+                }
+              }
+            },
+            "Casse_5": {
+              "case": "PPK",
+              "actions": {
+                "Créer_un_élément_5": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "fe903c77-9709-4485-be59-95b167aec7b8"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                      "connectionName": "shared_sharepointonline_1",
+                      "operationId": "PostItem"
+                    },
+                    "parameters": {
+                      "dataset": "@parameters('Ev_Con_Zulaa (cm237_Ev_Con_Zulaa)')",
+                      "table": "@parameters('Ev_Con_List_Trigger_PPK_ResponsableMetier (cm237_Ev_Con_List_Trigger_PPK_ResponsableMetier)')",
+                      "item/Title": "\"RELANCER FLUX PPK RM\"",
+                      "item/idElement": "@variables('ID')",
+                      "item/EmailRelance": "@variables('EmailRelance')"
+                    },
+                    "authentication": {
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                      "type": "Raw"
+                    }
+                  }
+                }
+              }
+            },
+            "Casse_6": {
+              "case": "CAMRAIL",
+              "actions": {
+                "Créer_un_élément_6": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "a7af920b-4c9e-4a07-9fc7-bae06c4b4f85"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                      "connectionName": "shared_sharepointonline_1",
+                      "operationId": "PostItem"
+                    },
+                    "parameters": {
+                      "dataset": "@parameters('Ev_Con_Zulaa (cm237_Ev_Con_Zulaa)')",
+                      "table": "@parameters('Ev_Con_List_CAMRAILFlowRM (cm237_Ev_Con_List_CAMRAILFlowRM)')",
+                      "item/Title": "\"RELANCER FLUX CAMRAIL RM\"",
+                      "item/IdDemandeAchat": "@variables('ID')",
+                      "item/EmailRelance": "@variables('EmailRelance')"
+                    },
+                    "authentication": {
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                      "type": "Raw"
+                    }
+                  }
+                }
+              }
+            },
+            "Casse_7": {
+              "case": "DIT",
+              "actions": {
+                "Créer_un_élément_7": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "a7ff1bbe-521b-4240-bd5a-4d2e9fc2614f"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                      "connectionName": "shared_sharepointonline_1",
+                      "operationId": "PostItem"
+                    },
+                    "parameters": {
+                      "dataset": "@parameters('Ev_Con_Zulaa (cm237_Ev_Con_Zulaa)')",
+                      "table": "@parameters('Ev_Con_List_DIT_Flow_ResponsableMetier (cm237_Ev_Con_List_DIT_Flow_ResponsableMetier)')",
+                      "item/Title": "\"RELANCER FLUX DIT RM\"",
+                      "item/IdDemandeAchat": "@variables('ID')",
+                      "item/EmailRelance": "@variables('EmailRelance')"
+                    },
+                    "authentication": {
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                      "type": "Raw"
+                    }
+                  }
+                }
+              }
+            },
+            "Casse_8": {
+              "case": "BTLCF",
+              "actions": {
+                "Créer_un_élément_8": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "479bcab0-7642-4cf1-b9cf-249730581e1d"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                      "connectionName": "shared_sharepointonline_1",
+                      "operationId": "PostItem"
+                    },
+                    "parameters": {
+                      "dataset": "@parameters('Ev_Con_Zulaa (cm237_Ev_Con_Zulaa)')",
+                      "table": "@parameters('Ev_Con_List_BTLCF_Flow_ResponsableMetier (cm237_Ev_Con_List_BTLCF_Flow_ResponsableMetier)')",
+                      "item/Title": "\"RELANCER FLUX BTLCF RM\"",
+                      "item/IdDemandeAchat": "@variables('ID')",
+                      "item/EmailRelance": "@variables('EmailRelance')"
+                    },
+                    "authentication": {
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                      "type": "Raw"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "actions": {}
+          },
+          "expression": "@variables('Entite')",
+          "metadata": {
+            "operationMetadataId": "b13799de-f0f4-4538-84ca-003b56442e06"
+          },
+          "type": "Switch"
+        },
+        "Initialiser_la_variable_3": {
+          "runAfter": {
+            "Initialiser_la_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e3ecb1dc-8a0b-4af5-a3df-58f0bef548f6"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "EmailRelance",
+                "type": "string",
+                "value": "@{triggerBody()['Initialiserlavariable3_Valeur']}"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

@@ -1,0 +1,260 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline_1": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_SharePoint_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_List_DelegationPersonnel (cm237_Ev_Con_List_DelegationPersonnel)": {
+          "defaultValue": "ba191c5e-eebc-4601-b0b3-0209b4fae7ed",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_DelegationPersonnel",
+            "description": "Connexion à la liste sharepoint de DélegationPersonnel"
+          }
+        },
+        "Ev_Con_List_Entite (cm237_Ev_Con_List_Entit)": {
+          "defaultValue": "0ecfd9f6-6425-4e2a-816f-b35669a82481",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_Entit",
+            "description": "Connexion à la liste sharepoint des Entitées"
+          }
+        },
+        "Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)": {
+          "defaultValue": "https://teamsite.msc.com/sites/NL001-SITE_ACHAT",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Site_ZulaaDev",
+            "description": "Site de la dev où sont stockés les templates des documents de bon de commande, expression de besoin, réception et sortie de stock"
+          }
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "38470e20-97aa-46bb-a88b-63ef86a55699"
+          },
+          "type": "Request",
+          "kind": "PowerApp",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Obtenirl’élément2_ID": {
+                  "type": "integer"
+                },
+                "Obtenirl’élément2_ID_1": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "Obtenirl’élément2_ID",
+                "Obtenirl’élément2_ID_1"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "delegation_personnel": {
+          "runAfter": {
+            "entite": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "50b60577-fc09-411b-9275-4b7717484dde"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItem"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_DelegationPersonnel (cm237_Ev_Con_List_DelegationPersonnel)')",
+              "id": "@triggerBody()['Obtenirl’élément2_ID']"
+            },
+            "authentication": {
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+              "type": "Raw"
+            }
+          }
+        },
+        "entite": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "8a757e12-7f13-44c3-87c9-3b38a87114b6"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItem"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_Entite (cm237_Ev_Con_List_Entit)')",
+              "id": "@triggerBody()['Obtenirl’élément2_ID_1']"
+            },
+            "authentication": {
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+              "type": "Raw"
+            }
+          }
+        },
+        "Mettre_à_jour_l'élément": {
+          "runAfter": {
+            "Appliquer_à_chacun": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "0674c33f-8c49-4c91-a50f-010699c2cea0"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "PatchItem"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_Entite (cm237_Ev_Con_List_Entit)')",
+              "id": "@outputs('entite')?['body/ID']",
+              "item/ServiceAchat": "@variables('SVA')",
+              "item/DG": "@variables('DG')",
+              "item/DAF": [
+                {
+                  "Claims": "@outputs('delegation_personnel')?['body/PersonnelDelegateur/Claims']"
+                }
+              ],
+              "item/Status": true
+            },
+            "authentication": {
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+              "type": "Raw"
+            }
+          }
+        },
+        "Initialiser_la_variable": {
+          "runAfter": {
+            "delegation_personnel": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "17319a60-e143-438c-b2a3-aae96a386543"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "SVA",
+                "type": "array"
+              }
+            ]
+          }
+        },
+        "Appliquer_à_chacun": {
+          "foreach": "@outputs('entite')?['body/ServiceAchat']",
+          "actions": {
+            "Ajouter_à_la_variable_de_tableau": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "353277aa-8ddd-4880-8294-a991559c9b55"
+              },
+              "type": "AppendToArrayVariable",
+              "inputs": {
+                "name": "SVA",
+                "value": {
+                  "Claims": "@items('Appliquer_à_chacun')?['Claims']"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Appliquer_à_chacun_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "9a567f8d-ab6d-4b5f-88d7-43ff4195fad1"
+          },
+          "type": "Foreach"
+        },
+        "Initialiser_la_variable_2": {
+          "runAfter": {
+            "Initialiser_la_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "23717379-5329-451f-b95e-e252941cb0e7"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "DG",
+                "type": "array"
+              }
+            ]
+          }
+        },
+        "Appliquer_à_chacun_2": {
+          "foreach": "@outputs('entite')?['body/DG']",
+          "actions": {
+            "Ajouter_à_la_variable_de_tableau_2": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "e1ccda5e-eb6c-4df8-b1ff-a3a683853af3"
+              },
+              "type": "AppendToArrayVariable",
+              "inputs": {
+                "name": "DG",
+                "value": {
+                  "Claims": "@items('Appliquer_à_chacun_2')?['Claims']"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Initialiser_la_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "ce85581d-e0c7-40e3-a771-b2cc1f4898f9"
+          },
+          "type": "Foreach"
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

@@ -1,0 +1,37 @@
+{
+  "intents": [
+    {
+      "endUserOverrideName": "demarrage",
+      "triggerQueries": [
+        "hey",
+        "zulaa"
+      ],
+      "dialogId": "new_topic_f19db62109c34d71868cd6d69d7e0d19",
+      "isTriggeringEnabled": true,
+      "id": "new_topic_f19db62109c34d71868cd6d69d7e0d19",
+      "displayName": "appelle",
+      "description": "",
+      "createdTime": "2021-10-22T13:52:56.8655663Z",
+      "updatedTime": "2021-10-22T13:52:56.8655663Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    }
+  ],
+  "dialogs": [
+    {
+      "rootNodeId": "90cfdf84-264f-4608-bf62-f9d700f55baa",
+      "dialogChangeNodes": [
+        {
+          "targetDialogId": "new_topic_48bcf79f05264a4abbdca8ef44a81e3d_ba7b967c97ba4c39bca58a8bb6a72d59_conversationstart",
+          "nodeType": "DialogChangeNode",
+          "id": "90cfdf84-264f-4608-bf62-f9d700f55baa"
+        }
+      ],
+      "id": "new_topic_f19db62109c34d71868cd6d69d7e0d19",
+      "displayName": "Dialog for appelle",
+      "createdTime": "2021-10-22T13:52:56.8655663Z",
+      "updatedTime": "2021-10-22T13:53:32.7662194Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    }
+  ]
+}

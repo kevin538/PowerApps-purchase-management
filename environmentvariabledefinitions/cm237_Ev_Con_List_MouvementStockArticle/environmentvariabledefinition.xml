@@ -1,0 +1,15 @@
+<environmentvariabledefinition schemaname="cm237_Ev_Con_List_MouvementStockArticle">
+  <apiid>/providers/microsoft.powerapps/apis/shared_sharepointonline</apiid>
+  <displayname default="Ev_Con_List_MouvementStockArticle">
+    <label description="Ev_Con_List_MouvementStockArticle" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.0</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <parameterkey>table</parameterkey>
+  <parentdefinitionid>
+    <schemaname>cm237_Ev_Con_Site_ZulaaDev</schemaname>
+  </parentdefinitionid>
+  <secretstore>0</secretstore>
+  <type>100000004</type>
+</environmentvariabledefinition>

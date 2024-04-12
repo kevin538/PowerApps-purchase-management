@@ -1,0 +1,70 @@
+{
+  "namedEntities": [
+    {
+      "synonyms": [
+        "Informatique",
+        "IT",
+        "Service IT"
+      ],
+      "id": "9c8a2ae8-905d-4771-8494-a1c2758c1dd6",
+      "displayName": "DLA-70F00",
+      "createdTime": "2021-10-25T15:47:34.4423157Z",
+      "updatedTime": "2021-10-25T15:47:34.4423157Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "synonyms": [
+        "Frais commun consignation"
+      ],
+      "id": "042bdd51-8ba0-47e9-849d-f9e3a380fc9f",
+      "displayName": "DLA-10T00",
+      "createdTime": "2021-10-25T15:47:34.4423157Z",
+      "updatedTime": "2021-10-25T15:47:34.4423157Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "synonyms": [
+        "véhicules",
+        "Terminaux véhicules"
+      ],
+      "id": "cae928e5-d2ec-48ff-b831-1a0f76d4d608",
+      "displayName": "DLA-15E00",
+      "createdTime": "2021-10-25T15:47:34.4423157Z",
+      "updatedTime": "2021-10-25T15:47:34.4423157Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "synonyms": [
+        "Dépôts ctrs vide"
+      ],
+      "id": "843f4b63-f8a2-4fee-a7d6-24e5d4921ace",
+      "displayName": "DLA-15H01",
+      "createdTime": "2021-10-25T15:47:34.4423157Z",
+      "updatedTime": "2021-10-25T15:47:34.4423157Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    }
+  ],
+  "closedListTypes": [
+    {
+      "namedEntities": [
+        "9c8a2ae8-905d-4771-8494-a1c2758c1dd6",
+        "042bdd51-8ba0-47e9-849d-f9e3a380fc9f",
+        "cae928e5-d2ec-48ff-b831-1a0f76d4d608",
+        "843f4b63-f8a2-4fee-a7d6-24e5d4921ace"
+      ],
+      "smartMatchingEnabled": true,
+      "customTypeSchema": "ClosedList",
+      "id": "new_customtype_e13bdcef0d884477a12196ba2f4d361c",
+      "displayName": "Centres de couts",
+      "description": "Regroupes la listes des centre de couts de l'applications",
+      "createdTime": "2021-10-25T15:47:34.4423157Z",
+      "updatedTime": "2021-10-25T15:47:34.4423157Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    }
+  ]
+}

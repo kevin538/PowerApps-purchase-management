@@ -1,0 +1,127 @@
+{
+  "properties": {
+    "connectionReferences": {},
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_List_Article (cm237_Ev_Con_List_Article)": {
+          "defaultValue": "552b7a3d-ccc5-4968-96f3-2c5fc36fbeed",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_Article",
+            "description": "Connexion à la liste sharepoint des articles"
+          }
+        },
+        "Ev_Con_Zulaa_Camrail (cm237_Ev_Con_Zulaa)": {
+          "defaultValue": "https://teamsite.msc.com/sites/cm004-afr-cio-zulaa-dev",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Zulaa",
+            "description": "Site Sharepoint de production de ZULAA"
+          }
+        }
+      },
+      "triggers": {
+        "Quand_un_Article_est_cree": {
+          "recurrence": {
+            "interval": 1,
+            "frequency": "Minute"
+          },
+          "splitOn": "@triggerOutputs()?['body/value']",
+          "metadata": {
+            "operationMetadataId": "09fdd0e1-f3ed-4b0c-b86f-488d3c706671"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline",
+              "operationId": "GetOnNewItems",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Zulaa_Camrail (cm237_Ev_Con_Zulaa)')",
+              "table": "@parameters('Ev_Con_List_Article (cm237_Ev_Con_List_Article)')"
+            },
+            "authentication": "@parameters('$authentication')"
+          },
+          "runtimeConfiguration": {
+            "concurrency": {
+              "runs": 1
+            }
+          }
+        }
+      },
+      "actions": {
+        "Compose": {
+          "runAfter": {
+            "Article": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "41ab1819-0f15-486d-b0f3-75f5002a8d22"
+          },
+          "type": "Compose",
+          "inputs": "@formatDateTime(utcNow(),'yyMMddHHmmssfff')"
+        },
+        "Update_item": {
+          "runAfter": {
+            "Compose": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a60275f2-c3d6-4356-8615-a4c275dcf324"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline",
+              "operationId": "PatchItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Zulaa_Camrail (cm237_Ev_Con_Zulaa)')",
+              "table": "@parameters('Ev_Con_List_Article (cm237_Ev_Con_List_Article)')",
+              "id": "@outputs('Article')?['body/ID']",
+              "item/ChampLibre1": "@outputs('Compose')"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Article": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "88edec7e-b135-42df-98e6-3aee2c14f7eb"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Zulaa_Camrail (cm237_Ev_Con_Zulaa)')",
+              "table": "@parameters('Ev_Con_List_Article (cm237_Ev_Con_List_Article)')",
+              "id": "@triggerOutputs()?['body/ID']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "outputs": {}
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

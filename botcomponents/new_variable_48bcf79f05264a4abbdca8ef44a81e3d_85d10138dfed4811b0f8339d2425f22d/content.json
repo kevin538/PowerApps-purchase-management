@@ -1,0 +1,24 @@
+{
+  "contextVariables": [
+    {
+      "customTypeId": "new_customtype_f46e28a9db32465eaf9ac3251c07b0f3",
+      "initializerType": "UserQuestion",
+      "scope": "Session",
+      "greedySlotFillingEnabled": true,
+      "isInput": false,
+      "externalInitializationAllowed": false,
+      "messages": {
+        "GetValue": [
+          "48ff7619-546c-416c-a3fc-ec5c79c1b10a"
+        ]
+      },
+      "isGlobal": true,
+      "id": "new_variable_48bcf79f05264a4abbdca8ef44a81e3d_85d10138dfed4811b0f8339d2425f22d",
+      "displayName": "direction",
+      "createdTime": "2021-10-25T20:42:00.584Z",
+      "updatedTime": "2021-10-25T20:42:00.584Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "user-0"
+    }
+  ]
+}

@@ -1,0 +1,506 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_SharePoint_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_List_Departement (cm237_Ev_Con_List_Departement)": {
+          "defaultValue": "875dc31a-9614-4863-b9fd-c688d2137bec",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_Departement",
+            "description": "Connexion à la liste sharepoint des départements"
+          }
+        },
+        "Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)": {
+          "defaultValue": "https://teamsite.msc.com/sites/NL001-SITE_ACHAT",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Site_ZulaaDev",
+            "description": "Site de la dev où sont stockés les templates des documents de bon de commande, expression de besoin, réception et sortie de stock"
+          }
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "30c250b1-6d4c-49eb-9c5a-007b94c120f6"
+          },
+          "type": "Request",
+          "kind": "VirtualAgent",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "Direction",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_1": {
+                  "title": "Departement",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_2": {
+                  "title": "Entite",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text",
+                "text_1",
+                "text_2"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Return_value(s)_to_Power_Virtual_Agents": {
+          "runAfter": {
+            "Condition": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "2d948658-7f9b-4f3f-9089-fe4387d39822"
+          },
+          "type": "Response",
+          "kind": "VirtualAgent",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "existdepartement": "@variables('ExistDepartement')",
+              "iddepartement": "@{variables('IdDepartement')}"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "existdepartement": {
+                  "title": "ExistDepartement",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                },
+                "iddepartement": {
+                  "title": "IdDepartement",
+                  "x-ms-dynamically-added": true,
+                  "type": "number"
+                }
+              }
+            }
+          }
+        },
+        "Condition": {
+          "actions": {
+            "Condition_3": {
+              "actions": {
+                "Set_variable_5": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "8ab07d57-5d35-452c-9002-bb0c3a2a99d8"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "ExistDepartement",
+                    "value": "OUI"
+                  }
+                }
+              },
+              "runAfter": {},
+              "else": {
+                "actions": {
+                  "Get_items": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "dba3bbb9-bbd9-4c92-8f1f-26ceed28ef37"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                        "connectionName": "shared_sharepointonline",
+                        "operationId": "GetItems"
+                      },
+                      "parameters": {
+                        "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                        "table": "@parameters('Ev_Con_List_Departement (cm237_Ev_Con_List_Departement)')",
+                        "$filter": "EntiteId/CodeSociete eq '@{triggerBody()['text_2']}' and Title eq '@{triggerBody()['text_1']}'",
+                        "$top": 1
+                      },
+                      "authentication": "@parameters('$authentication')"
+                    }
+                  },
+                  "Condition_2": {
+                    "actions": {
+                      "Set_variable_2": {
+                        "runAfter": {},
+                        "metadata": {
+                          "operationMetadataId": "ce365748-6725-424d-913e-96fde23ee1bf"
+                        },
+                        "type": "SetVariable",
+                        "inputs": {
+                          "name": "ExistDepartement",
+                          "value": "OUI"
+                        }
+                      },
+                      "Apply_to_each": {
+                        "foreach": "@outputs('Get_items')?['body/value']",
+                        "actions": {
+                          "Set_variable_3": {
+                            "runAfter": {},
+                            "metadata": {
+                              "operationMetadataId": "cd207086-4cdb-4453-9b5a-111a820cfdb0"
+                            },
+                            "type": "SetVariable",
+                            "inputs": {
+                              "name": "IdDepartement",
+                              "value": "@items('Apply_to_each')?['ID']"
+                            }
+                          },
+                          "Set_variable_4": {
+                            "runAfter": {
+                              "Set_variable_3": [
+                                "Succeeded"
+                              ]
+                            },
+                            "metadata": {
+                              "operationMetadataId": "5df2dfc2-82fe-4f46-9ec0-8333605e47dc"
+                            },
+                            "type": "SetVariable",
+                            "inputs": {
+                              "name": "NomDepartement",
+                              "value": "@items('Apply_to_each')?['Title']"
+                            }
+                          }
+                        },
+                        "runAfter": {
+                          "Set_variable_2": [
+                            "Succeeded"
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "fddeb2ac-e90b-4ba2-9158-0abf861ad5b4"
+                        },
+                        "type": "Foreach"
+                      }
+                    },
+                    "runAfter": {
+                      "Get_items": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Set_variable": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "88786f6b-2ee0-49a5-b71b-4e33051fd99c"
+                          },
+                          "type": "SetVariable",
+                          "inputs": {
+                            "name": "ExistDepartement",
+                            "value": "NON"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "greaterOrEquals": [
+                        "@length(outputs('Get_items')?['body/value'])",
+                        1
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "e058dfb3-e638-4c60-bfa0-58255c09fd12"
+                    },
+                    "type": "If"
+                  }
+                }
+              },
+              "expression": {
+                "or": [
+                  {
+                    "equals": [
+                      "@triggerBody()['text_1']",
+                      "Aucun"
+                    ]
+                  },
+                  {
+                    "equals": [
+                      "@triggerBody()['text_1']",
+                      "aucun"
+                    ]
+                  }
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "fa01022a-3d0f-41c2-ad2b-188703ca09e4"
+              },
+              "type": "If"
+            }
+          },
+          "runAfter": {
+            "InitializeVariableNomDepartement": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Condition_4": {
+                "actions": {
+                  "Set_variable_6": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "8652c56a-4a84-43d3-ab8a-5f9f862fadbe"
+                    },
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "ExistDepartement",
+                      "value": "OUI"
+                    }
+                  }
+                },
+                "runAfter": {},
+                "else": {
+                  "actions": {
+                    "Get_items_2": {
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "c66bbdd3-de9a-4feb-adda-f1572f32d92a"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                          "connectionName": "shared_sharepointonline",
+                          "operationId": "GetItems"
+                        },
+                        "parameters": {
+                          "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                          "table": "@parameters('Ev_Con_List_Departement (cm237_Ev_Con_List_Departement)')",
+                          "$filter": "EntiteId/CodeSociete eq '@{triggerBody()['text_2']}' and Title eq '@{triggerBody()['text_1']}' and DirectionId/CodeDirection eq '@{triggerBody()['text']}'",
+                          "$top": 1
+                        },
+                        "authentication": "@parameters('$authentication')"
+                      }
+                    },
+                    "Condition_5": {
+                      "actions": {
+                        "Set_variable_8": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "4eff7978-ba9b-4c7d-9c16-e0bb4db910d5"
+                          },
+                          "type": "SetVariable",
+                          "inputs": {
+                            "name": "ExistDepartement",
+                            "value": "OUI"
+                          }
+                        },
+                        "Apply_to_each_2": {
+                          "foreach": "@outputs('Get_items_2')?['body/value']",
+                          "actions": {
+                            "Set_variable_9": {
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "665fab9c-99cb-4445-ae54-fbfcaae54071"
+                              },
+                              "type": "SetVariable",
+                              "inputs": {
+                                "name": "IdDepartement",
+                                "value": "@items('Apply_to_each_2')?['ID']"
+                              }
+                            },
+                            "Set_variable_10": {
+                              "runAfter": {
+                                "Set_variable_9": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "ba22ea60-d016-4c06-9d44-db3228ca35b4"
+                              },
+                              "type": "SetVariable",
+                              "inputs": {
+                                "name": "NomDepartement",
+                                "value": "@items('Apply_to_each_2')?['Title']"
+                              }
+                            }
+                          },
+                          "runAfter": {
+                            "Set_variable_8": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "ccd90828-3e4b-4e83-ae1d-71724569964d"
+                          },
+                          "type": "Foreach"
+                        }
+                      },
+                      "runAfter": {
+                        "Get_items_2": [
+                          "Succeeded"
+                        ]
+                      },
+                      "else": {
+                        "actions": {
+                          "Set_variable_7": {
+                            "runAfter": {},
+                            "metadata": {
+                              "operationMetadataId": "fe046cde-9f31-4535-851e-5393e1794b6c"
+                            },
+                            "type": "SetVariable",
+                            "inputs": {
+                              "name": "ExistDepartement",
+                              "value": "NON"
+                            }
+                          }
+                        }
+                      },
+                      "expression": {
+                        "greaterOrEquals": [
+                          "@length(outputs('Get_items_2')?['body/value'])",
+                          1
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "6c352b4c-89f8-4ac4-a7ab-49e2f9c070b8"
+                      },
+                      "type": "If"
+                    }
+                  }
+                },
+                "expression": {
+                  "or": [
+                    {
+                      "equals": [
+                        "@triggerBody()['text_1']",
+                        "Aucun"
+                      ]
+                    },
+                    {
+                      "equals": [
+                        "@triggerBody()['text_1']",
+                        "aucun"
+                      ]
+                    }
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "b706159b-470b-4241-b91e-efc0ee7dfa44"
+                },
+                "type": "If"
+              }
+            }
+          },
+          "expression": {
+            "or": [
+              {
+                "equals": [
+                  "@triggerBody()['text']",
+                  "Aucun"
+                ]
+              },
+              {
+                "equals": [
+                  "@triggerBody()['text']",
+                  "aucun"
+                ]
+              }
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "fbddbbec-8a3d-4856-9368-b3e3b33fc706"
+          },
+          "type": "If"
+        },
+        "InitializeVariableExistDepartement": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "fc100292-5999-4f9d-a29b-7fe6bbd2df87"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ExistDepartement",
+                "type": "string",
+                "value": "NON"
+              }
+            ]
+          }
+        },
+        "InitializeVariableIdDepartement": {
+          "runAfter": {
+            "InitializeVariableExistDepartement": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6b9510dc-65bc-4b96-96cd-3d23f423a87d"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "IdDepartement",
+                "type": "integer",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "InitializeVariableNomDepartement": {
+          "runAfter": {
+            "InitializeVariableIdDepartement": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "88eab6db-8fb3-4160-ad3d-f31429cded56"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "NomDepartement",
+                "type": "string"
+              }
+            ]
+          }
+        }
+      },
+      "outputs": {}
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

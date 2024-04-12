@@ -1,0 +1,501 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_SharePoint_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_List_PersonneCentreCout (cm237_Ev_Con_List_PersonneCentreCout)": {
+          "defaultValue": "bb71767b-9c56-47e2-8ac0-987b3c7a9349",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_PersonneCentreCout",
+            "description": "Connexion à la liste sharepoint de PersonneCentreCout"
+          }
+        },
+        "Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)": {
+          "defaultValue": "d8dfb529-f01e-47b3-bb55-710c65c63e74",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_SiteCentreCout",
+            "description": "Connexion à la liste sharepoint des SiteCentreCout"
+          }
+        },
+        "Ev_Con_List_Utilisateur (cm237_Ev_Con_List_Utilisateur)": {
+          "defaultValue": "60fc3dfa-5efc-479b-8bdc-492f217c6303",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_Utilisateur",
+            "description": "Connexion à la liste sharepoint des utilisateurs"
+          }
+        },
+        "Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)": {
+          "defaultValue": "https://teamsite.msc.com/sites/NL001-SITE_ACHAT",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Site_ZulaaDev",
+            "description": "Site de la dev où sont stockés les templates des documents de bon de commande, expression de besoin, réception et sortie de stock"
+          }
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "f582cab6-6c05-4bd9-b3c8-234160ae9b36"
+          },
+          "type": "Request",
+          "kind": "VirtualAgent",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "CentreCoutChatBot",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_1": {
+                  "title": "Username",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_2": {
+                  "title": "Entite",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text",
+                "text_1",
+                "text_2"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Return_value(s)_to_Power_Virtual_Agents": {
+          "runAfter": {
+            "Condition": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "04205390-e3d2-4ec4-b6b3-fb711fec39fb"
+          },
+          "type": "Response",
+          "kind": "VirtualAgent",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "exist": "@variables('VarExist')",
+              "centredecout": "@variables('VarBonCC')",
+              "messageaffiche": "@variables('VarMessage')"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "exist": {
+                  "title": "Exist",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                },
+                "centredecout": {
+                  "title": "CentreDeCout",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                },
+                "messageaffiche": {
+                  "title": "MessageAffiche",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "GetItems": {
+          "runAfter": {
+            "InitializeMessage": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "0b2ffd73-964c-41ef-ad35-25f138b6c05d"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline",
+              "operationId": "GetItems"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+              "$filter": "Code eq '@{variables('VarBonCC')}' or CentreCout eq '@{variables('VarBonCC')}' and EntiteId/CodeSociete eq '@{triggerBody()['text_2']}'",
+              "$top": 1
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "InitializeBonCC": {
+          "runAfter": {
+            "InitializeEmailUser": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a5c3e6e2-d0f3-431b-a4d4-1254af2c5a5e"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "VarBonCC",
+                "type": "string",
+                "value": "@{toUpper(triggerBody()['text'])}"
+              }
+            ]
+          }
+        },
+        "Condition": {
+          "actions": {
+            "Apply_to_each": {
+              "foreach": "@outputs('GetItems')?['body/value']",
+              "actions": {
+                "MAJCC": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "d7e55b84-d25e-4f71-8806-21b2882a3491"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "VarBonCC",
+                    "value": "@items('Apply_to_each')?['Code']"
+                  }
+                },
+                "Set_variable": {
+                  "runAfter": {
+                    "MAJCC": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "47a2d006-0ee2-49b3-a7a3-7b1e0be40b37"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "VarIdCC",
+                    "value": "@items('Apply_to_each')?['ID']"
+                  }
+                }
+              },
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "7dee4aca-b541-4980-9e30-c9b3f1c91fdf"
+              },
+              "type": "Foreach"
+            },
+            "GetitemsPersonneCC": {
+              "runAfter": {
+                "Apply_to_each_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ddc7c98a-ca95-48fe-8634-df596c8c5020"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                  "connectionName": "shared_sharepointonline",
+                  "operationId": "GetItems"
+                },
+                "parameters": {
+                  "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                  "table": "@parameters('Ev_Con_List_PersonneCentreCout (cm237_Ev_Con_List_PersonneCentreCout)')",
+                  "$filter": "SiteCentreCoutId/Id eq '@{variables('VarIdCC')}' and Personne/EMail eq '@{variables('EmailUser')}'",
+                  "$top": 1
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Condition_2": {
+              "actions": {
+                "Set_variable_2": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "db609d88-bd65-4361-aa74-9db87e7fef9d"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "VarMessage",
+                    "value": "Vous avez les accès sur ce centre de coût"
+                  }
+                },
+                "Set_variable_3": {
+                  "runAfter": {
+                    "Set_variable_2": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "62a6b79f-8c30-4a5a-ae9e-f80277f4a35c"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "VarExist",
+                    "value": "OUI"
+                  }
+                }
+              },
+              "runAfter": {
+                "GetitemsPersonneCC": [
+                  "Succeeded"
+                ]
+              },
+              "else": {
+                "actions": {
+                  "MAJMessage2": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "a3bfc0ab-d816-42f5-a562-b1c9efd3a19f"
+                    },
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "VarMessage",
+                      "value": "Vous n'avez pas accès sur ce centre de coût"
+                    }
+                  },
+                  "MAJExist2": {
+                    "runAfter": {
+                      "MAJMessage2": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "5c2d32ea-4bef-4f82-a39b-89f12bb5efa7"
+                    },
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "VarExist",
+                      "value": "NON"
+                    }
+                  }
+                }
+              },
+              "expression": {
+                "greaterOrEquals": [
+                  "@length(outputs('GetitemsPersonneCC')?['body/value'])",
+                  1
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "9a708b0d-79b2-45e3-a004-61c734d02ec1"
+              },
+              "type": "If"
+            },
+            "GetitemsSearchEmail": {
+              "runAfter": {
+                "Apply_to_each": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "882d9916-690b-4aa3-8c60-b3e9a71141e2"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                  "connectionName": "shared_sharepointonline",
+                  "operationId": "GetItems"
+                },
+                "parameters": {
+                  "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                  "table": "@parameters('Ev_Con_List_Utilisateur (cm237_Ev_Con_List_Utilisateur)')",
+                  "$filter": "Nom eq '@{triggerBody()['text_1']}'",
+                  "$top": 1
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Apply_to_each_2": {
+              "foreach": "@outputs('GetitemsSearchEmail')?['body/value']",
+              "actions": {
+                "Set_variable_4": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "fd4d15c1-4a32-4023-a4dd-6440f9f03ff6"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "EmailUser",
+                    "value": "@items('Apply_to_each_2')?['Personne/Email']"
+                  }
+                }
+              },
+              "runAfter": {
+                "GetitemsSearchEmail": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "f31d2050-4f82-4aa5-931c-a0f5dda49c7c"
+              },
+              "type": "Foreach"
+            }
+          },
+          "runAfter": {
+            "GetItems": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "MAJMessage": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "1c8aaac1-0802-4ef8-93c2-44267cde307a"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "VarMessage",
+                  "value": "Ce centre de coût n'existe pas dans votre entité"
+                }
+              },
+              "MAJExist": {
+                "runAfter": {
+                  "MAJMessage": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "25de308e-7994-435f-bfe0-2fe033cd7638"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "VarExist",
+                  "value": "NON"
+                }
+              }
+            }
+          },
+          "expression": {
+            "greaterOrEquals": [
+              "@length(outputs('GetItems')?['body/value'])",
+              1
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "b8d0e039-cf96-45f8-b963-3fe28b9ea8d9"
+          },
+          "type": "If"
+        },
+        "InitializeExistCC": {
+          "runAfter": {
+            "InitializeCCId": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6aa48e44-b2f7-4e0f-b474-a83296c77288"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "VarExist",
+                "type": "string",
+                "value": "NON"
+              }
+            ]
+          }
+        },
+        "InitializeMessage": {
+          "runAfter": {
+            "InitializeExistCC": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f4c1f318-9343-406a-adb4-d3aa08a2ff9d"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "VarMessage",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "InitializeCCId": {
+          "runAfter": {
+            "InitializeBonCC": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "c0ecc66f-a329-4536-916e-bf333c0c4318"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "VarIdCC",
+                "type": "integer"
+              }
+            ]
+          }
+        },
+        "InitializeEmailUser": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "d3b48ebd-3f4e-4fe6-9fa3-00ba48e6712c"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "EmailUser",
+                "type": "string"
+              }
+            ]
+          }
+        }
+      },
+      "outputs": {}
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

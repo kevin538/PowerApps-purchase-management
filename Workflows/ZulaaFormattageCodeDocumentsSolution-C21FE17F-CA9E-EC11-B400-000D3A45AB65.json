@@ -1,0 +1,515 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline_1": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_SharePoint_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_List_Compteur (cm237_Ev_Con_List_Compteur)": {
+          "defaultValue": "ef34277e-1da4-479e-8bf6-db2649b94cbd",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_Compteur"
+          }
+        },
+        "Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)": {
+          "defaultValue": "https://teamsite.msc.com/sites/cm004-afr-cio-zulaa-dev",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Site_ZulaaDev",
+            "description": "Site de la dev où sont stockés les templates des documents de bon de commande, expression de besoin, réception et sortie de stock"
+          }
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "d1ffeb05-7742-4693-8d6e-88e8461df8b7"
+          },
+          "type": "Request",
+          "kind": "PowerApp",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "VarEB_Value": {
+                  "type": "string",
+                  "description": "Enter initial value",
+                  "x-ms-powerflows-param-ispartial": false
+                },
+                "VarEntiteValue_Value": {
+                  "type": "string",
+                  "description": "Enter initial value",
+                  "x-ms-powerflows-param-ispartial": false
+                }
+              },
+              "required": [
+                "VarEB_Value",
+                "VarEntiteValue_Value"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Initialize_variable": {
+          "runAfter": {
+            "Condition": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a6ca1248-5317-4b56-9ba9-91f843087773"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "IndexFormatte",
+                "type": "integer",
+                "value": "@variables('Index')"
+              }
+            ]
+          }
+        },
+        "Format_number": {
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "ac7d9ad2-5bc5-4c49-aafd-dd55ea78c599"
+          },
+          "type": "Expression",
+          "kind": "FormatNumber",
+          "inputs": {
+            "number": "@variables('IndexFormatte')",
+            "format": "0000",
+            "locale": "en"
+          }
+        },
+        "Substring": {
+          "runAfter": {
+            "Format_number": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a7e55e6f-7cb4-4f12-b207-836c422636db"
+          },
+          "type": "Expression",
+          "kind": "Substring",
+          "inputs": {
+            "text": "@string(outputs('Format_number')?['body'])",
+            "startingPosition": "@sub(length(outputs('Format_number')?['body']),4)",
+            "length": 4
+          }
+        },
+        "Get_items": {
+          "runAfter": {
+            "VarEntiteValue": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "4b0c6dda-c258-4260-9738-aabcafebe86c"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItems"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_Compteur (cm237_Ev_Con_List_Compteur)')",
+              "$filter": "Annee eq '@{variables('Annee')}' and TypeDocument eq '@{variables('TypeDocument')}'",
+              "$orderby": "ID desc",
+              "$top": 1
+            },
+            "authentication": {
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+              "type": "Raw"
+            }
+          }
+        },
+        "Condition": {
+          "actions": {
+            "Create_item": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "b672d837-77bf-4923-8aec-4e2845dee6b2"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                  "connectionName": "shared_sharepointonline_1",
+                  "operationId": "PostItem"
+                },
+                "parameters": {
+                  "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                  "table": "@parameters('Ev_Con_List_Compteur (cm237_Ev_Con_List_Compteur)')",
+                  "item/Index": 0,
+                  "item/Annee": "@variables('Annee')",
+                  "item/TypeDocument": "@variables('TypeDocument')",
+                  "item/Entite": "@variables('ValueEntite')"
+                },
+                "authentication": {
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                  "type": "Raw"
+                }
+              }
+            },
+            "Set_variable": {
+              "runAfter": {
+                "Create_item": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ee0c1238-3c9e-4d1c-8577-ed98acdca1dd"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "Index",
+                "value": "@int(outputs('Create_item')?['body/Index'])"
+              }
+            },
+            "Set_variable_4": {
+              "runAfter": {
+                "Set_variable": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "a8f4bf98-4e3d-4e5d-9808-7405e1cb3055"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "IdCompteurDeCreation",
+                "value": "@outputs('Create_item')?['body/ID']"
+              }
+            }
+          },
+          "runAfter": {
+            "Get_items": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Apply_to_each": {
+                "foreach": "@outputs('Get_items')?['body/value']",
+                "actions": {
+                  "Set_variable_2": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "1b4ebbbc-f334-40a6-8d19-e561c8367bf2"
+                    },
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "IndexFloat",
+                      "value": "@items('Apply_to_each')?['Index']"
+                    }
+                  }
+                },
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "1712f421-e770-4ed7-9c8c-44018e4c9147"
+                },
+                "type": "Foreach"
+              },
+              "Compose_2": {
+                "runAfter": {
+                  "Apply_to_each": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "fa4e96b9-fa50-4f89-86cb-ccbee172fde4"
+                },
+                "type": "Compose",
+                "inputs": "@add(int(string(variables('IndexFloat'))), 1)"
+              },
+              "Set_variable_3": {
+                "runAfter": {
+                  "Create_item_2": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "50ffd411-9952-494a-a6e1-ab482ad84ba3"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "Index",
+                  "value": "@outputs('Compose_2')"
+                }
+              },
+              "Create_item_2": {
+                "runAfter": {
+                  "Compose_2": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "488f1196-1f9b-4e22-846b-b5db471579e4"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                    "connectionName": "shared_sharepointonline_1",
+                    "operationId": "PostItem"
+                  },
+                  "parameters": {
+                    "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                    "table": "@parameters('Ev_Con_List_Compteur (cm237_Ev_Con_List_Compteur)')",
+                    "item/Index": "@outputs('Compose_2')",
+                    "item/Annee": "@variables('Annee')",
+                    "item/TypeDocument": "@variables('TypeDocument')",
+                    "item/Entite": "@variables('ValueEntite')"
+                  },
+                  "authentication": {
+                    "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                    "type": "Raw"
+                  }
+                }
+              },
+              "Set_variable_5": {
+                "runAfter": {
+                  "Set_variable_3": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "7710f6d1-23ce-49f3-98f3-cd25d5099f35"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "IdCompteurDeCreation",
+                  "value": "@outputs('Create_item_2')?['body/ID']"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@length(outputs('Get_items')?['body/value'])",
+              0
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "46a9fb03-f918-4b67-bc76-e21c1ca532f7"
+          },
+          "type": "If"
+        },
+        "Compose": {
+          "runAfter": {
+            "Substring": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6e497cd3-a460-40bc-9b4e-babfad9422c6"
+          },
+          "type": "Compose",
+          "inputs": "@concat(variables('TypeDocument'),variables('Annee'),outputs('Substring')?['body'])"
+        },
+        "Var2DerniereChiffreAnneeEnCours": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "09ed3f94-7944-40a5-a3e3-aece3a72059b"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Annee",
+                "type": "integer",
+                "value": "@int(formatDateTime(utcNow(),'yy'))"
+              }
+            ]
+          }
+        },
+        "VarEB": {
+          "runAfter": {
+            "Var2DerniereChiffreAnneeEnCours": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "af11fd8a-ab95-4f25-b369-e9406f8f2894"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "TypeDocument",
+                "type": "string",
+                "value": "@{triggerBody()['VarEB_Value']}"
+              }
+            ]
+          }
+        },
+        "VarIndexInteger": {
+          "runAfter": {
+            "VarIndexFloat": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "8ba10d08-43a1-4f37-b235-48870131472b"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Index",
+                "type": "integer"
+              }
+            ]
+          }
+        },
+        "VarIndexFloat": {
+          "runAfter": {
+            "VarEB": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "ae018e8f-0d14-41b1-9b9f-dc7a1463191c"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "IndexFloat",
+                "type": "float"
+              }
+            ]
+          }
+        },
+        "IdCompteurDeCreation": {
+          "runAfter": {
+            "VarIndexInteger": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "7a70c4e3-fb61-46cb-bbbb-f5110b46792f"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "IdCompteurDeCreation",
+                "type": "integer"
+              }
+            ]
+          }
+        },
+        "Update_item": {
+          "runAfter": {
+            "Compose": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "2dc27686-6cc5-4ff9-b75a-e09449b7ee8f"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "PatchItem"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_Compteur (cm237_Ev_Con_List_Compteur)')",
+              "id": "@variables('IdCompteurDeCreation')",
+              "item/Title": "@outputs('Compose')"
+            },
+            "authentication": {
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+              "type": "Raw"
+            }
+          }
+        },
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "Update_item": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "693d3436-3631-4da0-b114-69256020daa5"
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "code": "@{outputs('Compose')}"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "title": "Code",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "VarEntiteValue": {
+          "runAfter": {
+            "IdCompteurDeCreation": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a63997e7-1621-467b-8313-0378e840e0b9"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ValueEntite",
+                "type": "string",
+                "value": "@{triggerBody()['VarEntiteValue_Value']}"
+              }
+            ]
+          }
+        }
+      },
+      "outputs": {}
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

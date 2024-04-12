@@ -1,0 +1,186 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_approvals_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_Approval_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_approvals"
+        }
+      },
+      "shared_sharepointonline_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_SharePoint_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_List_Flow_DemandeAchat (cm237_Ev_Con_List_Flow_DemandeAchat)": {
+          "defaultValue": "dc29577c-7a2d-443c-a0dc-4b40672fc0cf",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_Flow_DemandeAchat",
+            "description": "Declancheur du flux de demande d'achat"
+          }
+        },
+        "Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)": {
+          "defaultValue": "https://teamsite.msc.com/sites/NL001-SITE_ACHAT",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Site_ZulaaDev",
+            "description": "Site de la dev où sont stockés les templates des documents de bon de commande, expression de besoin, réception et sortie de stock"
+          }
+        }
+      },
+      "triggers": {
+        "Lorsqu’un_élément_est_créé": {
+          "recurrence": {
+            "interval": 1,
+            "frequency": "Minute"
+          },
+          "splitOn": "@triggerOutputs()?['body/value']",
+          "metadata": {
+            "operationMetadataId": "778f99c7-851a-4935-b9dd-72b1c8704b0b"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetOnNewItems",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_Flow_DemandeAchat (cm237_Ev_Con_List_Flow_DemandeAchat)')"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "Démarrer_et_attendre_une_approbation": {
+          "runAfter": {
+            "Initialiser_la_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e248858b-39d5-4914-a359-82b77c3c409b"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_approvals_1",
+              "operationId": "StartAndWaitForAnApproval",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_approvals"
+            },
+            "parameters": {
+              "approvalType": "Basic",
+              "WebhookApprovalCreationInput/title": "DATE",
+              "WebhookApprovalCreationInput/assignedTo": "@{variables('email')};",
+              "WebhookApprovalCreationInput/requestor": "@{variables('email')};",
+              "WebhookApprovalCreationInput/enableNotifications": true,
+              "WebhookApprovalCreationInput/enableReassignment": true
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Initialiser_la_variable": {
+          "runAfter": {
+            "Initialiser_la_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "c23847f1-7888-49fa-96ce-c3183a11e925"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "email",
+                "type": "string",
+                "value": "@triggerOutputs()?['body/email']"
+              }
+            ]
+          }
+        },
+        "Mettre_à_jour_l'élément": {
+          "runAfter": {
+            "Définir_une_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "be03b491-215a-4d66-98a3-98b5116c171a"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "PatchItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_Flow_DemandeAchat (cm237_Ev_Con_List_Flow_DemandeAchat)')",
+              "id": "@triggerOutputs()?['body/ID']",
+              "item/Title": "\"dateFormat\"",
+              "item/DateValidationResponsableAchat": "@outputs('Démarrer_et_attendre_une_approbation')?['body/completionDate']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Initialiser_la_variable_2": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "a1780544-f4c7-4700-a725-13650d2ee264"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "date",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Définir_une_variable": {
+          "runAfter": {
+            "Démarrer_et_attendre_une_approbation": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "c3952fb0-a85e-4c48-a998-e7d48d585986"
+          },
+          "type": "SetVariable",
+          "inputs": {
+            "name": "date",
+            "value": "@{formatDateTime(outputs('Démarrer_et_attendre_une_approbation')?['body/completionDate'],'dd/MM/yyyy')}"
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

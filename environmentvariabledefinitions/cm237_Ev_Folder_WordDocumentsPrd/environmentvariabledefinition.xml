@@ -1,0 +1,13 @@
+<environmentvariabledefinition schemaname="cm237_Ev_Folder_WordDocumentsPrd">
+  <description default="Bibliothèque de documents à renseigner pour le site en cours dans le connecteur Word">
+    <label description="Bibliothèque de documents à renseigner pour le site en cours dans le connecteur Word" languagecode="1033" />
+  </description>
+  <displayname default="Ev_Folder_WordDocumentsPrd">
+    <label description="Ev_Folder_WordDocumentsPrd" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.19</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>

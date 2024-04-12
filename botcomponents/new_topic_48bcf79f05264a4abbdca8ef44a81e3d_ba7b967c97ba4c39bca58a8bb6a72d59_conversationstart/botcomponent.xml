@@ -1,0 +1,8 @@
+<botcomponent schemaname="new_topic_48bcf79f05264a4abbdca8ef44a81e3d_ba7b967c97ba4c39bca58a8bb6a72d59_conversationstart">
+  <componenttype>0</componenttype>
+  <description>Voici les salutations par défaut au début d'une conversation. Dans un premier temps, le bot ou agent virtuel doit se présenter. Lorsque vous concevez des rubriques, vérifiez si vous devez respecter des lois en vigueur.</description>
+  <iscustomizable>1</iscustomizable>
+  <name>Salutations</name>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</botcomponent>

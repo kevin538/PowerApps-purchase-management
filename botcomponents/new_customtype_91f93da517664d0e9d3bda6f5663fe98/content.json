@@ -1,0 +1,48 @@
+{
+  "namedEntities": [
+    {
+      "synonyms": [
+        "consommables",
+        "consommable",
+        "article"
+      ],
+      "id": "fdbe4e5e-3bf9-4b2e-8806-9cf0757cbdc6",
+      "displayName": "Articles",
+      "createdTime": "2021-11-05T09:18:04.7234998Z",
+      "updatedTime": "2021-11-05T09:18:04.7234998Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "synonyms": [
+        "maintenances",
+        "maintenance",
+        "travaux",
+        "prestations"
+      ],
+      "id": "e9718347-49c5-46e4-a7f2-cb99ac427bea",
+      "displayName": "Prestation",
+      "createdTime": "2021-11-05T09:18:04.7234998Z",
+      "updatedTime": "2021-11-05T09:18:04.7234998Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    }
+  ],
+  "closedListTypes": [
+    {
+      "namedEntities": [
+        "fdbe4e5e-3bf9-4b2e-8806-9cf0757cbdc6",
+        "e9718347-49c5-46e4-a7f2-cb99ac427bea"
+      ],
+      "smartMatchingEnabled": true,
+      "customTypeSchema": "ClosedList",
+      "id": "new_customtype_91f93da517664d0e9d3bda6f5663fe98",
+      "displayName": "Type Articles",
+      "description": "",
+      "createdTime": "2021-11-05T09:18:04.7234998Z",
+      "updatedTime": "2021-11-05T09:18:04.7234998Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    }
+  ]
+}

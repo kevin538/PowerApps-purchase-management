@@ -1,0 +1,748 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_SharePoint_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      },
+      "shared_approvals_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_Approval_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_approvals"
+        }
+      },
+      "shared_office365_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_Outlook_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_office365"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_List_DemandeAchat (cm237_Ev_Con_List_DemandeAchat)": {
+          "defaultValue": "dc29577c-7a2d-443c-a0dc-4b40672fc0cf",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_DemandeAchat",
+            "description": "DEMANDEACHAT"
+          }
+        },
+        "Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)": {
+          "defaultValue": "d8dfb529-f01e-47b3-bb55-710c65c63e74",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_SiteCentreCout",
+            "description": "Connexion à la liste sharepoint des SiteCentreCout"
+          }
+        },
+        "Ev_Con_List_DemandeAchatArticleFournisseur (cm237_Ev_Con_List_DemandeAchatArticleFournisseur)": {
+          "defaultValue": "308c398c-07c8-4c20-9c88-349231c0cc53",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_DemandeAchatArticleFournisseur",
+            "description": "Connexion à laliste sharepoint DemandeAchatArticleFournisseur"
+          }
+        },
+        "Ev_Con_List_FlowHistory (cm237_Ev_Con_List_FlowHistory)": {
+          "defaultValue": "0f6df2ea-31ab-40c8-afcf-9a12a9a7c8eb",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_FlowHistory"
+          }
+        },
+        "Ev_Con_List_Trigger_SMT_ControleGestion (cm237_Ev_Con_List_Trigger_SMT_ControleGestion)": {
+          "defaultValue": "5c5698c1-c7a9-4d56-8b6a-9f6b27cec1c9",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_Trigger_SMT_ControleGestion",
+            "description": "Trigger_SMT_ControleGestion"
+          }
+        },
+        "Ev_Con_List_Trigger_SMT_ResponsableAchat (cm237_Ev_Con_List_Trigger_SMT_ResponsableAchat)": {
+          "defaultValue": "84a67c02-caf5-4d77-9d22-de551dfda621",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_Trigger_SMT_ResponsableAchat",
+            "description": "Trigger_SMT_ResponsableAchat"
+          }
+        },
+        "Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)": {
+          "defaultValue": "https://teamsite.msc.com/sites/NL001-SITE_ACHAT",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Site_ZulaaDev",
+            "description": "Site de la dev où sont stockés les templates des documents de bon de commande, expression de besoin, réception et sortie de stock"
+          }
+        }
+      },
+      "triggers": {
+        "When_an_item_is_created": {
+          "recurrence": {
+            "frequency": "Minute",
+            "interval": 1
+          },
+          "splitOn": "@triggerOutputs()?['body/value']",
+          "metadata": {
+            "operationMetadataId": "210d5185-8732-49d0-b4c0-7ae0051e698e"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetOnNewItems"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_Trigger_SMT_ControleGestion (cm237_Ev_Con_List_Trigger_SMT_ControleGestion)')"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "varListValideur": {
+          "runAfter": {
+            "Demande_Achat": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "073da887-3417-4f7f-be05-cbf1ac27aede"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varListValideur",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Demande_Achat": {
+          "runAfter": {
+            "Compose": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f6bdcf78-7d7e-4da4-8475-6f38f8700cc0"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItem"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_DemandeAchat (cm237_Ev_Con_List_DemandeAchat)')",
+              "id": "@outputs('Compose')"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Get_attachments_DA": {
+          "runAfter": {
+            "varLigneArticle": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e8ac5c63-485b-4e7b-a350-72456482e42b"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItemAttachments"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_DemandeAchat (cm237_Ev_Con_List_DemandeAchat)')",
+              "itemId": "@outputs('Demande_Achat')?['body/ID']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "lienPieceJointe": {
+          "runAfter": {
+            "varListValideur": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "07cd2697-eb00-4705-8867-6d8f31b68121"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "lienPieceJointe",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "loop_pieces_jointes": {
+          "foreach": "@body('Get_attachments_DA')",
+          "actions": {
+            "Append_to_string_variable": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "a10242b6-7fe9-4992-9f6c-7d824b2246d3"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "lienPieceJointe",
+                "value": "- @{item()?['DisplayName']} : @{join(split(item()?['AbsoluteUri'],' '),'%20')};\n"
+              }
+            },
+            "Obtenir_le_contenu_du_fichier": {
+              "runAfter": {
+                "Append_to_string_variable": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "09f60df5-a6c4-4de3-9055-b17de3b9550d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                  "connectionName": "shared_sharepointonline_1",
+                  "operationId": "GetFileContent"
+                },
+                "parameters": {
+                  "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                  "id": "@item()?['Id']",
+                  "inferContentType": true
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Ajouter_à_la_variable_de_tableau": {
+              "runAfter": {
+                "Obtenir_le_contenu_du_fichier": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "53d136e8-bf07-4ca5-bafc-2218b258c9ea"
+              },
+              "type": "AppendToArrayVariable",
+              "inputs": {
+                "name": "Attachments",
+                "value": {
+                  "Name": "@item()?['DisplayName']",
+                  "content": "@body('Obtenir_le_contenu_du_fichier')"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Get_attachments_DA": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "87513a89-ef0d-4779-bc64-b68c070cce29"
+          },
+          "type": "Foreach"
+        },
+        "Get_Ligne_Articles": {
+          "runAfter": {
+            "loop_pieces_jointes": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f641dd3a-3a77-4ca1-8864-78187f4353ec"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItems"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_DemandeAchatArticleFournisseur (cm237_Ev_Con_List_DemandeAchatArticleFournisseur)')",
+              "$filter": "DemandeAchatId/Id eq '@{outputs('Demande_Achat')?['body/ID']}'"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "varLigneArticle": {
+          "runAfter": {
+            "Initialiser_la_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d5242091-0f70-4172-b187-13c6d0ced479"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varLigneArticle",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "loop_ligne_articles": {
+          "foreach": "@outputs('Get_Ligne_Articles')?['body/value']",
+          "actions": {
+            "Append_to_string_variable_2": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "8149b1c4-b59c-4030-9293-a7662095bcb8"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "varLigneArticle",
+                "value": "- @{items('loop_ligne_articles')?['ArticleId/Value']} , Quantité : @{items('loop_ligne_articles')?['Quantite']}, Prix Unitaire :  @{items('loop_ligne_articles')?['Prix']} @{outputs('Demande_Achat')?['body/Devise/Value']}  , Centre de coût :  @{items('loop_ligne_articles')?['SiteCentreCoutId/Value']};\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Get_Ligne_Articles": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5cb82fcd-8413-4255-9e5d-e53c30303b40"
+          },
+          "type": "Foreach"
+        },
+        "Get_Centre_de_cout": {
+          "runAfter": {
+            "loop_ligne_articles": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "1c050953-628b-4767-8c33-3e150f6924a8"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItem"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+              "id": "@outputs('Demande_Achat')?['body/SiteCentreCoutId/Id']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Start_and_wait_for_an_approval": {
+          "runAfter": {
+            "Update_Validateur_Niveau_Validation": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a30005dd-43e4-4e49-a6f9-dc7b9a0eeabd"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_approvals",
+              "connectionName": "shared_approvals_1",
+              "operationId": "StartAndWaitForAnApproval"
+            },
+            "parameters": {
+              "approvalType": "CustomResponse",
+              "WebhookApprovalCreationInput/responseOptions": [
+                "Valider",
+                "Rejeter",
+                "Renvoyer (Pour modification)"
+              ],
+              "WebhookApprovalCreationInput/title": "Validation (Control de gestion) -SMT-Demande d'achat  @{outputs('Demande_Achat')?['body/ID']}",
+              "WebhookApprovalCreationInput/assignedTo": "@{variables('varListValideur')};",
+              "WebhookApprovalCreationInput/details": "Description : @{outputs('Demande_Achat')?['body/Description']} , \n\nListe des articles :\n@{variables('varLigneArticle')}\n\n\nMontant HT : @{outputs('Demande_Achat')?['body/Montant']} @{outputs('Demande_Achat')?['body/Devise/Value']};\nMontant TTC: @{outputs('Demande_Achat')?['body/MontantTTC']} @{outputs('Demande_Achat')?['body/Devise/Value']}.\n\nFichier(s) Joint(s) : \n@{variables('lienPieceJointe')}\n\nNB : Veuillez donner votre approbation avant le @{addDays(utcNow(),28,'dd/MM/yyyy')}",
+              "WebhookApprovalCreationInput/requestor": "@{outputs('Demande_Achat')?['body/Author/Email']};",
+              "WebhookApprovalCreationInput/enableNotifications": true,
+              "WebhookApprovalCreationInput/enableReassignment": true,
+              "WebhookApprovalCreationInput/attachments": "@variables('Attachments')"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Apply_to_each": {
+          "foreach": "@outputs('Start_and_wait_for_an_approval')?['body/responses']",
+          "actions": {
+            "Condition_2": {
+              "actions": {
+                "Update_item_2": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "5b7cd289-dd92-4130-8b69-41d20d239003"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                      "connectionName": "shared_sharepointonline_1",
+                      "operationId": "PatchItem"
+                    },
+                    "parameters": {
+                      "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                      "table": "@parameters('Ev_Con_List_DemandeAchat (cm237_Ev_Con_List_DemandeAchat)')",
+                      "id": "@outputs('Demande_Achat')?['body/ID']",
+                      "item/Statut/Value": "En cours",
+                      "item/StatutValidationControleurGestio/Value": "Validé",
+                      "item/DateValidationCG": "@outputs('Start_and_wait_for_an_approval')?['body/completionDate']",
+                      "item/RaisonValidationCG": "@items('Apply_to_each')?['comments']",
+                      "item/ValidateurCG": "@items('Apply_to_each')?['responder/displayName']"
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  }
+                },
+                "Create_item_DA3_RA": {
+                  "runAfter": {
+                    "Update_item_2": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "d2026ff6-7e84-4832-ba49-f9eee7822291"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                      "connectionName": "shared_sharepointonline_1",
+                      "operationId": "PostItem"
+                    },
+                    "parameters": {
+                      "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                      "table": "@parameters('Ev_Con_List_Trigger_SMT_ResponsableAchat (cm237_Ev_Con_List_Trigger_SMT_ResponsableAchat)')",
+                      "item/IdDemandeAchat": "@outputs('Demande_Achat')?['body/ID']"
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  }
+                }
+              },
+              "runAfter": {},
+              "else": {
+                "actions": {
+                  "Condition_3": {
+                    "actions": {
+                      "Update_item": {
+                        "runAfter": {},
+                        "metadata": {
+                          "operationMetadataId": "4c845562-faa4-45e9-a673-3b8a2b4ddd97"
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                            "connectionName": "shared_sharepointonline_1",
+                            "operationId": "PatchItem"
+                          },
+                          "parameters": {
+                            "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                            "table": "@parameters('Ev_Con_List_DemandeAchat (cm237_Ev_Con_List_DemandeAchat)')",
+                            "id": "@outputs('Demande_Achat')?['body/ID']",
+                            "item/Statut/Value": "Refusé",
+                            "item/StatutValidationControleurGestio/Value": "Refusé",
+                            "item/DateValidationCG": "@outputs('Start_and_wait_for_an_approval')?['body/completionDate']",
+                            "item/RaisonValidationCG": "@items('Apply_to_each')?['comments']",
+                            "item/ValidateurCG": "@items('Apply_to_each')?['responder/displayName']"
+                          },
+                          "authentication": "@parameters('$authentication')"
+                        }
+                      }
+                    },
+                    "runAfter": {},
+                    "else": {
+                      "actions": {
+                        "Update_item_3": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "77200d0e-60b1-451e-80dc-e6545d066b93"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                              "connectionName": "shared_sharepointonline_1",
+                              "operationId": "PatchItem"
+                            },
+                            "parameters": {
+                              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                              "table": "@parameters('Ev_Con_List_DemandeAchat (cm237_Ev_Con_List_DemandeAchat)')",
+                              "id": "@outputs('Demande_Achat')?['body/ID']",
+                              "item/Statut/Value": "Annulé",
+                              "item/StatutValidationControleurGestio/Value": "Annulé",
+                              "item/DateValidationCG": "@outputs('Start_and_wait_for_an_approval')?['body/completionDate']",
+                              "item/RaisonValidationCG": "@items('Apply_to_each')?['comments']",
+                              "item/ValidateurCG": "@items('Apply_to_each')?['responder/displayName']"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                        "@outputs('Start_and_wait_for_an_approval')?['body/outcome']",
+                        "Rejeter"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "040a7fc0-c167-4629-9e2c-aa4af8824d29"
+                    },
+                    "type": "If"
+                  }
+                }
+              },
+              "expression": {
+                "equals": [
+                  "@outputs('Start_and_wait_for_an_approval')?['body/outcome']",
+                  "Valider"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "08c940d9-9546-40fe-9829-24fd752ae2a7"
+              },
+              "type": "If"
+            }
+          },
+          "runAfter": {
+            "Condition": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "ac7d6375-757c-4716-9438-344358bca57d"
+          },
+          "type": "Foreach"
+        },
+        "loop_validateur": {
+          "foreach": "@outputs('Get_Centre_de_cout')?['body/ControleurGestion']",
+          "actions": {
+            "Set_variable": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "0e7eec21-b5ac-4186-82b1-89f74eba23ec"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "varListValideur",
+                "value": "@items('loop_validateur')?['Email']"
+              }
+            }
+          },
+          "runAfter": {
+            "Get_Centre_de_cout": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "58be5a62-d23a-4d11-a106-5ba45199d3cc"
+          },
+          "type": "Foreach"
+        },
+        "Condition": {
+          "actions": {},
+          "runAfter": {
+            "Get__DA_2": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Send_an_email_(V2)": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "fcc59af7-02d0-4342-8157-6833145051e6"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365",
+                    "connectionName": "shared_office365_1",
+                    "operationId": "SendEmailV2"
+                  },
+                  "parameters": {
+                    "emailMessage/To": "@variables('varListValideur')",
+                    "emailMessage/Subject": "[Notifcation - Zulaa] Approbation non prise en compte",
+                    "emailMessage/Body": "<p>La demande d'achat DA@{outputs('Demande_Achat')?['body/ID']} a déjà été approuvée.<br>\n<br>\n<strong>La nouvelle approbation n'a pas été prise en compte !</strong><br>\n<br>\n[ZULAA]</p>"
+                  },
+                  "authentication": "@parameters('$authentication')"
+                }
+              },
+              "Terminate": {
+                "runAfter": {
+                  "Send_an_email_(V2)": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "15a7be9d-c016-4ce8-b5d3-8b8161876f03"
+                },
+                "type": "Terminate",
+                "inputs": {
+                  "runStatus": "Cancelled"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@outputs('Get__DA_2')?['body/StatutValidationControleurGestio/Value']",
+              "En cours"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "61c3f1b2-2ee9-4cf5-bf4f-104c8628f377"
+          },
+          "type": "If"
+        },
+        "Initialiser_la_variable": {
+          "runAfter": {
+            "lienPieceJointe": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "fbbefa2e-4b51-4c64-900a-4ac6630e47cc"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Attachments",
+                "type": "array",
+                "value": []
+              }
+            ]
+          }
+        },
+        "Historique": {
+          "runAfter": {
+            "loop_validateur": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "8e2a04f1-df8d-44f2-a8c2-678166340c99"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "PostItem"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_FlowHistory (cm237_Ev_Con_List_FlowHistory)')",
+              "item/Title": "SMT_ControleGestion",
+              "item/ElementId": "DA@{outputs('Demande_Achat')?['body/ID']}",
+              "item/ValidateurName": "@variables('varListValideur')",
+              "item/FlowType/Value": "Classic"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Get__DA_2": {
+          "runAfter": {
+            "Start_and_wait_for_an_approval": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "fca9df61-0f6d-4aa7-a860-793e102cf65a"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItem"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_DemandeAchat (cm237_Ev_Con_List_DemandeAchat)')",
+              "id": "@outputs('Demande_Achat')?['body/ID']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Update_Validateur_Niveau_Validation": {
+          "runAfter": {
+            "Historique": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "9aa0971c-d346-4919-90ce-a133cd3b1fed"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "PatchItem"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_DemandeAchat (cm237_Ev_Con_List_DemandeAchat)')",
+              "id": "@outputs('Demande_Achat')?['body/ID']",
+              "item/ValidateurActuelle": "@variables('varListValideur')",
+              "item/NiveauValidation/Value": "CG"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Compose": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "1639e4e9-aecf-4fdb-b287-864e0fb75a7f"
+          },
+          "type": "Compose",
+          "inputs": "@triggerOutputs()?['body/idElement']"
+        }
+      },
+      "outputs": {}
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

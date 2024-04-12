@@ -1,0 +1,133 @@
+{
+  "intents": [
+    {
+      "systemIntentTypes": [
+        "Goodbye"
+      ],
+      "intentType": "System",
+      "triggerQueries": [
+        "Au revoir",
+        "Au revoir et encore merci",
+        "Au revoir, à plus tard !",
+        "Moi aussi je suis content de vous avoir parlé. Passez une bonne journée.",
+        "Moi aussi je suis contente de vous avoir parlé. Passez une bonne journée.",
+        "Moi aussi je suis content de vous avoir parlé. Passe une bonne journée.",
+        "Moi aussi je suis contente de vous avoir parlé. Passe une bonne journée.",
+        "Au revoir",
+        "Passez une bonne journée",
+        "Passe une bonne journée",
+        "Passez une bonne nuit",
+        "Passe une bonne nuit",
+        "Passez une superbe journée",
+        "Passe une superbe journée",
+        "Passez une superbe journée. Merci pour votre efficacité.",
+        "Passe une superbe journée. Merci pour ton efficacité.",
+        "Passez une excellente journée :)",
+        "Passe une excellente journée :)",
+        "Je n'ai pas de problème. Au revoir.",
+        "J'agirai plus tard. Merci, au revoir",
+        "J'aurai besoin de vous parler plus tard.",
+        "J'aurai besoin de te parler plus tard.",
+        "C'était sympa de vous parler. Au revoir.",
+        "C'était sympa de te parler. Au revoir.",
+        "Non merci. Bonne nuit",
+        "Non merci. Au revoir.",
+        "Non merci ! Bonne journée !",
+        "Non, merci pour votre aide, au revoir.",
+        "Non, merci pour ton aide, au revoir.",
+        "Non, merci beaucoup. Bonne journée.",
+        "Aucune des options ci-dessus. Au revoir",
+        "Non, tout est ok, merci et au revoir",
+        "Non merci bonne journée au revoir",
+        "Non. Au revoir.",
+        "Pas pour le moment. Merci et bonne journée.",
+        "Ce n'est pas utile. Au revoir.",
+        "Ok merci excellente journée",
+        "Ok merci à plus tard",
+        "Parfait ! Bonne journée !",
+        "Idem ici. Bonne journée",
+        "Idem ici. Au revoir...",
+        "À bientôt",
+        "À plus tard",
+        "Désolé au revoir merci pour votre aide",
+        "Désolé au revoir merci pour ton aide",
+        "Désolée au revoir merci pour votre aide",
+        "Désolée au revoir merci pour ton aide",
+        "Désolé je dois partir travailler bonne journée",
+        "Désolée je dois partir travailler bonne journée",
+        "Désolé je dois partir. Au revoir",
+        "Désolée je dois partir. Au revoir",
+        "Bonne continuation et bonne journée",
+        "Merci de m'avoir parlé bonne journée",
+        "Merci et au revoir !",
+        "Merci et bonne journée",
+        "Merci à plus tard merci pour votre aide",
+        "Merci à plus tard merci pour ton aide",
+        "Merci pour votre aide ! Au revoir !",
+        "Merci pour ton aide ! Au revoir !",
+        "Merci bonne journée",
+        "Merci je vais regarder cela",
+        "Merci beaucoup au revoir",
+        "Merci beaucoup. Bonne journée !",
+        "Merci, bonne journée.",
+        "Merci, à plus tard.",
+        "Merci. Au revoir",
+        "Merci pour votre aide au revoir",
+        "Merci pour ton aide au revoir",
+        "Merci pour l'aide au revoir",
+        "Merci pour votre aide. Au revoir.",
+        "Merci pour ton aide. Au revoir.",
+        "Merci pour votre aide. Passez une bonne journée !!",
+        "Merci pour ton aide. Passe une bonne journée !!",
+        "Merci au revoir",
+        "Merci, bonne nuit",
+        "Merci. Au revoir",
+        "Merci. Je quitte la conversation maintenant.",
+        "Merci. Tout va bien maintenant. Bonne journée."
+      ],
+      "dialogId": "new_topic_48bcf79f05264a4abbdca8ef44a81e3d_f56d1a3e522740c78f9fac0939332dbd_goodbye",
+      "isTriggeringEnabled": true,
+      "id": "new_topic_48bcf79f05264a4abbdca8ef44a81e3d_f56d1a3e522740c78f9fac0939332dbd_goodbye",
+      "displayName": "Au revoir",
+      "description": "Intention système - Au revoir",
+      "createdTime": "2019-01-15T00:00:00Z",
+      "updatedTime": "2019-01-15T00:00:00Z",
+      "createdUserId": "user0",
+      "updatedUserId": "user0"
+    }
+  ],
+  "dialogs": [
+    {
+      "rootNodeId": "3ce2158c-ebd3-4e2f-9e15-74432e415182",
+      "dialogType": "System",
+      "messageNodes": [
+        {
+          "botMessageId": "026a85be-8cca-4b87-b39f-3639fcfe3383",
+          "nodeType": "BotMessageNode",
+          "id": "3ce2158c-ebd3-4e2f-9e15-74432e415182"
+        }
+      ],
+      "id": "new_topic_48bcf79f05264a4abbdca8ef44a81e3d_f56d1a3e522740c78f9fac0939332dbd_goodbye",
+      "displayName": "Boîte de dialogue Au revoir",
+      "createdTime": "2019-01-15T00:00:00Z",
+      "updatedTime": "2019-01-15T00:00:00Z",
+      "createdUserId": "user0",
+      "updatedUserId": "user0"
+    }
+  ],
+  "botMessages": [
+    {
+      "channelContent": {
+        "web": {
+          "contentFormat": "Markdown",
+          "content": "Merci d'avoir discuté avec moi. Au revoir !"
+        }
+      },
+      "id": "026a85be-8cca-4b87-b39f-3639fcfe3383",
+      "createdTime": "2019-01-15T00:00:00Z",
+      "updatedTime": "2019-01-15T00:00:00Z",
+      "createdUserId": "user0",
+      "updatedUserId": "user0"
+    }
+  ]
+}

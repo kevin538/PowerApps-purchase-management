@@ -1,0 +1,8 @@
+<botcomponent schemaname="new_topic_48bcf79f05264a4abbdca8ef44a81e3d_3d2584ec30914684839527e05e7be172_thankyou">
+  <componenttype>0</componenttype>
+  <description>Intention système - Remerciement</description>
+  <iscustomizable>1</iscustomizable>
+  <name>Remerciement</name>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</botcomponent>

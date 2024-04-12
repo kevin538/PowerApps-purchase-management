@@ -1,0 +1,24 @@
+{
+  "contextVariables": [
+    {
+      "customTypeId": "new_customtype_e13bdcef0d884477a12196ba2f4d361c",
+      "initializerType": "UserQuestion",
+      "scope": "Session",
+      "greedySlotFillingEnabled": true,
+      "isInput": false,
+      "externalInitializationAllowed": false,
+      "messages": {
+        "GetValue": [
+          "a5861c3a-189e-466e-873d-fdad1843c076"
+        ]
+      },
+      "isGlobal": true,
+      "id": "new_variable_48bcf79f05264a4abbdca8ef44a81e3d_d6dc6489604f4517b3414bb9acd52b7f",
+      "displayName": "centrecout",
+      "createdTime": "2021-10-25T20:50:28.538Z",
+      "updatedTime": "2021-10-25T20:50:28.538Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "user-0"
+    }
+  ]
+}

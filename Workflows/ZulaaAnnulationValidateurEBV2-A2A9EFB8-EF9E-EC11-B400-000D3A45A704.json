@@ -1,0 +1,171 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline_1": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_SharePoint_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)": {
+          "defaultValue": "d8dfb529-f01e-47b3-bb55-710c65c63e74",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_SiteCentreCout",
+            "description": "Connexion à la liste sharepoint des SiteCentreCout"
+          }
+        },
+        "Ev_Con_List_DelegationPersonnel (cm237_Ev_Con_List_DelegationPersonnel)": {
+          "defaultValue": "ba191c5e-eebc-4601-b0b3-0209b4fae7ed",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_DelegationPersonnel",
+            "description": "Connexion à la liste sharepoint de DélegationPersonnel"
+          }
+        },
+        "Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)": {
+          "defaultValue": "https://teamsite.msc.com/sites/NL001-SITE_ACHAT",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Site_ZulaaDev",
+            "description": "Site de la dev où sont stockés les templates des documents de bon de commande, expression de besoin, réception et sortie de stock"
+          }
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "f34a3b34-1b19-4b6c-b969-cc46a28f4117"
+          },
+          "type": "Request",
+          "kind": "PowerApp",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "SiteCentreCout_Id": {
+                  "type": "integer",
+                  "format": "int64",
+                  "description": "Unique identifier of item to be retrieved",
+                  "x-ms-powerflows-param-ispartial": false
+                },
+                "GetitemUtllisateur_Id": {
+                  "type": "integer",
+                  "format": "int64",
+                  "description": "Unique identifier of item to be retrieved",
+                  "x-ms-powerflows-param-ispartial": false
+                }
+              },
+              "required": [
+                "SiteCentreCout_Id",
+                "GetitemUtllisateur_Id"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "SiteCentreCout": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "a6881893-fbe6-4700-934d-dfbad1abfa18"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItem"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+              "id": "@triggerBody()['SiteCentreCout_Id']"
+            },
+            "authentication": {
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+              "type": "Raw"
+            }
+          }
+        },
+        "Get_item_Utllisateur": {
+          "runAfter": {
+            "SiteCentreCout": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "574132ba-c27d-4e4c-905f-db675c69fcd4"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItem"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_DelegationPersonnel (cm237_Ev_Con_List_DelegationPersonnel)')",
+              "id": "@triggerBody()['GetitemUtllisateur_Id']"
+            },
+            "authentication": {
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+              "type": "Raw"
+            }
+          }
+        },
+        "Update_item": {
+          "runAfter": {
+            "Get_item_Utllisateur": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "84f120e2-0706-47f5-84d4-38bfb0d47066"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "PatchItem"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+              "id": "@outputs('SiteCentreCout')?['body/ID']",
+              "item/ValidateurEB": [
+                {
+                  "Claims": "@outputs('Get_item_Utllisateur')?['body/PersonnelDelegateur/Claims']"
+                }
+              ]
+            },
+            "authentication": {
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+              "type": "Raw"
+            }
+          }
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

@@ -1,0 +1,13 @@
+<environmentvariabledefinition schemaname="cm237_Ev_Con_SharepointFolder">
+  <description default="Dossier Racine (Documents partages ou Shared Documents) d'un site Sharepoint">
+    <label description="Dossier Racine (Documents partages ou Shared Documents) d'un site Sharepoint" languagecode="1033" />
+  </description>
+  <displayname default="Ev_Con_SharepointFolder">
+    <label description="Ev_Con_SharepointFolder" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.19</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>

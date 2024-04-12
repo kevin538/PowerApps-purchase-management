@@ -1,0 +1,15 @@
+{
+  "regexTypes": [
+    {
+      "regExPattern": "kb[0-9]{6}",
+      "customTypeSchema": "RegexPattern",
+      "id": "new_customtype_6b8d8225e2874f929477eb497ae38d15",
+      "displayName": "test entite",
+      "description": "",
+      "createdTime": "2021-10-14T07:57:38.7719387Z",
+      "updatedTime": "2021-10-14T07:57:38.7719387Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    }
+  ]
+}

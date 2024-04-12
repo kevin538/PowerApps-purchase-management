@@ -1,0 +1,8 @@
+<botcomponent schemaname="new_customtype_2a390cf8b51642e4aed2fa6d68c7a06c">
+  <componenttype>3</componenttype>
+  <description>Regroupe la liste des départements</description>
+  <iscustomizable>1</iscustomizable>
+  <name>Départements</name>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</botcomponent>

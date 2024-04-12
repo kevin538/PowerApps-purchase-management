@@ -1,0 +1,18 @@
+<environmentvariabledefinition schemaname="cm237_Ev_Con_List_SOCOPAOFlowValidationApplication">
+  <apiid>/providers/microsoft.powerapps/apis/shared_sharepointonline</apiid>
+  <description default="SOCOPAO_Flow_ValidationApplication">
+    <label description="SOCOPAO_Flow_ValidationApplication" languagecode="1033" />
+  </description>
+  <displayname default="Ev_Con_List_SOCOPAOFlowValidationApplication">
+    <label description="Ev_Con_List_SOCOPAOFlowValidationApplication" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.2</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <parameterkey>table</parameterkey>
+  <parentdefinitionid>
+    <schemaname>cm237_Ev_Con_Site_ZulaaDev</schemaname>
+  </parentdefinitionid>
+  <secretstore>0</secretstore>
+  <type>100000004</type>
+</environmentvariabledefinition>

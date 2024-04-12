@@ -1,0 +1,229 @@
+{
+  "namedEntities": [
+    {
+      "synonyms": [
+        "sano",
+        "supermont",
+        "tangui",
+        "eau"
+      ],
+      "id": "b7d8b042-3c3a-4060-a001-a57f0b98ceaa",
+      "displayName": "Eau minérale",
+      "createdTime": "2021-10-25T15:31:53.2165011Z",
+      "updatedTime": "2021-10-25T15:31:53.2165011Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "synonyms": [
+        "souris",
+        "clavier",
+        "ordinateur"
+      ],
+      "id": "9f253408-bb68-49f7-b46a-ebff85fbe366",
+      "displayName": "Matériel informatique et télécom",
+      "createdTime": "2021-10-25T15:31:53.2165011Z",
+      "updatedTime": "2021-10-25T15:31:53.2165011Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "id": "c63e5564-c6e4-48e8-8c99-d2febf40bc40",
+      "displayName": "Matériel industriel",
+      "createdTime": "2021-10-25T15:31:53.2165011Z",
+      "updatedTime": "2021-10-25T15:31:53.2165011Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "synonyms": [
+        "maximo"
+      ],
+      "id": "891def8f-75e8-4f2c-b8d6-af887dcf9691",
+      "displayName": "Achat de logiciel",
+      "createdTime": "2021-10-25T15:31:53.2165011Z",
+      "updatedTime": "2021-10-25T15:31:53.2165011Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "id": "a30c2719-f3e8-4ffd-8e43-90c57dc7f447",
+      "displayName": "Matériel de bureau",
+      "createdTime": "2021-10-25T15:31:53.2165011Z",
+      "updatedTime": "2021-10-25T15:31:53.2165011Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "synonyms": [
+        "médicaments"
+      ],
+      "id": "284f8fd6-8f2a-4cf4-9849-56d64efbd677",
+      "displayName": "Matériel médicale",
+      "createdTime": "2021-10-25T15:31:53.2165011Z",
+      "updatedTime": "2021-10-25T15:31:53.2165011Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "id": "ca425672-387c-4b94-89b3-e68cbe6167f0",
+      "displayName": "Outils de nettoyage",
+      "createdTime": "2021-10-25T15:31:53.2165011Z",
+      "updatedTime": "2021-10-25T15:31:53.2165011Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "id": "66e34a27-117e-4ebe-bb2b-6d56bed92cbd",
+      "displayName": "Aliments",
+      "createdTime": "2021-10-25T15:31:53.2165011Z",
+      "updatedTime": "2021-10-25T15:31:53.2165011Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "id": "43849641-87c4-434c-a544-594cc4b45537",
+      "displayName": "Voyages",
+      "createdTime": "2021-10-25T15:31:53.2165011Z",
+      "updatedTime": "2021-10-25T15:31:53.2165011Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "synonyms": [
+        "sécurité",
+        "chaussures"
+      ],
+      "id": "ac0650a6-77eb-4700-b292-6220638ce876",
+      "displayName": "EPI",
+      "createdTime": "2021-10-25T15:31:53.2165011Z",
+      "updatedTime": "2021-10-25T15:31:53.2165011Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "id": "ae13c223-2f2b-474a-98de-d2ded4ca33b3",
+      "displayName": "Matériel de levage",
+      "createdTime": "2021-10-25T15:31:53.2165011Z",
+      "updatedTime": "2021-10-25T15:31:53.2165011Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "id": "1abb21d9-624f-4aab-a0a5-bb93c5eeeb3f",
+      "displayName": "Véhicules",
+      "createdTime": "2021-10-25T15:31:53.2165011Z",
+      "updatedTime": "2021-10-25T15:31:53.2165011Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "id": "feb291ed-25df-4a39-b09b-d2adcda04062",
+      "displayName": "Vêtements",
+      "createdTime": "2021-10-25T15:31:53.2165011Z",
+      "updatedTime": "2021-10-25T15:31:53.2165011Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "id": "364ce49e-22e3-44de-8177-2ae219c27bd0",
+      "displayName": "Achats divers",
+      "createdTime": "2021-10-25T15:31:53.2165011Z",
+      "updatedTime": "2021-10-25T15:31:53.2165011Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "id": "c375a762-c313-4dc0-ab47-fb846d459a36",
+      "displayName": "Prestations informatiques et télécom",
+      "createdTime": "2021-10-25T15:31:53.2165011Z",
+      "updatedTime": "2021-10-25T15:31:53.2165011Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "id": "5f6da0e3-f923-46d0-bc0d-f00f79c80d35",
+      "displayName": "Services divers",
+      "createdTime": "2021-10-25T15:31:53.2165011Z",
+      "updatedTime": "2021-10-25T15:31:53.2165011Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "id": "fffa6431-d7f3-48f4-8071-4cb85ef392be",
+      "displayName": "Achat de transport",
+      "createdTime": "2021-10-25T15:31:53.2165011Z",
+      "updatedTime": "2021-10-25T15:31:53.2165011Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "id": "e223bd5f-a327-438c-ab7d-7132acb759b0",
+      "displayName": "Location engins",
+      "createdTime": "2021-10-25T15:31:53.2165011Z",
+      "updatedTime": "2021-10-25T15:31:53.2165011Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "id": "a46bfbac-083a-4ec9-88f1-c1ca75306b4d",
+      "displayName": "Expertise divers",
+      "createdTime": "2021-10-25T15:31:53.2165011Z",
+      "updatedTime": "2021-10-25T15:31:53.2165011Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "id": "cf576bd7-4b91-4953-9599-77723eb5c346",
+      "displayName": "Tavaux de réparation",
+      "createdTime": "2021-10-25T15:31:53.2165011Z",
+      "updatedTime": "2021-10-25T15:31:53.2165011Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "id": "21f7b6c2-572a-4250-9343-a612270601cb",
+      "displayName": "Travaux divers",
+      "createdTime": "2021-10-25T15:31:53.2165011Z",
+      "updatedTime": "2021-10-25T15:31:53.2165011Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    }
+  ],
+  "closedListTypes": [
+    {
+      "namedEntities": [
+        "b7d8b042-3c3a-4060-a001-a57f0b98ceaa",
+        "9f253408-bb68-49f7-b46a-ebff85fbe366",
+        "c63e5564-c6e4-48e8-8c99-d2febf40bc40",
+        "891def8f-75e8-4f2c-b8d6-af887dcf9691",
+        "a30c2719-f3e8-4ffd-8e43-90c57dc7f447",
+        "284f8fd6-8f2a-4cf4-9849-56d64efbd677",
+        "ca425672-387c-4b94-89b3-e68cbe6167f0",
+        "66e34a27-117e-4ebe-bb2b-6d56bed92cbd",
+        "43849641-87c4-434c-a544-594cc4b45537",
+        "ac0650a6-77eb-4700-b292-6220638ce876",
+        "ae13c223-2f2b-474a-98de-d2ded4ca33b3",
+        "1abb21d9-624f-4aab-a0a5-bb93c5eeeb3f",
+        "feb291ed-25df-4a39-b09b-d2adcda04062",
+        "364ce49e-22e3-44de-8177-2ae219c27bd0",
+        "c375a762-c313-4dc0-ab47-fb846d459a36",
+        "5f6da0e3-f923-46d0-bc0d-f00f79c80d35",
+        "fffa6431-d7f3-48f4-8071-4cb85ef392be",
+        "e223bd5f-a327-438c-ab7d-7132acb759b0",
+        "a46bfbac-083a-4ec9-88f1-c1ca75306b4d",
+        "cf576bd7-4b91-4953-9599-77723eb5c346",
+        "21f7b6c2-572a-4250-9343-a612270601cb"
+      ],
+      "smartMatchingEnabled": true,
+      "customTypeSchema": "ClosedList",
+      "id": "new_customtype_de8da38b438648ef9e6583ef64a9773d",
+      "displayName": "Catégories d'articles",
+      "description": "Regroupe la liste des catégories d'articles que peur contenir une expression besoin",
+      "createdTime": "2021-10-25T15:31:53.2165011Z",
+      "updatedTime": "2021-10-25T15:31:53.2165011Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    }
+  ]
+}

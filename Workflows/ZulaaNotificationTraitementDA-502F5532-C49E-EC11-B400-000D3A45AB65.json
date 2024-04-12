@@ -1,0 +1,161 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_SharePoint_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      },
+      "shared_teams_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_sharedteams_da33c"
+        },
+        "api": {
+          "name": "shared_teams"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_List_DemandeAchat (cm237_Ev_Con_List_DemandeAchat)": {
+          "defaultValue": "dc29577c-7a2d-443c-a0dc-4b40672fc0cf",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_DemandeAchat",
+            "description": "DEMANDEACHAT"
+          }
+        },
+        "Ev_Con_List_ExpressionBesoin (cm237_Ev_Con_List_ExpressionBesoin)": {
+          "defaultValue": "0ff6249c-664c-454b-a5d6-9ae8c5b6242e",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_ExpressionBesoin",
+            "description": "Connexion à la liste Sharepoint des Exxpressions de Besoins"
+          }
+        },
+        "Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)": {
+          "defaultValue": "https://teamsite.msc.com/sites/NL001-SITE_ACHAT",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Site_ZulaaDev",
+            "description": "Site de la dev où sont stockés les templates des documents de bon de commande, expression de besoin, réception et sortie de stock"
+          }
+        }
+      },
+      "triggers": {
+        "When_an_item_is_created": {
+          "recurrence": {
+            "frequency": "Minute",
+            "interval": 1
+          },
+          "splitOn": "@triggerOutputs()?['body/value']",
+          "metadata": {
+            "operationMetadataId": "c97fbe44-9817-461c-9cb6-e8b95017f187"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline",
+              "operationId": "GetOnNewItems"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_DemandeAchat (cm237_Ev_Con_List_DemandeAchat)')"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "Get_ExpressionBesoin": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "0ee6408b-5b8f-43eb-a1c8-9ffb66b20fce"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline",
+              "operationId": "GetItem"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_ExpressionBesoin (cm237_Ev_Con_List_ExpressionBesoin)')",
+              "id": "@triggerOutputs()?['body/ExpressionBesoinId/Id']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Update_item_EB": {
+          "runAfter": {
+            "Post_message_in_a_chat_or_channel": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "62779ac6-ba20-423e-bfef-78ac94d6894b"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline",
+              "operationId": "PatchItem"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_ExpressionBesoin (cm237_Ev_Con_List_ExpressionBesoin)')",
+              "id": "@outputs('Get_ExpressionBesoin')?['body/ID']",
+              "item/Traiter": true
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Post_message_in_a_chat_or_channel": {
+          "runAfter": {
+            "Get_ExpressionBesoin": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "af05a4d0-a035-4686-9f60-c5f6990c8a60"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_teams",
+              "connectionName": "shared_teams_1",
+              "operationId": "PostMessageToConversation"
+            },
+            "parameters": {
+              "poster": "Flow bot",
+              "location": "Chat with Flow bot",
+              "body/recipient": "@{outputs('Get_ExpressionBesoin')?['body/Author/Email']};",
+              "body/messageBody": "<p><span style=\"font-family: arial\">Votre </span><span style=\"font-family: arial\"><strong>Expression de besoin</strong></span><span style=\"font-family: arial\"> </span><span style=\"font-family: arial\"><strong></strong></span><span style=\"font-family: arial\"><strong>@{outputs('Get_ExpressionBesoin')?['body/Code']}</strong></span><span style=\"font-family: arial\"><strong></strong></span><span style=\"font-family: arial\"> vient d'être traitée par le service Achat.<br>\n<br>\n<br>\nCordialement<br>\n</span><span style=\"font-family: arial\"><strong>ZULAA</strong></span></p>"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

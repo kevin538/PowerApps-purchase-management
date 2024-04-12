@@ -1,0 +1,446 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_SharePoint_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      },
+      "shared_onedriveforbusiness": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_sharedonedriveforbusiness_f40a6"
+        },
+        "api": {
+          "name": "shared_onedriveforbusiness"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_List_Fournisseur (cm237_Ev_Con_List_Fournisseur)": {
+          "defaultValue": "bb26e0de-401d-464b-bf1c-96e01d5bb8f2",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_Fournisseur",
+            "description": "Connexion à la liste sharepoint des fournisseurs"
+          }
+        },
+        "Ev_Con_List_FournisseurEntite (cm237_Ev_Con_List_FournisseurEntit)": {
+          "defaultValue": "73d5721f-d0eb-40bf-acd3-a019056d94d8",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_FournisseurEntit",
+            "description": "Connexion à l aliste sharepoint des FournisseurEntité"
+          }
+        },
+        "Ev_Con_List_HistoriqueAjoutFournisseur (cm237_Ev_Con_List_HistoriqueAjoutFournisseur)": {
+          "defaultValue": "099a6755-a7b0-4e98-98a5-eafd75b3a52a",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_HistoriqueAjoutFournisseur",
+            "description": "HistoriqueAjoutFournisseur"
+          }
+        },
+        "Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)": {
+          "defaultValue": "https://teamsite.msc.com/sites/NL001-SITE_ACHAT",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Site_ZulaaDev",
+            "description": "Site de la dev où sont stockés les templates des documents de bon de commande, expression de besoin, réception et sortie de stock"
+          }
+        }
+      },
+      "triggers": {
+        "When_a_file_is_modified": {
+          "recurrence": {
+            "interval": 1,
+            "frequency": "Minute"
+          },
+          "metadata": {
+            "b!AD_hyv8wlEmOS0g5xJjRQNiVC0toe-ZMsxyUBOdaVwtwo1Vu0LslQp1xAzdbqNDu.01YMOOSK75RN5NR6FRYVDJD6QC4VUPUEG7": "/Fourniseurs",
+            "operationMetadataId": "898ea843-10a1-4eec-b935-e03822e294e0",
+            "b!AD_hyv8wlEmOS0g5xJjRQNiVC0toe-ZMsxyUBOdaVwtwo1Vu0LslQp1xAzdbqNDu.01YMOOSK5FXVENW6VDUNGLL4TB73NJE4OH": "/Fourniseurs/ADD_suppliers"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_onedriveforbusiness",
+              "operationId": "OnUpdatedFileV2",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+            },
+            "parameters": {
+              "folderId": "b!AD_hyv8wlEmOS0g5xJjRQNiVC0toe-ZMsxyUBOdaVwtwo1Vu0LslQp1xAzdbqNDu.01YMOOSK5FXVENW6VDUNGLL4TB73NJE4OH",
+              "includeSubfolders": false,
+              "inferContentType": true
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "Apply_to_each": {
+          "foreach": "@body('Parse_JSON')?['data']",
+          "actions": {
+            "Increment_variable": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "970bdcef-f1b2-4a35-9420-534303c7190a"
+              },
+              "type": "IncrementVariable",
+              "inputs": {
+                "name": "nombreFournisseur",
+                "value": 1
+              }
+            },
+            "check": {
+              "runAfter": {
+                "Increment_variable": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "978894f2-402f-461e-ade2-41b985d765bd"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline",
+                  "operationId": "GetItems",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                  "table": "@parameters('Ev_Con_List_Fournisseur (cm237_Ev_Con_List_Fournisseur)')",
+                  "$filter": "CodeIris eq '@{items('Apply_to_each')?['CompteIris']}'"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Apply_to_each_2": {
+              "foreach": "@outputs('check')?['body/value']",
+              "actions": {
+                "Set_variable": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "82dc8025-3282-4e62-b0d8-a38574cdd420"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "go",
+                    "value": false
+                  }
+                },
+                "Set_variable_FournisseurId": {
+                  "runAfter": {
+                    "Set_variable": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "033d6f5a-bedd-4890-8473-6f424bb172fe"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "FournisseurId",
+                    "value": "@items('Apply_to_each_2')?['ID']"
+                  }
+                }
+              },
+              "runAfter": {
+                "check": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "8efcf3d0-299c-41ff-8571-5e1f4e2fb5af"
+              },
+              "type": "Foreach"
+            },
+            "Condition": {
+              "actions": {
+                "Create_item": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "ef204618-b679-42c4-b2ec-c2c5649cc29b"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_sharepointonline",
+                      "operationId": "PostItem",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                    },
+                    "parameters": {
+                      "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                      "table": "@parameters('Ev_Con_List_Fournisseur (cm237_Ev_Con_List_Fournisseur)')",
+                      "item/Title": "@trim(items('Apply_to_each')?['Nom'])",
+                      "item/RaisonSocial": "@trim(items('Apply_to_each')?['RaisonSocial'])",
+                      "item/CodeIris": "@items('Apply_to_each')?['CompteIris']",
+                      "item/SiteWeb": "@items('Apply_to_each')?['SiteWeb']",
+                      "item/NumeroContribuable": "@items('Apply_to_each')?['NumeroContribuable']",
+                      "item/Actif": true,
+                      "item/Exoneration": false,
+                      "item/Devise/Value": "FCFA",
+                      "item/Adresse": "@items('Apply_to_each')?['Adresse1']",
+                      "item/Telephone": "@items('Apply_to_each')?['Telephone1']",
+                      "item/Email": "@items('Apply_to_each')?['Email']",
+                      "item/Fax": "@items('Apply_to_each')?['Fax']",
+                      "item/Ville": "@items('Apply_to_each')?['Ville']",
+                      "item/RegistreCommerce": "@items('Apply_to_each')?['RegistreCommerce']"
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  }
+                },
+                "Create_item_3": {
+                  "runAfter": {
+                    "Create_item": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "0b8896cb-befb-484b-9d32-bf86697768c9"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_sharepointonline",
+                      "operationId": "PostItem",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                    },
+                    "parameters": {
+                      "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                      "table": "@parameters('Ev_Con_List_FournisseurEntite (cm237_Ev_Con_List_FournisseurEntit)')",
+                      "item/FournisseurId/Id": "@outputs('Create_item')?['body/ID']",
+                      "item/EntiteId/Id": 1,
+                      "item/Statut/Value": "Créé",
+                      "item/Actif": true
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  }
+                }
+              },
+              "runAfter": {
+                "Apply_to_each_2": [
+                  "Succeeded"
+                ]
+              },
+              "else": {
+                "actions": {
+                  "Update_item": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "be772c9c-a644-4dc5-90b7-2dc693c2b878"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_sharepointonline",
+                        "operationId": "PatchItem",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                      },
+                      "parameters": {
+                        "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                        "table": "@parameters('Ev_Con_List_Fournisseur (cm237_Ev_Con_List_Fournisseur)')",
+                        "id": "@variables('FournisseurId')",
+                        "item/Title": "@trim(items('Apply_to_each')?['Nom'])",
+                        "item/RaisonSocial": "@trim(items('Apply_to_each')?['RaisonSocial'])",
+                        "item/CodeIris": "@items('Apply_to_each')?['CompteIris']",
+                        "item/SiteWeb": "@items('Apply_to_each')?['SiteWeb']",
+                        "item/NumeroContribuable": "@items('Apply_to_each')?['NumeroContribuable']",
+                        "item/Adresse": "@items('Apply_to_each')?['Adresse1']",
+                        "item/Telephone": "@items('Apply_to_each')?['Telephone1']",
+                        "item/Email": "@items('Apply_to_each')?['Email']",
+                        "item/Fax": "@items('Apply_to_each')?['Fax']",
+                        "item/Ville": "@items('Apply_to_each')?['Ville']",
+                        "item/RegistreCommerce": "@items('Apply_to_each')?['RegistreCommerce']"
+                      },
+                      "authentication": "@parameters('$authentication')"
+                    }
+                  }
+                }
+              },
+              "expression": {
+                "equals": [
+                  "@variables('go')",
+                  true
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "9fb7f4f6-f924-4874-a704-7fb1fad572de"
+              },
+              "type": "If"
+            }
+          },
+          "runAfter": {
+            "Initialize_variable_FournisseurId": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f6732a2d-4d94-4314-bbd9-8b7a5333740f"
+          },
+          "type": "Foreach"
+        },
+        "Create_item_2": {
+          "runAfter": {
+            "Apply_to_each": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "13e7eeb9-5646-4842-abc6-f8b283a2fa59"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline",
+              "operationId": "PostItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_HistoriqueAjoutFournisseur (cm237_Ev_Con_List_HistoriqueAjoutFournisseur)')",
+              "item/Title": "cron",
+              "item/nombre": "@variables('nombreFournisseur')"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Initialize_variable": {
+          "runAfter": {
+            "Parse_JSON": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6706165c-46be-4815-82bf-ede2f6f349f8"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "nombreFournisseur",
+                "type": "integer",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "Initialize_variable_2": {
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "c955c271-9a7e-4ebd-96a1-1c9378a07c83"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "go",
+                "type": "boolean",
+                "value": true
+              }
+            ]
+          }
+        },
+        "Initialize_variable_FournisseurId": {
+          "runAfter": {
+            "Initialize_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "25550043-012e-415d-8e30-2e36904aecbc"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "FournisseurId",
+                "type": "integer",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "Parse_JSON": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "577edf2a-8d17-4b96-9852-dcedf26b8bd1"
+          },
+          "type": "ParseJson",
+          "inputs": {
+            "content": "@json(triggerBody())",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Email": {
+                        "type": "string"
+                      },
+                      "RaisonSocial": {
+                        "type": "string"
+                      },
+                      "Nom": {
+                        "type": "string"
+                      },
+                      "CompteIris": {
+                        "type": "string"
+                      },
+                      "Telephone1": {
+                        "type": "string"
+                      },
+                      "Adresse1": {
+                        "type": "string"
+                      },
+                      "RegistreCommerce": {
+                        "type": "string"
+                      },
+                      "SiteWeb": {
+                        "type": "string"
+                      },
+                      "NumeroContribuable": {
+                        "type": "string"
+                      },
+                      "Ville": {
+                        "type": "string"
+                      },
+                      "Fax": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "outputs": {}
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

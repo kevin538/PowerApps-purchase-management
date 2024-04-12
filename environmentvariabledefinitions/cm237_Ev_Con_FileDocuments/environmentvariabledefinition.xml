@@ -1,0 +1,14 @@
+<environmentvariabledefinition schemaname="cm237_Ev_Con_FileDocuments">
+  <defaultvalue>Documents</defaultvalue>
+  <description default="Direction vers les documents">
+    <label description="Direction vers les documents" languagecode="1033" />
+  </description>
+  <displayname default="Ev_Con_FileDocuments">
+    <label description="Ev_Con_FileDocuments" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.28</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>

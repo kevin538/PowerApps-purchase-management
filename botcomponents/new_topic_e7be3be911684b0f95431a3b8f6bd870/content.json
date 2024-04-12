@@ -1,0 +1,47 @@
+{
+  "intents": [
+    {
+      "dialogId": "new_topic_e7be3be911684b0f95431a3b8f6bd870",
+      "isTriggeringEnabled": true,
+      "id": "new_topic_e7be3be911684b0f95431a3b8f6bd870",
+      "displayName": "Enregistrement expression de besoin",
+      "description": "",
+      "createdTime": "2021-10-25T21:03:45.2113811Z",
+      "updatedTime": "2021-10-25T21:03:45.2113811Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    }
+  ],
+  "dialogs": [
+    {
+      "rootNodeId": "b2ab3c8a-b694-474d-85cc-27e52be15218",
+      "messageNodes": [
+        {
+          "botMessageId": "25b7f2d6-534f-40c4-949d-a43ae15b5a32",
+          "nodeType": "BotMessageNode",
+          "id": "b2ab3c8a-b694-474d-85cc-27e52be15218"
+        }
+      ],
+      "id": "new_topic_e7be3be911684b0f95431a3b8f6bd870",
+      "displayName": "Dialog for Enregistrement expression de besoin",
+      "createdTime": "2021-10-25T21:03:45.2113811Z",
+      "updatedTime": "2021-10-27T16:23:49.8929153Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    }
+  ],
+  "botMessages": [
+    {
+      "channelContent": {
+        "web": {
+          "contentFormat": "Markdown",
+          "content": "ok"
+        }
+      },
+      "id": "25b7f2d6-534f-40c4-949d-a43ae15b5a32",
+      "createdTime": "2021-10-27T16:23:43.798Z",
+      "updatedTime": "2021-10-27T16:23:43.798Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "user-0"
+    }
+  ]
+}

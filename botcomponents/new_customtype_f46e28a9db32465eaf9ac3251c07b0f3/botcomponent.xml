@@ -1,0 +1,8 @@
+<botcomponent schemaname="new_customtype_f46e28a9db32465eaf9ac3251c07b0f3">
+  <componenttype>3</componenttype>
+  <description>La liste de toutes les directions</description>
+  <iscustomizable>1</iscustomizable>
+  <name>Directions</name>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</botcomponent>

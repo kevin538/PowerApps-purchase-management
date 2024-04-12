@@ -1,0 +1,170 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline_1": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_SharePoint_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_List_MouvementStockEntete (cm237_Ev_Con_List_MouvementStockEntete)": {
+          "defaultValue": "b4f5135b-fc53-47e6-b449-b5f677a685f8",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_MouvementStockEntete",
+            "description": "Connexion à la liste Sharepoint  des mouvementsStockEntete"
+          }
+        },
+        "Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)": {
+          "defaultValue": "https://teamsite.msc.com/sites/NL001-SITE_ACHAT",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Site_ZulaaDev",
+            "description": "Site de la dev où sont stockés les templates des documents de bon de commande, expression de besoin, réception et sortie de stock"
+          }
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "087c45ce-25be-4d11-a71e-bccfdae98466"
+          },
+          "type": "Request",
+          "kind": "PowerApp",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Initialiserlavariable_Valeur": {
+                  "type": "integer",
+                  "description": "Entrer la valeur initiale",
+                  "x-ms-powerflows-param-ispartial": false
+                },
+                "Initialiserlavariable2_Valeur": {
+                  "type": "string",
+                  "description": "Entrer la valeur initiale",
+                  "x-ms-powerflows-param-ispartial": false
+                }
+              },
+              "required": [
+                "Initialiserlavariable_Valeur",
+                "Initialiserlavariable2_Valeur"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Initialiser_la_variable": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "146d02f7-5214-4a52-8848-b42ad8cf3278"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "idSortie",
+                "type": "integer",
+                "value": "@triggerBody()['Initialiserlavariable_Valeur']"
+              }
+            ]
+          }
+        },
+        "Initialiser_la_variable_2": {
+          "runAfter": {
+            "Initialiser_la_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "73b36bfe-e62d-4025-81f0-68fa9128b065"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Reponse",
+                "type": "string",
+                "value": "@{triggerBody()['Initialiserlavariable2_Valeur']}"
+              }
+            ]
+          }
+        },
+        "Sortie_": {
+          "runAfter": {
+            "Initialiser_la_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "950e3ccb-fc8a-4fb7-8485-fe51b7528944"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItem"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_MouvementStockEntete (cm237_Ev_Con_List_MouvementStockEntete)')",
+              "id": "@variables('idSortie')"
+            },
+            "authentication": {
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+              "type": "Raw"
+            }
+          }
+        },
+        "Mettre_à_jour_l'élément": {
+          "runAfter": {
+            "Sortie_": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "3eff5b79-44b3-40f5-9c69-bba5a7ddfaa2"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "PatchItem"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_MouvementStockEntete (cm237_Ev_Con_List_MouvementStockEntete)')",
+              "id": "@outputs('Sortie_')?['body/ID']",
+              "item/VailidationSortie": "@variables('Reponse')"
+            },
+            "authentication": {
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+              "type": "Raw"
+            }
+          }
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

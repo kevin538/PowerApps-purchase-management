@@ -1,0 +1,733 @@
+{
+  "intents": [
+    {
+      "triggerQueries": [
+        "commande de chaque mois",
+        "Commande de tous les jours",
+        "Commande régulière",
+        "Commande mensuelle"
+      ],
+      "dialogId": "new_topic_a55ab61cfc3f4fe396dd0d72024eca3c",
+      "isTriggeringEnabled": true,
+      "id": "new_topic_a55ab61cfc3f4fe396dd0d72024eca3c",
+      "displayName": "Commande mensuelle",
+      "createdTime": "2022-07-06T14:49:49.5498257Z",
+      "updatedTime": "2022-07-06T17:11:38.0372218Z",
+      "createdUserId": "c67588e6-fb9d-4231-ad5b-eb9277ce1719",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    }
+  ],
+  "namedEntities": [
+    {
+      "id": "a06318bd-ee65-4222-9319-9288c38c805f",
+      "displayName": "OUI"
+    },
+    {
+      "id": "80ff5b75-a473-46de-9f26-b92cf57869c4",
+      "displayName": "NON"
+    },
+    {
+      "id": "958cd966-8e9f-4ca5-86e9-cfceea6a5485",
+      "displayName": "OUI"
+    },
+    {
+      "id": "d1fe6014-8cc0-46d8-9606-ccb281915daa",
+      "displayName": "NON"
+    }
+  ],
+  "dialogs": [
+    {
+      "rootNodeId": "3d015b4c-8590-41a7-bd12-bb573f1daa23",
+      "messageNodes": [
+        {
+          "botMessageId": "f325ad2e-c2d4-459a-9f29-f28323ae7aba",
+          "nodeType": "BotMessageNode",
+          "id": "88ad90c3-95d4-4ea8-8284-9717fc7029e7",
+          "defaultTargetNodeId": "d783318c-e6cb-4d77-a078-f732d78b21e5"
+        },
+        {
+          "botMessageId": "7fcf4eee-ba06-4b62-978a-5201abe5f369",
+          "nodeType": "BotMessageNode",
+          "id": "89d70a99-da40-4031-90da-395dbec293dc",
+          "defaultTargetNodeId": "00aaf215-a5c7-43bb-b5f3-f285443e8863"
+        },
+        {
+          "botMessageId": "c5eab7a4-d811-4f8c-bcec-d738675713a0",
+          "nodeType": "BotMessageNode",
+          "id": "15b7190e-5e2e-47b6-8e09-4833d3f62db0",
+          "defaultTargetNodeId": "d783318c-e6cb-4d77-a078-f732d78b21e5"
+        },
+        {
+          "botMessageId": "7d09b145-1a6d-4f39-87b4-131839c08e65",
+          "nodeType": "BotMessageNode",
+          "id": "7aaec794-6d55-4957-b36e-93291f548a0b",
+          "defaultTargetNodeId": "1578d805-4835-4543-ab73-c23f5d15f7ba"
+        },
+        {
+          "botMessageId": "fbcc1e40-c7c7-413b-b381-c3faa78db80f",
+          "nodeType": "BotMessageNode",
+          "id": "5f24a58a-a293-4e8c-84f6-58a7bfb2d6a1",
+          "defaultTargetNodeId": "7327cdc7-9c79-4bf0-a5ff-c53b876c3032"
+        }
+      ],
+      "actionNodes": [
+        {
+          "contextVariableId": "32e8302a-331a-4417-b5cc-d4ac2c51cdb1",
+          "nodeType": "ActionNode",
+          "inputParameterVariableIdMap": {
+            "text_1": "{7bd4f62b-7262-40bc-8c63-8c540568cf6c}"
+          },
+          "outputExpressionVariableIds": [
+            "7ec47e4c-7fcb-4b85-938c-e5aa22828304",
+            "135d42c2-5102-4270-b324-7ef5a02f99ac",
+            "10540735-01be-42a7-a387-1992f866d461"
+          ],
+          "id": "3d015b4c-8590-41a7-bd12-bb573f1daa23",
+          "routes": [
+            {
+              "expression": "@equals(parameters('7ec47e4c-7fcb-4b85-938c-e5aa22828304'), 'OUI')",
+              "targetNodeId": "88ad90c3-95d4-4ea8-8284-9717fc7029e7"
+            }
+          ],
+          "defaultTargetNodeId": "89d70a99-da40-4031-90da-395dbec293dc"
+        },
+        {
+          "contextVariableId": "8f40e90a-bcb8-4c58-8b95-402cf8c5007a",
+          "nodeType": "ActionNode",
+          "inputParameterVariableIdMap": {
+            "text_1": "{10540735-01be-42a7-a387-1992f866d461}",
+            "text": "{3a1bf90f-606e-47ae-be20-338093280bbd}"
+          },
+          "outputExpressionVariableIds": [
+            "864bb5b6-5c1c-42c0-a0b3-3341f0163334",
+            "92976c6f-2f48-409a-ab60-73a835e1dbcc",
+            "344bd2a6-8383-463d-bb9f-f4b359cb25f2"
+          ],
+          "id": "54e04afe-10a1-4f78-aee9-5270c3f91956",
+          "routes": [
+            {
+              "expression": "@equals(parameters('864bb5b6-5c1c-42c0-a0b3-3341f0163334'), 'OUI')",
+              "targetNodeId": "7aaec794-6d55-4957-b36e-93291f548a0b"
+            }
+          ],
+          "defaultTargetNodeId": "15b7190e-5e2e-47b6-8e09-4833d3f62db0"
+        },
+        {
+          "contextVariableId": "0a183bfd-1d1a-4565-803d-2f588baf9c81",
+          "nodeType": "ActionNode",
+          "inputParameterVariableIdMap": {
+            "number": "{92976c6f-2f48-409a-ab60-73a835e1dbcc}"
+          },
+          "outputExpressionVariableIds": [
+            "f4dec917-70b2-4858-8cd5-855a4c225e08",
+            "65bcb882-4503-4c2b-a480-4b9713df2130"
+          ],
+          "id": "5594dc64-d63c-463a-8444-5dcb1d7fb077",
+          "defaultTargetNodeId": "5f24a58a-a293-4e8c-84f6-58a7bfb2d6a1"
+        }
+      ],
+      "dialogChangeNodes": [
+        {
+          "targetDialogId": "new_topic_48bcf79f05264a4abbdca8ef44a81e3d_f56d1a3e522740c78f9fac0939332dbd_goodbye",
+          "nodeType": "DialogChangeNode",
+          "id": "00aaf215-a5c7-43bb-b5f3-f285443e8863"
+        },
+        {
+          "targetDialogId": "new_topic_48bcf79f05264a4abbdca8ef44a81e3d_f56d1a3e522740c78f9fac0939332dbd_goodbye",
+          "nodeType": "DialogChangeNode",
+          "id": "265afb34-2413-4582-8e63-826cc16971cc"
+        },
+        {
+          "targetDialogId": "new_topic_48bcf79f05264a4abbdca8ef44a81e3d_f56d1a3e522740c78f9fac0939332dbd_goodbye",
+          "nodeType": "DialogChangeNode",
+          "id": "8334a05b-4c05-4252-ad7c-6b0711a2fc43"
+        }
+      ],
+      "questionNodes": [
+        {
+          "contextVariableId": "3a1bf90f-606e-47ae-be20-338093280bbd",
+          "nodeType": "QuestionNode",
+          "id": "d783318c-e6cb-4d77-a078-f732d78b21e5",
+          "defaultTargetNodeId": "54e04afe-10a1-4f78-aee9-5270c3f91956"
+        },
+        {
+          "contextVariableId": "a229edbf-4218-4f14-98d5-6f1a7fcabfde",
+          "nodeType": "QuestionNode",
+          "id": "1578d805-4835-4543-ab73-c23f5d15f7ba",
+          "routes": [
+            {
+              "expression": "@equals(parameters('a229edbf-4218-4f14-98d5-6f1a7fcabfde'), 'a06318bd-ee65-4222-9319-9288c38c805f')",
+              "targetNodeId": "5594dc64-d63c-463a-8444-5dcb1d7fb077"
+            },
+            {
+              "expression": "@equals(parameters('a229edbf-4218-4f14-98d5-6f1a7fcabfde'), '80ff5b75-a473-46de-9f26-b92cf57869c4')",
+              "targetNodeId": "265afb34-2413-4582-8e63-826cc16971cc"
+            }
+          ],
+          "defaultTargetNodeId": "1578d805-4835-4543-ab73-c23f5d15f7ba"
+        },
+        {
+          "contextVariableId": "69ab6dbf-87f5-45ca-8896-167236ba1aa0",
+          "nodeType": "QuestionNode",
+          "id": "7327cdc7-9c79-4bf0-a5ff-c53b876c3032",
+          "routes": [
+            {
+              "expression": "@equals(parameters('69ab6dbf-87f5-45ca-8896-167236ba1aa0'), '958cd966-8e9f-4ca5-86e9-cfceea6a5485')",
+              "targetNodeId": "d783318c-e6cb-4d77-a078-f732d78b21e5"
+            },
+            {
+              "expression": "@equals(parameters('69ab6dbf-87f5-45ca-8896-167236ba1aa0'), 'd1fe6014-8cc0-46d8-9606-ccb281915daa')",
+              "targetNodeId": "8334a05b-4c05-4252-ad7c-6b0711a2fc43"
+            }
+          ],
+          "defaultTargetNodeId": "7327cdc7-9c79-4bf0-a5ff-c53b876c3032"
+        }
+      ],
+      "id": "new_topic_a55ab61cfc3f4fe396dd0d72024eca3c",
+      "displayName": "Untitled",
+      "createdTime": "2022-07-06T14:49:49.5498257Z",
+      "updatedTime": "2022-07-06T17:11:38.0372218Z",
+      "createdUserId": "c67588e6-fb9d-4231-ad5b-eb9277ce1719",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    }
+  ],
+  "botMessages": [
+    {
+      "channelContent": {
+        "web": {
+          "contentFormat": "Markdown",
+          "content": "Entrez le code de la commande que vous voulez passer (**En majuscule de préférence**):"
+        }
+      },
+      "id": "c777e403-85d4-4f62-8ab1-fdcad6cd0db8",
+      "createdTime": "2022-07-06T14:56:14.013Z",
+      "updatedTime": "2022-07-06T14:56:14.013Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "user-0"
+    },
+    {
+      "channelContent": {
+        "web": {
+          "contentFormat": "Markdown",
+          "content": "**Voulez vous bien enregistrer l'expression de besoin de code** {3a1bf90f-606e-47ae-be20-338093280bbd} **et d'identifiant** {92976c6f-2f48-409a-ab60-73a835e1dbcc}?"
+        }
+      },
+      "id": "589a8df6-91ee-4b51-89bc-2f70ffb7f7b1",
+      "createdTime": "2022-07-06T16:29:42.904Z",
+      "updatedTime": "2022-07-06T16:29:42.904Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "user-0"
+    },
+    {
+      "channelContent": {
+        "web": {
+          "contentFormat": "Markdown",
+          "content": "Voulez vous passer une nouvelle commande mensuelle?"
+        }
+      },
+      "id": "fefa125c-f7a9-47ad-a5c7-4632b21c95cf",
+      "createdTime": "2022-07-06T16:51:03.219Z",
+      "updatedTime": "2022-07-06T16:51:03.219Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "user-0"
+    },
+    {
+      "channelContent": {
+        "web": {
+          "contentFormat": "Markdown",
+          "content": "**Vous allez effectuer votre commande mensuelle sur l'entité**\n\n{10540735-01be-42a7-a387-1992f866d461}"
+        }
+      },
+      "id": "f325ad2e-c2d4-459a-9f29-f28323ae7aba",
+      "createdTime": "2022-07-06T14:53:14.377Z",
+      "updatedTime": "2022-07-06T14:53:14.377Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "user-0"
+    },
+    {
+      "channelContent": {
+        "web": {
+          "contentFormat": "Markdown",
+          "content": "**Vous ne pouvez pas effectuer des expressions de besoin sur Zulaa. Contacter la Hotline ou appeler le 5812 pour demander les accès.**"
+        }
+      },
+      "id": "7fcf4eee-ba06-4b62-978a-5201abe5f369",
+      "createdTime": "2022-07-06T14:53:48.317Z",
+      "updatedTime": "2022-07-06T14:53:48.317Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "user-0"
+    },
+    {
+      "channelContent": {
+        "web": {
+          "contentFormat": "Markdown",
+          "content": "**Le code de cette expression de besoin n'existe pas dans votre entité.**"
+        }
+      },
+      "id": "c5eab7a4-d811-4f8c-bcec-d738675713a0",
+      "createdTime": "2022-07-06T15:52:21.806Z",
+      "updatedTime": "2022-07-06T15:52:21.806Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "user-0"
+    },
+    {
+      "channelContent": {
+        "web": {
+          "contentFormat": "Markdown",
+          "content": "_Détails de l'expression de besoin_:\n\n{344bd2a6-8383-463d-bb9f-f4b359cb25f2}"
+        }
+      },
+      "id": "7d09b145-1a6d-4f39-87b4-131839c08e65",
+      "createdTime": "2022-07-06T15:53:41.881Z",
+      "updatedTime": "2022-07-06T15:53:41.881Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "user-0"
+    },
+    {
+      "channelContent": {
+        "web": {
+          "contentFormat": "Markdown",
+          "content": "**Nouvelle expression de besoin créée avec le code** {65bcb882-4503-4c2b-a480-4b9713df2130}."
+        }
+      },
+      "id": "fbcc1e40-c7c7-413b-b381-c3faa78db80f",
+      "createdTime": "2022-07-06T16:49:21.776Z",
+      "updatedTime": "2022-07-06T16:49:21.776Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "user-0"
+    }
+  ],
+  "actionDefinitions": [
+    {
+      "timeoutInSeconds": 60,
+      "retryCount": 1,
+      "method": 2,
+      "headers": {
+        "accept": "application/json"
+      },
+      "bodyContent": "{\"text_1\":\"{7bd4f62b-7262-40bc-8c63-8c540568cf6c}\"}",
+      "actionType": "Flow",
+      "flowMetadata": {
+        "id": "c7e4afb4-81ae-ec11-9840-002248812bc7",
+        "title": "ZulaaCBVerificationDroit",
+        "description": "Call this flow from Power Virtual Agents.",
+        "httpMethod": 2,
+        "inputParameters": [
+          {
+            "name": "Username",
+            "id": "text_1",
+            "type": "String",
+            "optional": false
+          }
+        ],
+        "outputParameters": [
+          {
+            "name": "DROIT",
+            "id": "droit",
+            "type": "String",
+            "optional": true
+          },
+          {
+            "name": "EntiteId",
+            "id": "entiteid",
+            "type": "Number",
+            "optional": true
+          },
+          {
+            "name": "EntiteValue",
+            "id": "entitevalue",
+            "type": "String",
+            "optional": true
+          }
+        ],
+        "outputSchemaType": "Json",
+        "createdTime": "2022-04-28T11:12:28Z",
+        "isEnabled": true,
+        "lastModifiedTime": "2022-06-29T11:18:44Z",
+        "versionNumber": 5929381
+      },
+      "id": "04720f25-ba0c-4b8e-b1fe-008d4397807b",
+      "displayName": "ZulaaCBVerificationDroit",
+      "description": "Call this flow from Power Virtual Agents.",
+      "createdTime": "2022-07-06T14:52:22.558Z",
+      "updatedTime": "2022-07-06T14:52:22.558Z"
+    },
+    {
+      "timeoutInSeconds": 60,
+      "retryCount": 1,
+      "method": 2,
+      "headers": {
+        "accept": "application/json"
+      },
+      "bodyContent": "{\"text_1\":\"{10540735-01be-42a7-a387-1992f866d461}\",\"text\":\"{3a1bf90f-606e-47ae-be20-338093280bbd}\"}",
+      "actionType": "Flow",
+      "flowMetadata": {
+        "id": "15c47426-3dfd-ec11-82e5-000d3a47d5c9",
+        "title": "ZulaaExistenceEB",
+        "description": "Call this flow from Power Virtual Agents.",
+        "httpMethod": 2,
+        "inputParameters": [
+          {
+            "name": "ValueEntite",
+            "id": "text_1",
+            "type": "String",
+            "optional": false
+          },
+          {
+            "name": "CodeEB",
+            "id": "text",
+            "type": "String",
+            "optional": false
+          }
+        ],
+        "outputParameters": [
+          {
+            "name": "ExistEB",
+            "id": "existeb",
+            "type": "String",
+            "optional": true
+          },
+          {
+            "name": "IdEB",
+            "id": "ideb",
+            "type": "Number",
+            "optional": true
+          },
+          {
+            "name": "DetailsEB",
+            "id": "detailseb",
+            "type": "String",
+            "optional": true
+          }
+        ],
+        "outputSchemaType": "Json",
+        "createdTime": "2022-07-06T15:06:03Z",
+        "isEnabled": true,
+        "lastModifiedTime": "2022-07-06T15:51:07Z",
+        "versionNumber": 6045306
+      },
+      "id": "85c8d91e-9e16-4085-8c48-0bee5aebe902",
+      "displayName": "ZulaaExistenceEB",
+      "description": "Call this flow from Power Virtual Agents.",
+      "createdTime": "2022-07-06T15:51:36.539Z",
+      "updatedTime": "2022-07-06T15:51:36.539Z"
+    },
+    {
+      "timeoutInSeconds": 60,
+      "retryCount": 1,
+      "method": 2,
+      "headers": {
+        "accept": "application/json"
+      },
+      "bodyContent": "{\"number\":{92976c6f-2f48-409a-ab60-73a835e1dbcc}}",
+      "actionType": "Flow",
+      "flowMetadata": {
+        "id": "f9ed3e09-4afd-ec11-82e5-000d3a47d5c9",
+        "title": "ZulaaCBEnregistrementEB",
+        "description": "Call this flow from Power Virtual Agents.",
+        "httpMethod": 2,
+        "inputParameters": [
+          {
+            "name": "IdEB",
+            "id": "number",
+            "type": "Number",
+            "optional": false
+          }
+        ],
+        "outputParameters": [
+          {
+            "name": "NewIdEB",
+            "id": "newideb",
+            "type": "Number",
+            "optional": true
+          },
+          {
+            "name": "NewCodeEB",
+            "id": "newcodeeb",
+            "type": "String",
+            "optional": true
+          }
+        ],
+        "outputSchemaType": "Json",
+        "createdTime": "2022-07-06T16:38:17Z",
+        "isEnabled": true,
+        "lastModifiedTime": "2022-07-06T16:47:23Z",
+        "versionNumber": 6045489
+      },
+      "id": "22bc1888-b9c8-452e-954d-5fe70e5993ae",
+      "displayName": "ZulaaCBEnregistrementEB",
+      "description": "Call this flow from Power Virtual Agents.",
+      "createdTime": "2022-07-06T16:48:31.833Z",
+      "updatedTime": "2022-07-06T16:48:31.833Z"
+    }
+  ],
+  "contextVariables": [
+    {
+      "systemType": "None",
+      "initializerType": "UserQuestion",
+      "scope": "Dialog",
+      "greedySlotFillingEnabled": true,
+      "isInput": false,
+      "externalInitializationAllowed": false,
+      "messages": {
+        "GetValue": [
+          "c777e403-85d4-4f62-8ab1-fdcad6cd0db8"
+        ]
+      },
+      "isGlobal": false,
+      "id": "3a1bf90f-606e-47ae-be20-338093280bbd",
+      "displayName": "CodeEB",
+      "createdTime": "2022-07-06T14:56:14.013Z",
+      "updatedTime": "2022-07-06T17:11:38.0372218Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    },
+    {
+      "systemType": "String",
+      "initializerType": "UserQuestion",
+      "scope": "Dialog",
+      "greedySlotFillingEnabled": true,
+      "isInput": false,
+      "externalInitializationAllowed": false,
+      "namedEntityOptions": [
+        "a06318bd-ee65-4222-9319-9288c38c805f",
+        "80ff5b75-a473-46de-9f26-b92cf57869c4"
+      ],
+      "messages": {
+        "GetValue": [
+          "589a8df6-91ee-4b51-89bc-2f70ffb7f7b1"
+        ]
+      },
+      "isGlobal": false,
+      "id": "a229edbf-4218-4f14-98d5-6f1a7fcabfde",
+      "displayName": "QuestionValidationSubmit",
+      "createdTime": "2022-07-06T16:29:42.905Z",
+      "updatedTime": "2022-07-06T17:11:38.0372218Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    },
+    {
+      "systemType": "String",
+      "initializerType": "UserQuestion",
+      "scope": "Dialog",
+      "greedySlotFillingEnabled": true,
+      "isInput": false,
+      "externalInitializationAllowed": false,
+      "namedEntityOptions": [
+        "958cd966-8e9f-4ca5-86e9-cfceea6a5485",
+        "d1fe6014-8cc0-46d8-9606-ccb281915daa"
+      ],
+      "messages": {
+        "GetValue": [
+          "fefa125c-f7a9-47ad-a5c7-4632b21c95cf"
+        ]
+      },
+      "isGlobal": false,
+      "id": "69ab6dbf-87f5-45ca-8896-167236ba1aa0",
+      "displayName": "Var",
+      "createdTime": "2022-07-06T16:51:03.219Z",
+      "updatedTime": "2022-07-06T17:11:38.0372218Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    },
+    {
+      "customTypeId": "8890d810-80bd-4753-8687-b2babc5945db",
+      "initializerType": "Action",
+      "scope": "Dialog",
+      "greedySlotFillingEnabled": false,
+      "isInput": false,
+      "externalInitializationAllowed": false,
+      "actionId": "04720f25-ba0c-4b8e-b1fe-008d4397807b",
+      "isGlobal": false,
+      "id": "32e8302a-331a-4417-b5cc-d4ac2c51cdb1",
+      "displayName": "",
+      "createdTime": "2022-07-06T14:52:22.559Z",
+      "updatedTime": "2022-07-06T17:11:38.0372218Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    },
+    {
+      "systemType": "String",
+      "initializerType": "Expression",
+      "scope": "Dialog",
+      "greedySlotFillingEnabled": false,
+      "isInput": false,
+      "externalInitializationAllowed": false,
+      "expression": "@parameters('32e8302a-331a-4417-b5cc-d4ac2c51cdb1')['droit']",
+      "isGlobal": false,
+      "id": "7ec47e4c-7fcb-4b85-938c-e5aa22828304",
+      "displayName": "DROIT",
+      "createdTime": "2022-07-06T14:52:22.559Z",
+      "updatedTime": "2022-07-06T17:11:38.0372218Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    },
+    {
+      "systemType": "Number",
+      "initializerType": "Expression",
+      "scope": "Dialog",
+      "greedySlotFillingEnabled": false,
+      "isInput": false,
+      "externalInitializationAllowed": false,
+      "expression": "@parameters('32e8302a-331a-4417-b5cc-d4ac2c51cdb1')['entiteid']",
+      "isGlobal": false,
+      "id": "135d42c2-5102-4270-b324-7ef5a02f99ac",
+      "displayName": "EntiteId",
+      "createdTime": "2022-07-06T14:52:22.563Z",
+      "updatedTime": "2022-07-06T17:11:38.0372218Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    },
+    {
+      "systemType": "String",
+      "initializerType": "Expression",
+      "scope": "Dialog",
+      "greedySlotFillingEnabled": false,
+      "isInput": false,
+      "externalInitializationAllowed": false,
+      "expression": "@parameters('32e8302a-331a-4417-b5cc-d4ac2c51cdb1')['entitevalue']",
+      "isGlobal": false,
+      "id": "10540735-01be-42a7-a387-1992f866d461",
+      "displayName": "EntiteValue",
+      "createdTime": "2022-07-06T14:52:22.564Z",
+      "updatedTime": "2022-07-06T17:11:38.0372218Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    },
+    {
+      "customTypeId": "3fe8584a-47aa-442e-b375-6e1484eb2d9f",
+      "initializerType": "Action",
+      "scope": "Dialog",
+      "greedySlotFillingEnabled": false,
+      "isInput": false,
+      "externalInitializationAllowed": false,
+      "actionId": "85c8d91e-9e16-4085-8c48-0bee5aebe902",
+      "isGlobal": false,
+      "id": "8f40e90a-bcb8-4c58-8b95-402cf8c5007a",
+      "displayName": "",
+      "createdTime": "2022-07-06T15:51:36.539Z",
+      "updatedTime": "2022-07-06T17:11:38.0372218Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    },
+    {
+      "systemType": "String",
+      "initializerType": "Expression",
+      "scope": "Dialog",
+      "greedySlotFillingEnabled": false,
+      "isInput": false,
+      "externalInitializationAllowed": false,
+      "expression": "@parameters('8f40e90a-bcb8-4c58-8b95-402cf8c5007a')['existeb']",
+      "isGlobal": false,
+      "id": "864bb5b6-5c1c-42c0-a0b3-3341f0163334",
+      "displayName": "ExistEB",
+      "createdTime": "2022-07-06T15:51:36.539Z",
+      "updatedTime": "2022-07-06T17:11:38.0372218Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    },
+    {
+      "systemType": "Number",
+      "initializerType": "Expression",
+      "scope": "Dialog",
+      "greedySlotFillingEnabled": false,
+      "isInput": false,
+      "externalInitializationAllowed": false,
+      "expression": "@parameters('8f40e90a-bcb8-4c58-8b95-402cf8c5007a')['ideb']",
+      "isGlobal": false,
+      "id": "92976c6f-2f48-409a-ab60-73a835e1dbcc",
+      "displayName": "IdEB",
+      "createdTime": "2022-07-06T15:51:36.54Z",
+      "updatedTime": "2022-07-06T17:11:38.0372218Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    },
+    {
+      "systemType": "String",
+      "initializerType": "Expression",
+      "scope": "Dialog",
+      "greedySlotFillingEnabled": false,
+      "isInput": false,
+      "externalInitializationAllowed": false,
+      "expression": "@parameters('8f40e90a-bcb8-4c58-8b95-402cf8c5007a')['detailseb']",
+      "isGlobal": false,
+      "id": "344bd2a6-8383-463d-bb9f-f4b359cb25f2",
+      "displayName": "DetailsEB",
+      "createdTime": "2022-07-06T15:51:36.54Z",
+      "updatedTime": "2022-07-06T17:11:38.0372218Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    },
+    {
+      "customTypeId": "fa10fa4b-1861-4c8d-943a-6f18d46347cf",
+      "initializerType": "Action",
+      "scope": "Dialog",
+      "greedySlotFillingEnabled": false,
+      "isInput": false,
+      "externalInitializationAllowed": false,
+      "actionId": "22bc1888-b9c8-452e-954d-5fe70e5993ae",
+      "isGlobal": false,
+      "id": "0a183bfd-1d1a-4565-803d-2f588baf9c81",
+      "displayName": "",
+      "createdTime": "2022-07-06T16:48:31.834Z",
+      "updatedTime": "2022-07-06T17:11:38.0372218Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    },
+    {
+      "systemType": "Number",
+      "initializerType": "Expression",
+      "scope": "Dialog",
+      "greedySlotFillingEnabled": false,
+      "isInput": false,
+      "externalInitializationAllowed": false,
+      "expression": "@parameters('0a183bfd-1d1a-4565-803d-2f588baf9c81')['newideb']",
+      "isGlobal": false,
+      "id": "f4dec917-70b2-4858-8cd5-855a4c225e08",
+      "displayName": "NewIdEB",
+      "createdTime": "2022-07-06T16:48:31.834Z",
+      "updatedTime": "2022-07-06T17:11:38.0372218Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    },
+    {
+      "systemType": "String",
+      "initializerType": "Expression",
+      "scope": "Dialog",
+      "greedySlotFillingEnabled": false,
+      "isInput": false,
+      "externalInitializationAllowed": false,
+      "expression": "@parameters('0a183bfd-1d1a-4565-803d-2f588baf9c81')['newcodeeb']",
+      "isGlobal": false,
+      "id": "65bcb882-4503-4c2b-a480-4b9713df2130",
+      "displayName": "NewCodeEB",
+      "createdTime": "2022-07-06T16:48:31.834Z",
+      "updatedTime": "2022-07-06T17:11:38.0372218Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    }
+  ],
+  "jsonTypes": [
+    {
+      "customTypeSchema": "Json",
+      "id": "8890d810-80bd-4753-8687-b2babc5945db",
+      "displayName": "Response Json Type for Flow - ZulaaCBVerificationDroit",
+      "createdTime": "2022-07-06T14:52:22.559Z",
+      "updatedTime": "2022-07-06T14:52:22.559Z"
+    },
+    {
+      "customTypeSchema": "Json",
+      "id": "3fe8584a-47aa-442e-b375-6e1484eb2d9f",
+      "displayName": "Response Json Type for Flow - ZulaaExistenceEB",
+      "createdTime": "2022-07-06T15:51:36.539Z",
+      "updatedTime": "2022-07-06T15:51:36.539Z"
+    },
+    {
+      "customTypeSchema": "Json",
+      "id": "fa10fa4b-1861-4c8d-943a-6f18d46347cf",
+      "displayName": "Response Json Type for Flow - ZulaaCBEnregistrementEB",
+      "createdTime": "2022-07-06T16:48:31.834Z",
+      "updatedTime": "2022-07-06T16:48:31.834Z"
+    }
+  ]
+}

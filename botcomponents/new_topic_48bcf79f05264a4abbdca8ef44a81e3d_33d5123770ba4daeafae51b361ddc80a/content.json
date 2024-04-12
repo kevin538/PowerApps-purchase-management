@@ -1,0 +1,83 @@
+{
+  "intents": [
+    {
+      "triggerQueries": [
+        "Quand êtes-vous fermé",
+        "Quand es-tu fermé",
+        "Quand êtes-vous ouvert",
+        "Quand es-tu ouvert",
+        "Horaires du magasin",
+        "Horaires d'ouverture quotidiennes"
+      ],
+      "dialogId": "new_topic_48bcf79f05264a4abbdca8ef44a81e3d_33d5123770ba4daeafae51b361ddc80a",
+      "isTriggeringEnabled": false,
+      "id": "new_topic_48bcf79f05264a4abbdca8ef44a81e3d_33d5123770ba4daeafae51b361ddc80a",
+      "displayName": "Leçon 1 - Une rubrique simple",
+      "description": "Leçon 1 - Dans cette leçon, vous allez apprendre à créer une rubrique simple avec une branche conditionnelle.\n\nDans les leçons suivantes, vous apprendrez à ajouter et à définir des variables, des conditions des entités.\n\nBienvenue dans Power Virtual Agents !",
+      "createdTime": "2019-01-15T00:00:00Z",
+      "updatedTime": "2021-10-15T11:36:43.7903078Z",
+      "createdUserId": "user0",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    }
+  ],
+  "dialogs": [
+    {
+      "rootNodeId": "e901982c-a22d-4074-b8c7-f7842977a047",
+      "messageNodes": [
+        {
+          "botMessageId": "159e7c92-8871-41a0-a739-9f67085f995f",
+          "nodeType": "BotMessageNode",
+          "id": "e901982c-a22d-4074-b8c7-f7842977a047",
+          "defaultTargetNodeId": "1f6c0946-4d56-4714-96f5-15e2247e953b"
+        },
+        {
+          "botMessageId": "614e2fa3-2cf0-42e3-a2eb-18f9fb274ee6",
+          "nodeType": "BotMessageNode",
+          "id": "1f6c0946-4d56-4714-96f5-15e2247e953b",
+          "defaultTargetNodeId": "6e127cd1-99ff-4c5e-8f3e-9ae93c0d4777"
+        }
+      ],
+      "dialogChangeNodes": [
+        {
+          "targetDialogId": "new_topic_48bcf79f05264a4abbdca8ef44a81e3d_aeabea4d071f415c8c107e1cb7af5424_assumedsuccess",
+          "nodeType": "DialogChangeNode",
+          "id": "6e127cd1-99ff-4c5e-8f3e-9ae93c0d4777"
+        }
+      ],
+      "id": "new_topic_48bcf79f05264a4abbdca8ef44a81e3d_33d5123770ba4daeafae51b361ddc80a",
+      "displayName": "Boîte de dialogue",
+      "createdTime": "2019-01-15T00:00:00Z",
+      "updatedTime": "2021-10-13T11:53:45.1827409Z",
+      "createdUserId": "user0",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    }
+  ],
+  "botMessages": [
+    {
+      "channelContent": {
+        "web": {
+          "contentFormat": "Markdown",
+          "content": "À votre service pour chercher les horaires des magasins."
+        }
+      },
+      "id": "159e7c92-8871-41a0-a739-9f67085f995f",
+      "createdTime": "2019-01-15T00:00:00Z",
+      "updatedTime": "2021-10-13T11:53:45.1827409Z",
+      "createdUserId": "user0",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "channelContent": {
+        "web": {
+          "contentFormat": "Markdown",
+          "content": "Les horaires du magasin de Colombes sont :\n\n*   Lun-Ven : de 9 h à 18 h\n*   Sam : de 10 h à 16 h\n*   Dim : Fermé\n\nLes horaires du magasin de Versailles sont :\n\n*   Lun-Ven : de 9 h à 18 h\n*   Sam-Dim : de 10 h à 16 h"
+        }
+      },
+      "id": "614e2fa3-2cf0-42e3-a2eb-18f9fb274ee6",
+      "createdTime": "2019-10-24T04:02:13.435Z",
+      "updatedTime": "2021-10-13T11:53:45.1827409Z",
+      "createdUserId": "user0",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    }
+  ]
+}

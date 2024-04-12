@@ -1,0 +1,1020 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline_1": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_SharePoint_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_List_MouvementStockEntete (cm237_Ev_Con_List_MouvementStockEntete)": {
+          "defaultValue": "b4f5135b-fc53-47e6-b449-b5f677a685f8",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_MouvementStockEntete",
+            "description": "Connexion à la liste Sharepoint  des mouvementsStockEntete"
+          }
+        },
+        "Ev_Con_List_MouvementStockArticle (cm237_Ev_Con_List_MouvementStockArticle)": {
+          "defaultValue": "5e605b51-6108-4813-84f1-184498cf53fb",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_MouvementStockArticle"
+          }
+        },
+        "Ev_Con_List_Actif (cm237_Ev_Con_List_Actif)": {
+          "defaultValue": "77d964e8-77c0-46f5-8a92-a518904ff692",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_Actif",
+            "description": "Connexion à la liste sharepoint des actifs"
+          }
+        },
+        "Ev_Con_List_MouvementStockActif (cm237_Ev_Con_List_MouvementStockActif)": {
+          "defaultValue": "fab84183-706d-4ca8-9b7b-cb2e8f9b80a0",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_MouvementStockActif"
+          }
+        },
+        "Ev_Con_List_RetourStockActif (cm237_Ev_Con_List_RetourStockActif)": {
+          "defaultValue": "ae38df69-639d-443a-a29b-0c7107fd9bb1",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_RetourStockActif"
+          }
+        },
+        "Ev_Con_List_RetourStockArticle (cm237_Ev_Con_List_RetourStockArticle)": {
+          "defaultValue": "7cc10143-d52b-45dc-a0cb-769b3493e9e8",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_RetourStockArticle"
+          }
+        },
+        "Ev_Con_List_RetourStock (cm237_Ev_Con_List_RetourStock)": {
+          "defaultValue": "2fc20c96-b699-40ce-9afc-bd58585c2f85",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_RetourStock"
+          }
+        },
+        "Ev_Con_List_MagasinArticle (cm237_Ev_Con_List_MagasinArticle)": {
+          "defaultValue": "1e82bd04-2c96-40a1-917c-58d7b4fa5124",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_MagasinArticle"
+          }
+        },
+        "Ev_Con_List_ActifPersonnelDeparmentActif (cm237_Ev_Con_List_ActifPersonnelDeparmentActif)": {
+          "defaultValue": "989b723d-26fd-46b1-ace4-c8c0492929c1",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_ActifPersonnelDeparmentActif"
+          }
+        },
+        "Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)": {
+          "defaultValue": "https://teamsite.msc.com/sites/NL001-SITE_ACHAT",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Site_ZulaaDev",
+            "description": "Site de la dev où sont stockés les templates des documents de bon de commande, expression de besoin, réception et sortie de stock"
+          }
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "30ab9d94-5118-4335-8410-201de64f0fce"
+          },
+          "type": "Request",
+          "kind": "PowerApp",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "GetitemRetourStock_Id": {
+                  "type": "integer",
+                  "format": "int64",
+                  "description": "Unique identifier of item to be retrieved",
+                  "x-ms-powerflows-param-ispartial": false
+                }
+              },
+              "required": [
+                "GetitemRetourStock_Id"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Get_item_RetourStock": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "a949a58c-a000-4227-9c03-d675fe6984ed"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItem"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_RetourStock (cm237_Ev_Con_List_RetourStock)')",
+              "id": "@triggerBody()['GetitemRetourStock_Id']"
+            },
+            "authentication": {
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+              "type": "Raw"
+            }
+          }
+        },
+        "Get_items_RetourStockActif": {
+          "runAfter": {
+            "Get_item_RetourStock": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "1fa83699-d34e-4d43-8168-f361df29373e"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItems"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_RetourStockActif (cm237_Ev_Con_List_RetourStockActif)')",
+              "$filter": "RetourStockId/Id eq '@{outputs('Get_item_RetourStock')?['body/ID']}'"
+            },
+            "authentication": {
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+              "type": "Raw"
+            }
+          }
+        },
+        "Condition": {
+          "actions": {},
+          "runAfter": {
+            "IdSortieStockActif": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Apply_to_each": {
+                "foreach": "@outputs('Get_items_RetourStockActif')?['body/value']",
+                "actions": {
+                  "Update_item": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "6658469d-9e90-4c22-9de0-3fd684ebe6c7"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                        "connectionName": "shared_sharepointonline_1",
+                        "operationId": "PatchItem"
+                      },
+                      "parameters": {
+                        "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                        "table": "@parameters('Ev_Con_List_Actif (cm237_Ev_Con_List_Actif)')",
+                        "id": "@items('Apply_to_each')?['ActifId/Id']",
+                        "item/Title": "@items('Apply_to_each')?['ActifId/Value']",
+                        "item/Statut/Value": "Non attribué",
+                        "item/MagasinId/Id": "@outputs('Get_item_RetourStock')?['body/MagasinId/Id']",
+                        "item/UtilisateurText": "@null"
+                      },
+                      "authentication": {
+                        "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                        "type": "Raw"
+                      }
+                    }
+                  },
+                  "Send_an_HTTP_request_to_SharePoint": {
+                    "runAfter": {
+                      "Update_item": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "20a732f0-5641-486d-aed7-8ecc4c2b5b24"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                        "connectionName": "shared_sharepointonline_1",
+                        "operationId": "HttpRequest"
+                      },
+                      "parameters": {
+                        "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                        "parameters/method": "POST",
+                        "parameters/uri": "_api/web/lists/getbytitle('Actif')/items(@{items('Apply_to_each')?['ActifId/Id']})",
+                        "parameters/headers": {
+                          "content-type": "application/json;odata=verbose",
+                          "If-Match": "*",
+                          "X-HTTP-METHOD": "MERGE",
+                          "Accept": "application/json;odata=verbose"
+                        },
+                        "parameters/body": "{\n\"__metadata\": {\"type\": \"SP.Data.ActifListItem\"},\n\"UtilisateurStringId\":\"\",\n\"UtilisateurId\": -1\n}"
+                      },
+                      "authentication": {
+                        "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                        "type": "Raw"
+                      }
+                    }
+                  },
+                  "Get_items_MouvementStockActif": {
+                    "runAfter": {
+                      "Send_an_HTTP_request_to_SharePoint": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "ec255284-53dc-4fd1-aa1c-c42c5192f664"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                        "connectionName": "shared_sharepointonline_1",
+                        "operationId": "GetItems"
+                      },
+                      "parameters": {
+                        "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                        "table": "@parameters('Ev_Con_List_MouvementStockActif (cm237_Ev_Con_List_MouvementStockActif)')",
+                        "$filter": "MouvementStockId/Id eq '@{outputs('Get_item_RetourStock')?['body/SortieStockId/Id']}' and ActifId/Id eq '@{items('Apply_to_each')?['ActifId/Id']}'"
+                      },
+                      "authentication": {
+                        "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                        "type": "Raw"
+                      }
+                    }
+                  },
+                  "Apply_to_each_5": {
+                    "foreach": "@outputs('Get_items_MouvementStockActif')?['body/value']",
+                    "actions": {
+                      "Set_variable_7": {
+                        "runAfter": {},
+                        "metadata": {
+                          "operationMetadataId": "55f55282-e8e7-4354-97a3-78e2bf100545"
+                        },
+                        "type": "SetVariable",
+                        "inputs": {
+                          "name": "IdSortieStockActif",
+                          "value": "@items('Apply_to_each_5')?['ID']"
+                        }
+                      }
+                    },
+                    "runAfter": {
+                      "Get_items_MouvementStockActif": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "edb02a4e-bedf-425d-b85e-b4bbbadc1eb7"
+                    },
+                    "type": "Foreach"
+                  },
+                  "Update_item_4": {
+                    "runAfter": {
+                      "Apply_to_each_5": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "1dc695c4-7783-46c1-81d4-881db5b76481"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                        "connectionName": "shared_sharepointonline_1",
+                        "operationId": "PatchItem"
+                      },
+                      "parameters": {
+                        "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                        "table": "@parameters('Ev_Con_List_MouvementStockActif (cm237_Ev_Con_List_MouvementStockActif)')",
+                        "id": "@variables('IdSortieStockActif')",
+                        "item/RetourEnstock": true
+                      },
+                      "authentication": {
+                        "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                        "type": "Raw"
+                      }
+                    }
+                  },
+                  "Create_item_Attribution": {
+                    "runAfter": {
+                      "Update_item_4": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "983e8aea-04e3-445f-9107-f53707cff3c1"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                        "connectionName": "shared_sharepointonline_1",
+                        "operationId": "PostItem"
+                      },
+                      "parameters": {
+                        "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                        "table": "@parameters('Ev_Con_List_ActifPersonnelDeparmentActif (cm237_Ev_Con_List_ActifPersonnelDeparmentActif)')",
+                        "item/DateAttribution": "@utcNow()",
+                        "item/ActifId/Id": "@items('Apply_to_each')?['ActifId/Id']",
+                        "item/Actif": true,
+                        "item/RetourStockId/Id": "@items('Apply_to_each')?['RetourStockId/Id']"
+                      },
+                      "authentication": {
+                        "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                        "type": "Raw"
+                      }
+                    }
+                  }
+                },
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "88f7cca8-faa0-43c1-9566-819c660ebcd2"
+                },
+                "type": "Foreach"
+              }
+            }
+          },
+          "expression": {
+            "lessOrEquals": [
+              "@length(outputs('Get_items_RetourStockActif')?['body/value'])",
+              0
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a26e3c5d-1c53-43dd-97d0-4593bb00056b"
+          },
+          "type": "If"
+        },
+        "Get_items_RetourStockArticle": {
+          "runAfter": {
+            "Condition": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "4253de71-63c2-48ae-93ed-b28b22797917"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItems"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_RetourStockArticle (cm237_Ev_Con_List_RetourStockArticle)')",
+              "$filter": "RetourStockId/Id eq '@{outputs('Get_item_RetourStock')?['body/ID']}'"
+            },
+            "authentication": {
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+              "type": "Raw"
+            }
+          }
+        },
+        "Condition_2": {
+          "actions": {},
+          "runAfter": {
+            "QteDejaRetournee": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Apply_to_each_2": {
+                "foreach": "@outputs('Get_items_RetourStockArticle')?['body/value']",
+                "actions": {
+                  "Get_items_MagasinArticle": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "8760d4be-7146-4646-979f-f00720ede7d6"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                        "connectionName": "shared_sharepointonline_1",
+                        "operationId": "GetItems"
+                      },
+                      "parameters": {
+                        "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                        "table": "@parameters('Ev_Con_List_MagasinArticle (cm237_Ev_Con_List_MagasinArticle)')",
+                        "$filter": "MagasinId/Id eq '@{outputs('Get_item_RetourStock')?['body/MagasinId/Id']}' and ArticleId/Id eq '@{items('Apply_to_each_2')?['ArticleId/Id']}'"
+                      },
+                      "authentication": {
+                        "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                        "type": "Raw"
+                      }
+                    }
+                  },
+                  "Condition_3": {
+                    "actions": {
+                      "Create_item": {
+                        "runAfter": {},
+                        "metadata": {
+                          "operationMetadataId": "48378b07-5bdc-4240-b78a-7c94ab05c657"
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                            "connectionName": "shared_sharepointonline_1",
+                            "operationId": "PostItem"
+                          },
+                          "parameters": {
+                            "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                            "table": "@parameters('Ev_Con_List_MagasinArticle (cm237_Ev_Con_List_MagasinArticle)')",
+                            "item/MagasinId/Id": "@outputs('Get_item_RetourStock')?['body/MagasinId/Id']",
+                            "item/ArticleId/Id": "@items('Apply_to_each_2')?['ArticleId/Id']",
+                            "item/QuantiteStock": "@items('Apply_to_each_2')?['Quantite']"
+                          },
+                          "authentication": {
+                            "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                            "type": "Raw"
+                          }
+                        }
+                      },
+                      "Set_variable_6": {
+                        "runAfter": {
+                          "Create_item": [
+                            "Succeeded"
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "84ef25a1-e85b-408f-ac87-3cba8b2dfaeb"
+                        },
+                        "type": "SetVariable",
+                        "inputs": {
+                          "name": "QuantiteRetournee",
+                          "value": "@items('Apply_to_each_2')?['Quantite']"
+                        }
+                      }
+                    },
+                    "runAfter": {
+                      "Get_items_MagasinArticle": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Set_variable": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "7d10c419-d0db-4591-87e1-c63720a59ddb"
+                          },
+                          "type": "SetVariable",
+                          "inputs": {
+                            "name": "QuantiteRetournee",
+                            "value": "@items('Apply_to_each_2')?['Quantite']"
+                          }
+                        },
+                        "Apply_to_each_3": {
+                          "foreach": "@outputs('Get_items_MagasinArticle')?['body/value']",
+                          "actions": {
+                            "Set_variable_2": {
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "fa8f7b0a-cf54-4d45-8e0d-dd820a440d5b"
+                              },
+                              "type": "SetVariable",
+                              "inputs": {
+                                "name": "QuantiteEnStock",
+                                "value": "@items('Apply_to_each_3')?['QuantiteStock']"
+                              }
+                            },
+                            "Set_variable_3": {
+                              "runAfter": {
+                                "Set_variable_2": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "1bf0e6e4-2822-4e28-8364-9dc207c339d4"
+                              },
+                              "type": "SetVariable",
+                              "inputs": {
+                                "name": "IdMagasinArticle",
+                                "value": "@items('Apply_to_each_3')?['ID']"
+                              }
+                            }
+                          },
+                          "runAfter": {
+                            "Set_variable": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "60357073-f7e2-4d82-95fa-01f735e9f125"
+                          },
+                          "type": "Foreach"
+                        },
+                        "Update_item_2": {
+                          "runAfter": {
+                            "Apply_to_each_3": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "8a891898-eafb-47ee-b13d-cecf889f21c6"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                              "connectionName": "shared_sharepointonline_1",
+                              "operationId": "PatchItem"
+                            },
+                            "parameters": {
+                              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                              "table": "@parameters('Ev_Con_List_MagasinArticle (cm237_Ev_Con_List_MagasinArticle)')",
+                              "id": "@variables('IdMagasinArticle')",
+                              "item/QuantiteStock": "@add(variables('QuantiteEnStock'),variables('QuantiteRetournee'))"
+                            },
+                            "authentication": {
+                              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                              "type": "Raw"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "lessOrEquals": [
+                        "@length(outputs('Get_items_MagasinArticle')?['body/value'])",
+                        0
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "d82b18cb-df0c-4b58-bd45-8228731b16fb"
+                    },
+                    "type": "If"
+                  },
+                  "Get_items_MouvementStockArticle": {
+                    "runAfter": {
+                      "Condition_3": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "964e2d0c-75d7-4dd8-9dbb-c3f2d926d518"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                        "connectionName": "shared_sharepointonline_1",
+                        "operationId": "GetItems"
+                      },
+                      "parameters": {
+                        "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                        "table": "@parameters('Ev_Con_List_MouvementStockArticle (cm237_Ev_Con_List_MouvementStockArticle)')",
+                        "$filter": "MouvementStockId/Id eq '@{outputs('Get_item_RetourStock')?['body/SortieStockId/Id']}' and ArticleId/Id eq '@{items('Apply_to_each_2')?['ArticleId/Id']}'"
+                      },
+                      "authentication": {
+                        "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                        "type": "Raw"
+                      }
+                    }
+                  },
+                  "Apply_to_each_4": {
+                    "foreach": "@outputs('Get_items_MouvementStockArticle')?['body/value']",
+                    "actions": {
+                      "Set_variable_4": {
+                        "runAfter": {},
+                        "metadata": {
+                          "operationMetadataId": "dc838704-97a8-4c32-a3f0-5c5e5bb2daa0"
+                        },
+                        "type": "SetVariable",
+                        "inputs": {
+                          "name": "QteDejaRetournee",
+                          "value": "@items('Apply_to_each_4')?['QteRetournee']"
+                        }
+                      },
+                      "Set_variable_5": {
+                        "runAfter": {
+                          "Set_variable_4": [
+                            "Succeeded"
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "98a80e9c-ef8f-4891-97b9-27efa372159a"
+                        },
+                        "type": "SetVariable",
+                        "inputs": {
+                          "name": "IdSortieStockArticle",
+                          "value": "@items('Apply_to_each_4')?['ID']"
+                        }
+                      }
+                    },
+                    "runAfter": {
+                      "Get_items_MouvementStockArticle": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "24732e1e-b1b5-4b59-82d0-542f318e0a07"
+                    },
+                    "type": "Foreach"
+                  },
+                  "Update_item_3": {
+                    "runAfter": {
+                      "Apply_to_each_4": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "aa7eb969-c9d3-464b-88f3-1f12ee80014f"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                        "connectionName": "shared_sharepointonline_1",
+                        "operationId": "PatchItem"
+                      },
+                      "parameters": {
+                        "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                        "table": "@parameters('Ev_Con_List_MouvementStockArticle (cm237_Ev_Con_List_MouvementStockArticle)')",
+                        "id": "@variables('IdSortieStockArticle')",
+                        "item/QteRetournee": "@add(variables('QteDejaRetournee'),variables('QuantiteRetournee'))"
+                      },
+                      "authentication": {
+                        "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                        "type": "Raw"
+                      }
+                    }
+                  }
+                },
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "61a138dd-20de-4bf8-8a97-88aa00511880"
+                },
+                "type": "Foreach"
+              }
+            }
+          },
+          "expression": {
+            "lessOrEquals": [
+              "@length(outputs('Get_items_RetourStockArticle')?['body/value'])",
+              0
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "42572e97-570a-4747-9d5c-117842488b60"
+          },
+          "type": "If"
+        },
+        "QuantiteRetournee": {
+          "runAfter": {
+            "Get_items_RetourStockArticle": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "bbb45f7f-0a45-447c-b81b-9ee1bd5da0d0"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "QuantiteRetournee",
+                "type": "float"
+              }
+            ]
+          }
+        },
+        "QuantiteEnStock": {
+          "runAfter": {
+            "QuantiteRetournee": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "77173d6d-d5a4-401d-97b8-28fa0e0e42d1"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "QuantiteEnStock",
+                "type": "float"
+              }
+            ]
+          }
+        },
+        "IdMagasinArticle": {
+          "runAfter": {
+            "QuantiteEnStock": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a4f449e8-6147-4f82-a3bb-2109490a8115"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "IdMagasinArticle",
+                "type": "integer"
+              }
+            ]
+          }
+        },
+        "IdSortieStockArticle": {
+          "runAfter": {
+            "IdMagasinArticle": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e14a65fe-b3e2-45c1-a5a0-9e5706216db7"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "IdSortieStockArticle",
+                "type": "integer"
+              }
+            ]
+          }
+        },
+        "QteDejaRetournee": {
+          "runAfter": {
+            "IdSortieStockArticle": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "54a68485-fd92-4e8e-b213-8dffcd4f7866"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "QteDejaRetournee",
+                "type": "float"
+              }
+            ]
+          }
+        },
+        "IdSortieStockActif": {
+          "runAfter": {
+            "Get_items_RetourStockActif": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "ceb26710-94bf-4a6c-af6e-4224920d0f54"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "IdSortieStockActif",
+                "type": "integer"
+              }
+            ]
+          }
+        },
+        "Get_items_MouvementStockActif_2": {
+          "runAfter": {
+            "Conditiondecloture": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "39b05368-902f-4ad0-97bc-fa64d3dad9fa"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItems"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_MouvementStockActif (cm237_Ev_Con_List_MouvementStockActif)')",
+              "$filter": "MouvementStockId/Id eq '@{outputs('Get_item_RetourStock')?['body/SortieStockId/Id']}'"
+            },
+            "authentication": {
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+              "type": "Raw"
+            }
+          }
+        },
+        "Apply_to_each_6": {
+          "foreach": "@outputs('Get_items_MouvementStockActif_2')?['body/value']",
+          "actions": {
+            "Condition_4": {
+              "actions": {},
+              "runAfter": {},
+              "else": {
+                "actions": {
+                  "Set_variable_8": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "10f20a61-5838-4044-8f55-9bb4174aebcc"
+                    },
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "Conditiondecloture",
+                      "value": 0
+                    }
+                  }
+                }
+              },
+              "expression": {
+                "equals": [
+                  "@items('Apply_to_each_6')?['RetourEnstock']",
+                  "@true"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "65d21532-8320-42df-a660-6d1ba497c317"
+              },
+              "type": "If"
+            }
+          },
+          "runAfter": {
+            "Get_items_MouvementStockActif_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "454b6a02-14a5-489d-a7f3-edbf7aa8618d"
+          },
+          "type": "Foreach"
+        },
+        "Conditiondecloture": {
+          "runAfter": {
+            "Condition_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "cd0d828f-4602-4d8b-8c77-c8838ca6147d"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Conditiondecloture",
+                "type": "integer",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "_Get_items_MouvementStockArticle_2": {
+          "runAfter": {
+            "Apply_to_each_6": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "8a35aed0-de99-428a-a81c-e0b76895a736"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItems"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_MouvementStockArticle (cm237_Ev_Con_List_MouvementStockArticle)')",
+              "$filter": "MouvementStockId/Id eq '@{outputs('Get_item_RetourStock')?['body/SortieStockId/Id']}'"
+            },
+            "authentication": {
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+              "type": "Raw"
+            }
+          }
+        },
+        "Apply_to_each_7": {
+          "foreach": "@outputs('_Get_items_MouvementStockArticle_2')?['body/value']",
+          "actions": {
+            "Condition_5": {
+              "actions": {},
+              "runAfter": {},
+              "else": {
+                "actions": {
+                  "Set_variable_9": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "64827432-c486-42db-ae16-e4d5ad1ec7c0"
+                    },
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "Conditiondecloture",
+                      "value": 0
+                    }
+                  }
+                }
+              },
+              "expression": {
+                "greaterOrEquals": [
+                  "@items('Apply_to_each_7')?['QteRetournee']",
+                  "@items('Apply_to_each_7')?['Qte']"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "5c2feadb-7b39-42d2-86b2-590e9bac63fd"
+              },
+              "type": "If"
+            }
+          },
+          "runAfter": {
+            "_Get_items_MouvementStockArticle_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "9cbb15da-b24e-414a-bc8a-0f2917882977"
+          },
+          "type": "Foreach"
+        },
+        "Condition_6": {
+          "actions": {
+            "Update_item_5": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "7f549ba9-abf7-40cc-aaf4-42b07fff78d1"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                  "connectionName": "shared_sharepointonline_1",
+                  "operationId": "PatchItem"
+                },
+                "parameters": {
+                  "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                  "table": "@parameters('Ev_Con_List_MouvementStockEntete (cm237_Ev_Con_List_MouvementStockEntete)')",
+                  "id": "@outputs('Get_item_RetourStock')?['body/SortieStockId/Id']",
+                  "item/Cloture": true
+                },
+                "authentication": {
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                  "type": "Raw"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Apply_to_each_7": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+              "@variables('Conditiondecloture')",
+              1
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "bafb819e-f17d-47a5-83de-1d9a3f711b43"
+          },
+          "type": "If"
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

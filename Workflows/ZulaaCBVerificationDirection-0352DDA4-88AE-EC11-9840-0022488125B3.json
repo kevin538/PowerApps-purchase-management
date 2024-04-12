@@ -1,0 +1,386 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_SharePoint_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_List_Entite (cm237_Ev_Con_List_Entit)": {
+          "defaultValue": "0ecfd9f6-6425-4e2a-816f-b35669a82481",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_Entit",
+            "description": "Connexion à la liste sharepoint des Entitées"
+          }
+        },
+        "Ev_Con_List_Direction (cm237_Ev_Con_List_Direction)": {
+          "defaultValue": "82024a7f-cecf-4881-a135-9fbaa9636a13",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_Direction",
+            "description": "Connexion à la liste sharepoint des directions"
+          }
+        },
+        "Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)": {
+          "defaultValue": "https://teamsite.msc.com/sites/NL001-SITE_ACHAT",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Site_ZulaaDev",
+            "description": "Site de la dev où sont stockés les templates des documents de bon de commande, expression de besoin, réception et sortie de stock"
+          }
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "a37785e7-5e05-4cdd-b04a-c62146830e67"
+          },
+          "type": "Request",
+          "kind": "VirtualAgent",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "Direction",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_1": {
+                  "title": "Entite",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text",
+                "text_1"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Return_value(s)_to_Power_Virtual_Agents": {
+          "runAfter": {
+            "Condition": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "c004befa-ffa4-4ca2-8459-a223ea450e10"
+          },
+          "type": "Response",
+          "kind": "VirtualAgent",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "existdirection": "@variables('ExistDirection')",
+              "iddirection": "@{variables('IdDirection')}",
+              "nomdirection": "@variables('NomDirection')"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "existdirection": {
+                  "title": "ExistDirection",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                },
+                "iddirection": {
+                  "title": "IdDirection",
+                  "x-ms-dynamically-added": true,
+                  "type": "number"
+                },
+                "nomdirection": {
+                  "title": "NomDirection",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "InitializeExist": {
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f915287d-0294-487d-af7f-dd290059bf96"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ExistDirection",
+                "type": "string",
+                "value": "NON"
+              }
+            ]
+          }
+        },
+        "GetitemsDirection": {
+          "runAfter": {
+            "Apply_to_each_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e180f5e6-746c-4e6a-9e9a-2ae09dba4ec6"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline",
+              "operationId": "GetItems"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_Direction (cm237_Ev_Con_List_Direction)')",
+              "$filter": "CodeDirection eq '@{variables('CodeDirection')}' and EntiteId/Id eq '@{variables('IdEntite')}'",
+              "$top": 1
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Initialize_variable": {
+          "runAfter": {
+            "Initialize_variable_3": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "2459be99-7c5f-4a79-b809-d723fe749033"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "CodeDirection",
+                "type": "string",
+                "value": "@{toUpper(triggerBody()['text'])}"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_2": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "1495b4c1-2172-4e82-88ac-2461a6304166"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "IdDirection",
+                "type": "integer",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "Initialize_variable_3": {
+          "runAfter": {
+            "Initialize_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "fc85ce1c-e71b-4b82-a8bc-af9a59dd9e57"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "NomDirection",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Condition": {
+          "actions": {
+            "Set_variable_2": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "7e122160-dfef-4358-88ff-617d626d1873"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "ExistDirection",
+                "value": "OUI"
+              }
+            },
+            "Apply_to_each": {
+              "foreach": "@outputs('GetitemsDirection')?['body/value']",
+              "actions": {
+                "Set_variable_3": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "3afabfd4-dd0c-4cb2-b9db-f29f31824c58"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "IdDirection",
+                    "value": "@items('Apply_to_each')?['ID']"
+                  }
+                },
+                "Set_variable_4": {
+                  "runAfter": {
+                    "Set_variable_3": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "a18cdf2b-992e-4d51-a65a-520993ac7201"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "NomDirection",
+                    "value": "@items('Apply_to_each')?['Title']"
+                  }
+                }
+              },
+              "runAfter": {
+                "Set_variable_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "b3325ad7-c765-46df-a4e8-c0bb9ea750bc"
+              },
+              "type": "Foreach"
+            }
+          },
+          "runAfter": {
+            "GetitemsDirection": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Set_variable": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "f29f32f0-fd69-4a8c-b3c7-83a6174a2812"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "ExistDirection",
+                  "value": "NON"
+                }
+              }
+            }
+          },
+          "expression": {
+            "greaterOrEquals": [
+              "@length(outputs('GetitemsDirection')?['body/value'])",
+              1
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "8e72ed50-1c2a-414c-9d60-e0dea13d6c29"
+          },
+          "type": "If"
+        },
+        "InitializeIdEntite": {
+          "runAfter": {
+            "InitializeExist": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "56cf87d2-cd97-4a29-b680-adea4688eb28"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "IdEntite",
+                "type": "integer"
+              }
+            ]
+          }
+        },
+        "GetitemsEntite": {
+          "runAfter": {
+            "InitializeIdEntite": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5a6033c1-ed61-4fbb-8af1-e338b77ec06c"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline",
+              "operationId": "GetItems"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_Entite (cm237_Ev_Con_List_Entit)')",
+              "$filter": "CodeSociete eq '@{triggerBody()['text_1']}'",
+              "$top": 1
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Apply_to_each_2": {
+          "foreach": "@outputs('GetitemsEntite')?['body/value']",
+          "actions": {
+            "Set_variable_5": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "3e520bfd-e71d-4e17-935c-3c4531fa3b16"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "IdEntite",
+                "value": "@items('Apply_to_each_2')?['ID']"
+              }
+            }
+          },
+          "runAfter": {
+            "GetitemsEntite": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "7e452522-45fb-46d5-8429-f2cffb3103d0"
+          },
+          "type": "Foreach"
+        }
+      },
+      "outputs": {}
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

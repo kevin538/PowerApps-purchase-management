@@ -1,0 +1,240 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline_1": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_SharePoint_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_List_Categorie (cm237_Ev_Con_List_Categorie)": {
+          "defaultValue": "b1e0e786-b358-4426-bcd9-230bd418de22",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_Categorie",
+            "description": "Connexion à la liste sharepoint des catégories"
+          }
+        },
+        "Ev_Con_List_ExpressionBesoin (cm237_Ev_Con_List_ExpressionBesoin)": {
+          "defaultValue": "ca1aa6ef-08fd-48d2-b216-c103ac34c876",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_ExpressionBesoin",
+            "description": "Connexion à la liste Sharepoint des Exxpressions de Besoins"
+          }
+        },
+        "Ev_Con_List_CategorieExpresisonBesoin (cm237_Ev_Con_List_CategorieExpresisonBesoin)": {
+          "defaultValue": "2b17e6ef-6918-4596-832e-f7716b250fcc",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_CategorieExpresisonBesoin",
+            "description": "Connexion à la liste Sharepoint des Categories d'expression de besoin"
+          }
+        },
+        "Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)": {
+          "defaultValue": "https://teamsite.msc.com/sites/cm004-afr-cio-zulaa-dev",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Site_ZulaaDev",
+            "description": "Site de la dev où sont stockés les templates des documents de bon de commande, expression de besoin, réception et sortie de stock"
+          }
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "f40ed05d-d5a8-4c2e-8b8d-e3e65302ae28"
+          },
+          "type": "Request",
+          "kind": "PowerApp",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "VarExpressionBesoin_Valeur": {
+                  "type": "integer",
+                  "description": "Entrer la valeur initiale",
+                  "x-ms-powerflows-param-ispartial": false
+                },
+                "VarCategorie_Valeur": {
+                  "type": "integer",
+                  "description": "Entrer la valeur initiale",
+                  "x-ms-powerflows-param-ispartial": false
+                },
+                "Description_Valeur": {
+                  "type": "string",
+                  "description": "Entrer la valeur initiale",
+                  "x-ms-powerflows-param-ispartial": false
+                }
+              },
+              "required": [
+                "VarExpressionBesoin_Valeur",
+                "VarCategorie_Valeur",
+                "Description_Valeur"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "VarExpressionBesoin": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "0a5f16c4-83cd-47a8-aef7-5de1401c0017"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "IdExpressionBesoin",
+                "type": "integer",
+                "value": "@triggerBody()['VarExpressionBesoin_Valeur']"
+              }
+            ]
+          }
+        },
+        "VarCategorie": {
+          "runAfter": {
+            "VarExpressionBesoin": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "efc59796-2526-4d1d-b074-c973bdbaa229"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "IdCategorie",
+                "type": "integer",
+                "value": "@triggerBody()['VarCategorie_Valeur']"
+              }
+            ]
+          }
+        },
+        "Description": {
+          "runAfter": {
+            "VarCategorie": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "240c0201-adf8-4851-b1c2-996fad187e5d"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Description",
+                "type": "string",
+                "value": "@{triggerBody()['Description_Valeur']}"
+              }
+            ]
+          }
+        },
+        "Créer_un_élément": {
+          "runAfter": {
+            "Obtenir_l’élément": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "3f85b5a2-8119-47dd-bd1e-57cca5121b5d"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "PostItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_CategorieExpresisonBesoin (cm237_Ev_Con_List_CategorieExpresisonBesoin)')",
+              "item/CategorieArticleId/Id": "@variables('IdCategorie')",
+              "item/ExpressionBesoinId/Id": "@variables('IdExpressionBesoin')",
+              "item/Description": "@variables('Description')"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        },
+        "Obtenir_l’élément": {
+          "runAfter": {
+            "Obtenir_l’élément_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "2ed2cf35-7e4c-4581-88f9-94573d381207"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_Categorie (cm237_Ev_Con_List_Categorie)')",
+              "id": "@variables('IdCategorie')"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        },
+        "Obtenir_l’élément_2": {
+          "runAfter": {
+            "Description": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "cc8f6b6a-3865-429f-90a7-209e3f7a2737"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_ExpressionBesoin (cm237_Ev_Con_List_ExpressionBesoin)')",
+              "id": "@variables('IdExpressionBesoin')"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

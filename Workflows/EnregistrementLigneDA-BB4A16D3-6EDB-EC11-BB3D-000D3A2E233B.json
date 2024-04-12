@@ -1,0 +1,202 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline_1": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_SharePoint_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_List_DemandeAchatArticleFournisseur (cm237_Ev_Con_List_DemandeAchatArticleFournisseur)": {
+          "defaultValue": "308c398c-07c8-4c20-9c88-349231c0cc53",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_DemandeAchatArticleFournisseur",
+            "description": "Connexion à laliste sharepoint DemandeAchatArticleFournisseur"
+          }
+        },
+        "Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)": {
+          "defaultValue": "https://teamsite.msc.com/sites/NL001-SITE_ACHAT",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Site_ZulaaDev",
+            "description": "Site de la dev où sont stockés les templates des documents de bon de commande, expression de besoin, réception et sortie de stock"
+          }
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "776e27ea-38de-49c9-b84c-9dd6bb44d289"
+          },
+          "type": "Request",
+          "kind": "PowerAppV2",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "number": {
+                  "title": "IdArticle",
+                  "type": "number",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter a number",
+                  "x-ms-content-hint": "NUMBER"
+                },
+                "number_1": {
+                  "title": "Quantite",
+                  "type": "number",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter a number",
+                  "x-ms-content-hint": "NUMBER"
+                },
+                "number_2": {
+                  "title": "Prix",
+                  "type": "number",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter a number",
+                  "x-ms-content-hint": "NUMBER"
+                },
+                "number_3": {
+                  "title": "IdFournisseur",
+                  "type": "number",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter a number",
+                  "x-ms-content-hint": "NUMBER"
+                },
+                "number_4": {
+                  "title": "IdSiteCentreCout",
+                  "type": "number",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter a number",
+                  "x-ms-content-hint": "NUMBER"
+                },
+                "number_5": {
+                  "title": "IdDemandeAchat",
+                  "type": "number",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter a number",
+                  "x-ms-content-hint": "NUMBER"
+                },
+                "text": {
+                  "title": "Description",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_1": {
+                  "title": "RefInt",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_2": {
+                  "title": "RefFabric",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_3": {
+                  "title": "Unite",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "number_6": {
+                  "title": "MontantLigne",
+                  "type": "number",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter a number",
+                  "x-ms-content-hint": "NUMBER"
+                },
+                "number_7": {
+                  "title": "MontantTaxe",
+                  "type": "number",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter a number",
+                  "x-ms-content-hint": "NUMBER"
+                }
+              },
+              "required": [
+                "number",
+                "number_1",
+                "number_2",
+                "number_3",
+                "number_4",
+                "number_5",
+                "text",
+                "text_1",
+                "text_2",
+                "text_3",
+                "number_6",
+                "number_7"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Create_item_DAAF": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "d089cc15-8bc2-4105-9cfb-faa29055c9ca"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "PostItem"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_DemandeAchatArticleFournisseur (cm237_Ev_Con_List_DemandeAchatArticleFournisseur)')",
+              "item/ArticleId/Id": "@triggerBody()['number']",
+              "item/DemandeAchatId/Id": "@triggerBody()['number_5']",
+              "item/FournisseurId/Id": "@triggerBody()['number_3']",
+              "item/Prix": "@triggerBody()['number_2']",
+              "item/Quantite": "@triggerBody()['number_1']",
+              "item/Description": "@triggerBody()['text']",
+              "item/MontantLigne": "@triggerBody()['number_6']",
+              "item/MontantLigneTaxe": "@triggerBody()['number_7']",
+              "item/Taxe": true,
+              "item/SiteCentreCoutId/Id": "@triggerBody()['number_4']",
+              "item/QuantiteRecus": 0,
+              "item/ReferenceInterne": "@triggerBody()['text_1']",
+              "item/ReferenceFabricant": "@triggerBody()['text_2']",
+              "item/DateLivraison": "@utcNow()",
+              "item/Unite": "@triggerBody()['text_3']",
+              "item/DateFournisseur": "@utcNow()"
+            },
+            "authentication": {
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+              "type": "Raw"
+            }
+          }
+        }
+      },
+      "outputs": {}
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

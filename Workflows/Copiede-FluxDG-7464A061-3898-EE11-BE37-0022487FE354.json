@@ -1,0 +1,86 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_onedriveforbusiness": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedonedriveforbusiness_28ac5"
+        },
+        "api": {
+          "name": "shared_onedriveforbusiness"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "fe8ae849-92ac-4687-9add-5cf5500b7952"
+          },
+          "type": "Request",
+          "kind": "PowerApp",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Chargerlefichieràpartirdel'URL_URLsource": {
+                  "type": "string",
+                  "description": "URL vers le fichier source.",
+                  "x-ms-powerflows-param-ispartial": false
+                },
+                "Chargerlefichieràpartirdel'URL_Chemind'accèsaufichierdedestination": {
+                  "type": "string",
+                  "description": "Chemin d'accès au fichier de destination, y compris le nom de fichier cible.. Ce paramètre est utilisé comme partie de \"76EAEA72-3236-4218-8785-4D656521CBD6\"",
+                  "x-ms-powerflows-param-ispartial": true
+                }
+              },
+              "required": [
+                "Chargerlefichieràpartirdel'URL_URLsource",
+                "Chargerlefichieràpartirdel'URL_Chemind'accèsaufichierdedestination"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Charger_le_fichier_à_partir_de_l'URL": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "08010fb4-09dd-4698-9a9b-08caa3a1fac9"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_onedriveforbusiness",
+              "operationId": "CopyFile",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+            },
+            "parameters": {
+              "source": "@triggerBody()['Chargerlefichieràpartirdel''URL_URLsource']",
+              "destination": "/Power Apps QR Code/@{triggerBody()['Chargerlefichieràpartirdel''URL_Chemind''accèsaufichierdedestination']}",
+              "overwrite": false
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

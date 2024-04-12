@@ -1,0 +1,10 @@
+<botcomponent schemaname="new_topic_48bcf79f05264a4abbdca8ef44a81e3d_85df75ce08a44a9b82cc8f3fdb25f669">
+  <componenttype>0</componenttype>
+  <description>Leçon 4 - Dans cette leçon, vous poursuivez votre apprentissage de la création d'une rubrique avec une branche conditionnelle, une variable et une entité personnalisée.  
+
+Elle permettra notamment à une entité d'ignorer une question de suivi. Faites par exemple un test avec "je veux un ordinateur portable professionnel."</description>
+  <iscustomizable>1</iscustomizable>
+  <name>Leçon 4 - Une rubrique avec des conditions, des variables et une entité personnalisée.</name>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</botcomponent>

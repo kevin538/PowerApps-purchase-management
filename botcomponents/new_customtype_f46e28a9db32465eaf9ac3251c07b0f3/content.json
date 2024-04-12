@@ -1,0 +1,115 @@
+{
+  "namedEntities": [
+    {
+      "synonyms": [
+        "DSI"
+      ],
+      "id": "3da5e070-2da1-4f6f-a803-7c224600b36b",
+      "displayName": "Direction des Systèmes d'informations",
+      "createdTime": "2021-10-25T18:46:04.6621643Z",
+      "updatedTime": "2021-10-25T18:53:48.6164019Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "synonyms": [
+        "DG"
+      ],
+      "id": "b81381e2-2082-4040-b9b7-d5585e6baf3f",
+      "displayName": "Direction générale",
+      "createdTime": "2021-10-25T18:46:04.6621643Z",
+      "updatedTime": "2021-10-25T18:53:48.6164019Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "synonyms": [
+        "DR"
+      ],
+      "id": "e4938d42-4acc-4cc1-b2ae-bd72c950af75",
+      "displayName": "Direction Régionale",
+      "createdTime": "2021-10-25T18:46:04.6621643Z",
+      "updatedTime": "2021-10-25T18:53:48.6164019Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "id": "54cb0112-155c-4ebf-8441-f627842c605e",
+      "displayName": "Direction Commerciale",
+      "createdTime": "2021-10-25T18:46:04.6621643Z",
+      "updatedTime": "2021-10-25T18:53:48.6164019Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "id": "cc781967-1a59-407a-b141-d9e23e1a2b74",
+      "displayName": "Direction des Solutions Logistiques",
+      "createdTime": "2021-10-25T18:46:04.6621643Z",
+      "updatedTime": "2021-10-25T18:53:48.6164019Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "id": "f86bd6cb-5088-494c-a628-a3908511ce7f",
+      "displayName": "Direction des Solutions Maritimes",
+      "createdTime": "2021-10-25T18:46:04.6621643Z",
+      "updatedTime": "2021-10-25T18:53:48.6164019Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "id": "1fa8b270-e8db-4038-8856-df0185b3752f",
+      "displayName": "Direction Technique",
+      "createdTime": "2021-10-25T18:46:04.6621643Z",
+      "updatedTime": "2021-10-25T18:53:48.6164019Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "synonyms": [
+        "DAF"
+      ],
+      "id": "3ae4d65c-0c70-434a-9c98-c5b48ef55e6c",
+      "displayName": "Direction Administrative et Financière",
+      "createdTime": "2021-10-25T18:46:04.6621643Z",
+      "updatedTime": "2021-10-25T18:53:48.6164019Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    },
+    {
+      "synonyms": [
+        "DRH"
+      ],
+      "id": "d2826b3a-a40d-4ea2-aa95-6d01a44b7d40",
+      "displayName": "Direction des Ressources Humaines",
+      "createdTime": "2021-10-25T18:46:04.6621643Z",
+      "updatedTime": "2021-10-25T18:53:48.6164019Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    }
+  ],
+  "closedListTypes": [
+    {
+      "namedEntities": [
+        "3da5e070-2da1-4f6f-a803-7c224600b36b",
+        "b81381e2-2082-4040-b9b7-d5585e6baf3f",
+        "e4938d42-4acc-4cc1-b2ae-bd72c950af75",
+        "54cb0112-155c-4ebf-8441-f627842c605e",
+        "cc781967-1a59-407a-b141-d9e23e1a2b74",
+        "f86bd6cb-5088-494c-a628-a3908511ce7f",
+        "1fa8b270-e8db-4038-8856-df0185b3752f",
+        "3ae4d65c-0c70-434a-9c98-c5b48ef55e6c",
+        "d2826b3a-a40d-4ea2-aa95-6d01a44b7d40"
+      ],
+      "smartMatchingEnabled": true,
+      "customTypeSchema": "ClosedList",
+      "id": "new_customtype_f46e28a9db32465eaf9ac3251c07b0f3",
+      "displayName": "Directions",
+      "description": "La liste de toutes les directions",
+      "createdTime": "2021-10-25T18:46:04.6621643Z",
+      "updatedTime": "2021-10-25T18:53:48.6164019Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28"
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_SharePoint_ZulaaCamrail"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      },
+      "shared_excelonlinebusiness": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_sharedexcelonlinebusiness_52726"
+        },
+        "api": {
+          "name": "shared_excelonlinebusiness"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "314ddede-9e2e-4035-8ce0-330a69d5442e"
+          },
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "required": []
+            }
+          }
+        }
+      },
+      "actions": {
+        "List_rows_present_in_a_table": {
+          "runAfter": {},
+          "metadata": {
+            "01ITEZTYPAW24TJIHGCNHKHBERBBIM66HY": "/Renouvellement poste de travail - 2023 -Zulaa.xlsx",
+            "operationMetadataId": "ad6c43bc-5f34-4bdb-88bd-569ce116b015"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_excelonlinebusiness",
+              "operationId": "GetItems",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_excelonlinebusiness"
+            },
+            "parameters": {
+              "source": "sites/teamsite.msc.com,c2a5de93-4d31-460d-b389-948f50ebb127,f86dbe58-de20-4db5-b870-09bb68fabe71",
+              "drive": "b!k96lwjFNDUaziZSPUOuxJ1i-bfgg3rVNuHAJu2j6vnEmPfALr06mRrmsPmN5a42U",
+              "file": "01ITEZTYPAW24TJIHGCNHKHBERBBIM66HY",
+              "table": "{9EC2BB7D-8F21-406B-84D4-1861129712CF}"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        },
+        "Apply_to_each_2": {
+          "foreach": "@outputs('List_rows_present_in_a_table')?['body/value']",
+          "actions": {
+            "Create_item": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "59e3780b-f6b1-4386-aa12-3a6e6d503dea"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline",
+                  "operationId": "PostItem",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "https://teamsite.msc.com/sites/NL001-SITE_ACHAT",
+                  "table": "77d964e8-77c0-46f5-8a92-a518904ff692",
+                  "item/Title": "@items('Apply_to_each_2')?['Numéro de parc']",
+                  "item/NumeroParc": "@items('Apply_to_each_2')?['Numéro de parc']",
+                  "item/NumeroSerie": "@items('Apply_to_each_2')?['Numéro de série']",
+                  "item/Description": "@items('Apply_to_each_2')?['Description']",
+                  "item/Fabriquant": "@items('Apply_to_each_2')?['Fabricant']",
+                  "item/Modele": "@items('Apply_to_each_2')?['Modèle']",
+                  "item/Marque": "@items('Apply_to_each_2')?['Marque']",
+                  "item/Statut/Value": "Non attribué",
+                  "item/DateAcquisition": "11/10/2023",
+                  "item/ArticleId/Id": 2758,
+                  "item/Tiers": false,
+                  "item/MagasinId/Id": 5,
+                  "item/Actif": true,
+                  "item/Etat/Value": "NEUF",
+                  "item/MagasinId2/Id": 5
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "List_rows_present_in_a_table": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f2ed8288-f494-422b-8418-57eee63b11b7"
+          },
+          "type": "Foreach"
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

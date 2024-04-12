@@ -1,0 +1,18 @@
+<environmentvariabledefinition schemaname="cm237_Ev_Con_List_Trigger_SOCOPAO_DAFA">
+  <apiid>/providers/microsoft.powerapps/apis/shared_sharepointonline</apiid>
+  <description default="Trigger_SOCOPAO_DAFA">
+    <label description="Trigger_SOCOPAO_DAFA" languagecode="1033" />
+  </description>
+  <displayname default="Ev_Con_List_Trigger_SOCOPAO_DAFA">
+    <label description="Ev_Con_List_Trigger_SOCOPAO_DAFA" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.6</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <parameterkey>table</parameterkey>
+  <parentdefinitionid>
+    <schemaname>cm237_Ev_Con_Site_ZulaaDev</schemaname>
+  </parentdefinitionid>
+  <secretstore>0</secretstore>
+  <type>100000004</type>
+</environmentvariabledefinition>

@@ -1,0 +1,115 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_office365_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_Outlook_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_office365"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "8c3da7d1-d2e2-4cb7-9615-e3f0b6c9cc6b"
+          },
+          "type": "Request",
+          "kind": "Http",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Email": {
+                        "type": "string"
+                      },
+                      "RaisonSocial": {
+                        "type": "string"
+                      },
+                      "Nom": {
+                        "type": "string"
+                      },
+                      "CompteIris": {
+                        "type": "string"
+                      },
+                      "Telephone1": {
+                        "type": "string"
+                      },
+                      "Adresse1": {
+                        "type": "string"
+                      },
+                      "RegistreCommerce": {
+                        "type": "string"
+                      },
+                      "SiteWeb": {
+                        "type": "string"
+                      },
+                      "NumeroContribuable": {
+                        "type": "string"
+                      },
+                      "Ville": {
+                        "type": "string"
+                      },
+                      "Fax": {
+                        "type": "string"
+                      },
+                      "DateExpiration": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "triggerAuthenticationType": "All"
+          }
+        }
+      },
+      "actions": {
+        "Send_an_email_(V2)": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "d5b3b8e6-2c32-4c2a-89b1-962711a1c93d"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_office365_1",
+              "operationId": "SendEmailV2",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+            },
+            "parameters": {
+              "emailMessage/To": "ext.lionel.changa@aglgroup.com;ext.winnie.donfack@aglgroup.com",
+              "emailMessage/Subject": "Test Fournisseur",
+              "emailMessage/Body": "<p>@{triggerBody()}</p>"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "outputs": {}
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

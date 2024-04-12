@@ -1,0 +1,454 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline_1": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_ZULAA"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      },
+      "shared_sendmail_1": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_EmailZulaa"
+        },
+        "api": {
+          "name": "shared_sendmail"
+        }
+      },
+      "shared_excelonlinebusiness_1": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_ExcelOnlineBusiness"
+        },
+        "api": {
+          "name": "shared_excelonlinebusiness"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "EV_CON_ZULAA_DEV (cm237_EV_CON_ZULAA_DEV)": {
+          "defaultValue": "https://bollore.sharepoint.com/sites/btl-afr-cio-zulaa-dev",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_EV_CON_ZULAA_DEV"
+          }
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "b93d012e-68df-4135-b298-91414dd7d62c"
+          },
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "date": {
+                  "title": "Date de déclenchement",
+                  "type": "string",
+                  "format": "date",
+                  "x-ms-dynamically-added": true,
+                  "description": "2023-04-03",
+                  "x-ms-content-hint": "DATE"
+                }
+              },
+              "required": [
+                "date"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Obtenir_les_éléments": {
+          "runAfter": {
+            "Initialiser_la_variable_7": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "0b8fabef-2e23-4b40-8a4a-37da9bc90bb7"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItems",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('EV_CON_ZULAA_DEV (cm237_EV_CON_ZULAA_DEV)')",
+              "table": "dbe6498e-9f55-4071-bf8c-8cfb898f8bb2",
+              "$filter": "Year(DueTime) ge 2023 and month(DueTime) ge 4 and day(DueTime) ge 13"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        },
+        "Initialiser_la_variable": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "a2d4c82d-d9bc-4fc3-8f23-f08a3693a85d"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Entite",
+                "type": "string",
+                "value": "13-04-2023"
+              }
+            ]
+          }
+        },
+        "Envoyer_une_notification_par_e-mail_(V3)": {
+          "runAfter": {
+            "Ajouter_une_ligne_à_un_tableau": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a1e4fc61-ca01-44ab-9b00-df8bbc86d780"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sendmail_1",
+              "operationId": "SendEmailV3",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sendmail"
+            },
+            "parameters": {
+              "request/to": "_svc_bcmdla_.sgx_dsi@bollore.com",
+              "request/subject": "test Flow EB",
+              "request/text": "<p>okay</p>"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        },
+        "Appliquer_à_chacun": {
+          "foreach": "@outputs('Obtenir_les_éléments')?['body/value']",
+          "actions": {
+            "Obtenir_les_éléments_3": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "1fcf51da-0346-4dca-9b69-3e358139e746"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_1",
+                  "operationId": "GetItems",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@parameters('EV_CON_ZULAA_DEV (cm237_EV_CON_ZULAA_DEV)')",
+                  "table": "b55addb3-850f-4f28-a11b-bc92e85eeffd",
+                  "$filter": "ExpressionBesoinId eq '@{items('Appliquer_à_chacun')?['Code']}'"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                }
+              }
+            },
+            "Ajouter_à_la_variable_de_chaîne": {
+              "runAfter": {
+                "Obtenir_les_éléments_3": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "cb9bb8cb-ed95-464d-82c1-3a5df71c9619"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Entite",
+                "value": "@items('Appliquer_à_chacun')?['EntiteId/Value']"
+              }
+            },
+            "Appliquer_à_chacun_2": {
+              "foreach": "@outputs('Obtenir_les_éléments_3')?['body/value']",
+              "actions": {
+                "Ajouter_à_la_variable_de_chaîne_2": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "d76a322e-5be8-43b1-b1a0-7bf3c685cd6e"
+                  },
+                  "type": "AppendToStringVariable",
+                  "inputs": {
+                    "name": "Description",
+                    "value": "@items('Appliquer_à_chacun_2')?['Description']"
+                  }
+                }
+              },
+              "runAfter": {
+                "Ajouter_à_la_variable_de_chaîne": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "19706a38-6a44-4faf-bf16-85eb6fc50e2d"
+              },
+              "type": "Foreach"
+            },
+            "Ajouter_à_la_variable_de_chaîne_3": {
+              "runAfter": {
+                "Appliquer_à_chacun_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "77f7d060-5ea2-46ec-ad6a-5c2025b345c4"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Departement",
+                "value": "@items('Appliquer_à_chacun')?['DepartementId/Value']"
+              }
+            },
+            "Ajouter_à_la_variable_de_chaîne_4": {
+              "runAfter": {
+                "Ajouter_à_la_variable_de_chaîne_3": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "6dd4816d-ebf8-454d-a31c-f3b0f5d449cc"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Direction",
+                "value": "@items('Appliquer_à_chacun')?['DirectionId/Value']"
+              }
+            },
+            "Définir_une_variable": {
+              "runAfter": {
+                "Ajouter_à_la_variable_de_chaîne_4": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "70dd2ddd-277d-4600-ade9-b197f9059696"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "ID",
+                "value": "@items('Appliquer_à_chacun')?['ID']"
+              }
+            }
+          },
+          "runAfter": {
+            "Obtenir_les_éléments_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "688db87d-befe-4250-bc77-bf29a750ec85"
+          },
+          "type": "Foreach"
+        },
+        "Initialiser_la_variable_2": {
+          "runAfter": {
+            "Initialiser_la_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "cc4d513b-268c-4986-916f-49be7df516ce"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Description",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Initialiser_la_variable_3": {
+          "runAfter": {
+            "Initialiser_la_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "7bac652c-2ea1-4648-8842-aca279c6f8cb"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Departement",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Initialiser_la_variable_4": {
+          "runAfter": {
+            "Initialiser_la_variable_3": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "2a8cdfb3-e6d1-4e3c-b5cf-ced52db4e8aa"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Direction",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Ajouter_une_ligne_à_un_tableau": {
+          "runAfter": {
+            "Appliquer_à_chacun": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "01YMOOSK6KZV5ARE3PNNDZAXNGNRC34ICC": "/TemplateExtractionEB.xlsx",
+            "operationMetadataId": "086c3ad5-2eeb-4ed1-9d17-ba769b2c63a4",
+            "tableId": "{0C5AE385-644A-4B26-9161-B90D3389200D}"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_excelonlinebusiness_1",
+              "operationId": "AddRowV2",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_excelonlinebusiness"
+            },
+            "parameters": {
+              "source": "me",
+              "drive": "b!AD_hyv8wlEmOS0g5xJjRQNiVC0toe-ZMsxyUBOdaVwtwo1Vu0LslQp1xAzdbqNDu",
+              "file": "01YMOOSK6KZV5ARE3PNNDZAXNGNRC34ICC",
+              "table": "{0C5AE385-644A-4B26-9161-B90D3389200D}",
+              "item/Site": "@variables('Entite')",
+              "item/Perimetre": "@variables('Direction')",
+              "item/Departement": "@variables('Departement')",
+              "item/N°EB": "@variables('ID')",
+              "item/Description EB": "@variables('Description')"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        },
+        "Initialiser_la_variable_5": {
+          "runAfter": {
+            "Initialiser_la_variable_4": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "4c8412b5-1755-4e1e-8a8b-16ba46f4d4a0"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ID",
+                "type": "integer"
+              }
+            ]
+          }
+        },
+        "Initialiser_la_variable_6": {
+          "runAfter": {
+            "Initialiser_la_variable_5": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "b0c1e6eb-ff75-40b2-91fe-6ac39c7d7761"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Emetteur",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Initialiser_la_variable_7": {
+          "runAfter": {
+            "Initialiser_la_variable_6": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "42ac113a-bea6-4f1b-ba87-1e07d65a0061"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "DateDeFin",
+                "type": "string",
+                "value": "2023-04-13"
+              }
+            ]
+          }
+        },
+        "Obtenir_les_éléments_2": {
+          "runAfter": {
+            "Obtenir_les_éléments": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a0194fe0-5fa1-4adb-82ff-cdd6e97413f9"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItems",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('EV_CON_ZULAA_DEV (cm237_EV_CON_ZULAA_DEV)')",
+              "table": "dbe6498e-9f55-4071-bf8c-8cfb898f8bb2",
+              "$filter": "Year(DueTime) ge 2023 and month(DueTime) le 4 and day(DueTime) le 14"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

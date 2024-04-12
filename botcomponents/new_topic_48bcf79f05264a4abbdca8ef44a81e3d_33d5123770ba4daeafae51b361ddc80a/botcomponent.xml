@@ -1,0 +1,12 @@
+<botcomponent schemaname="new_topic_48bcf79f05264a4abbdca8ef44a81e3d_33d5123770ba4daeafae51b361ddc80a">
+  <componenttype>0</componenttype>
+  <description>Leçon 1 - Dans cette leçon, vous allez apprendre à créer une rubrique simple avec une branche conditionnelle.
+
+Dans les leçons suivantes, vous apprendrez à ajouter et à définir des variables, des conditions des entités.
+
+Bienvenue dans Power Virtual Agents !</description>
+  <iscustomizable>1</iscustomizable>
+  <name>Leçon 1 - Une rubrique simple</name>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</botcomponent>

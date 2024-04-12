@@ -1,0 +1,461 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_SharePoint_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_List_DeclenheurCompteur (cm237_Ev_Con_List_DeclenheurCompteur)": {
+          "defaultValue": "73f952a4-516d-44f0-b4e6-a7802065151f",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_DeclenheurCompteur",
+            "description": "Table pour générer le compteur des documents"
+          }
+        },
+        "Ev_Con_List_Compteur (cm237_Ev_Con_List_Compteur)": {
+          "defaultValue": "ef34277e-1da4-479e-8bf6-db2649b94cbd",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_Compteur"
+          }
+        },
+        "Ev_Con_List_BonCommande (cm237_Ev_Con_List_BonCommande)": {
+          "defaultValue": "781991c9-06c6-4a31-9d09-592abdf86ce9",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_BonCommande",
+            "description": "Pointe sur la liste BonCommande"
+          }
+        },
+        "Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)": {
+          "defaultValue": "https://teamsite.msc.com/sites/cm004-afr-cio-zulaa-dev",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Site_ZulaaDev",
+            "description": "Site de la dev où sont stockés les templates des documents de bon de commande, expression de besoin, réception et sortie de stock"
+          }
+        }
+      },
+      "triggers": {
+        "When_an_item_is_created": {
+          "recurrence": {
+            "interval": 1,
+            "frequency": "Minute"
+          },
+          "splitOn": "@triggerOutputs()?['body/value']",
+          "metadata": {
+            "operationMetadataId": "adf97bca-98aa-4f5a-9101-3ad6cd3ff77c"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline",
+              "operationId": "GetOnNewItems",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_DeclenheurCompteur (cm237_Ev_Con_List_DeclenheurCompteur)')"
+            },
+            "authentication": "@parameters('$authentication')"
+          },
+          "conditions": [],
+          "runtimeConfiguration": {
+            "concurrency": {
+              "runs": 1
+            }
+          }
+        }
+      },
+      "actions": {
+        "Annee": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "2f053fa0-8c0b-489d-9eb0-bfeb7eb55859"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Annee",
+                "type": "integer",
+                "value": "@int(formatDateTime(utcNow(),'yy'))"
+              }
+            ]
+          }
+        },
+        "Get_items_Compteur": {
+          "runAfter": {
+            "VarIndex": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5d345fff-cb17-484d-9b04-9816312fd555"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline",
+              "operationId": "GetItems",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_Compteur (cm237_Ev_Con_List_Compteur)')",
+              "$filter": "Annee eq '@{variables('Annee')}' and TypeDocument eq '@{triggerOutputs()?['body/TypeDocument']}' and Entite eq '@{triggerOutputs()?['body/ValueEntite']}'",
+              "$orderby": "ID desc",
+              "$top": 1
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Condition": {
+          "actions": {
+            "Create_item": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "f762eda3-7200-433c-af3a-54952392a02a"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline",
+                  "operationId": "PostItem",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                  "table": "@parameters('Ev_Con_List_Compteur (cm237_Ev_Con_List_Compteur)')",
+                  "item/Index": 0,
+                  "item/Annee": "@variables('Annee')",
+                  "item/TypeDocument": "@triggerOutputs()?['body/TypeDocument']",
+                  "item/Entite": "@triggerOutputs()?['body/ValueEntite']"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Set_variable_2": {
+              "runAfter": {
+                "Create_item": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "c93f470c-2582-496a-acfb-5f39bf6f7329"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "IdLigneCompteur",
+                "value": "@outputs('Create_item')?['body/ID']"
+              }
+            },
+            "Set_variable_4": {
+              "runAfter": {
+                "Set_variable_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "6a35f097-290b-413e-a1b0-dd92de89f829"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "Index",
+                "value": "@int(string(outputs('Create_item')?['body/Index']))"
+              }
+            }
+          },
+          "runAfter": {
+            "Get_items_Compteur": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Apply_to_each": {
+                "foreach": "@outputs('Get_items_Compteur')?['body/value']",
+                "actions": {
+                  "Set_variable": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "72f2427d-d729-4384-93c7-2b62cd19ca0b"
+                    },
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "IndexFloat",
+                      "value": "@add(int(string(items('Apply_to_each')?['Index'])),1)"
+                    }
+                  },
+                  "Create_item_2": {
+                    "runAfter": {
+                      "Set_variable": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "04f445fb-a0c3-4f14-be94-f8027ada6a70"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_sharepointonline",
+                        "operationId": "PostItem",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                      },
+                      "parameters": {
+                        "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                        "table": "@parameters('Ev_Con_List_Compteur (cm237_Ev_Con_List_Compteur)')",
+                        "item/Index": "@variables('IndexFloat')",
+                        "item/Annee": "@variables('Annee')",
+                        "item/TypeDocument": "@triggerOutputs()?['body/TypeDocument']",
+                        "item/Entite": "@triggerOutputs()?['body/ValueEntite']"
+                      },
+                      "authentication": "@parameters('$authentication')"
+                    }
+                  },
+                  "Set_variable_3": {
+                    "runAfter": {
+                      "Create_item_2": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "c706c913-c16f-48bc-98f9-0d480e268026"
+                    },
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "IdLigneCompteur",
+                      "value": "@outputs('Create_item_2')?['body/ID']"
+                    }
+                  },
+                  "Set_variable_5": {
+                    "runAfter": {
+                      "Set_variable_3": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "8a681063-7d19-42aa-a271-4ecb63c70b4b"
+                    },
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "Index",
+                      "value": "@int(string(outputs('Create_item_2')?['body/Index']))"
+                    }
+                  }
+                },
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "9827fe1b-a986-4b8b-b0bb-228ea4d1dfe6"
+                },
+                "type": "Foreach"
+              }
+            }
+          },
+          "expression": {
+            "lessOrEquals": [
+              "@length(outputs('Get_items_Compteur')?['body/value'])",
+              0
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "413616e6-3a7c-4457-acfa-66ed7f6c88aa"
+          },
+          "type": "If"
+        },
+        "VarIndexFloat": {
+          "runAfter": {
+            "Annee": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "aa182cab-9af9-4d8b-b41a-2e638acc0f38"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "IndexFloat",
+                "type": "float"
+              }
+            ]
+          }
+        },
+        "VarLigneCompteur": {
+          "runAfter": {
+            "VarIndexFloat": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6848b100-8169-4199-8ebe-aa439d4f0766"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "IdLigneCompteur",
+                "type": "integer"
+              }
+            ]
+          }
+        },
+        "VarIndex": {
+          "runAfter": {
+            "VarLigneCompteur": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "ab504256-0ee6-4c67-837a-233b947103eb"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Index",
+                "type": "integer"
+              }
+            ]
+          }
+        },
+        "Format_number": {
+          "runAfter": {
+            "Condition": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e7e6ffc6-7cfc-4cc7-832b-3599fade0eef"
+          },
+          "type": "Expression",
+          "kind": "FormatNumber",
+          "inputs": {
+            "number": "@variables('Index')",
+            "format": "0000"
+          }
+        },
+        "Substring": {
+          "runAfter": {
+            "Format_number": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "89d07252-4e61-4384-9d68-f97d19139fd4"
+          },
+          "type": "Expression",
+          "kind": "Substring",
+          "inputs": {
+            "text": "@string(outputs('Format_number')?['body'])",
+            "startingPosition": "@sub(length(outputs('Format_number')?['body']),4)",
+            "length": 4
+          }
+        },
+        "Compose": {
+          "runAfter": {
+            "Substring": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "9764ce51-b0aa-4c91-9e77-6415c341b1a0"
+          },
+          "type": "Compose",
+          "inputs": "@concat(triggerOutputs()?['body/ValueEntite'],triggerOutputs()?['body/TypeDocument'],variables('Annee'),outputs('Substring')?['body'])"
+        },
+        "Update_item_Compteur": {
+          "runAfter": {
+            "Compose": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "fd2f1887-3c21-448d-a942-0dc5e91a8787"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline",
+              "operationId": "PatchItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_Compteur (cm237_Ev_Con_List_Compteur)')",
+              "id": "@variables('IdLigneCompteur')",
+              "item/Title": "@outputs('Compose')"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Switch": {
+          "runAfter": {
+            "Update_item_Compteur": [
+              "Succeeded"
+            ]
+          },
+          "cases": {
+            "Case": {
+              "case": "BC",
+              "actions": {
+                "Update_item": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "943b2be8-612c-4b21-96b3-c13b88553105"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_sharepointonline",
+                      "operationId": "PatchItem",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                    },
+                    "parameters": {
+                      "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                      "table": "@parameters('Ev_Con_List_BonCommande (cm237_Ev_Con_List_BonCommande)')",
+                      "id": "@triggerOutputs()?['body/IdDocument']",
+                      "item/Title": "@outputs('Compose')"
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "actions": {}
+          },
+          "expression": "@triggerOutputs()?['body/TypeDocument']",
+          "metadata": {
+            "operationMetadataId": "bbbd55b8-6194-4461-b2c9-0a67d5de2d59"
+          },
+          "type": "Switch"
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

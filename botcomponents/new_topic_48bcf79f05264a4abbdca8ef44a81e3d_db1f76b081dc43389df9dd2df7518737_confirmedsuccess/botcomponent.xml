@@ -1,0 +1,8 @@
+<botcomponent schemaname="new_topic_48bcf79f05264a4abbdca8ef44a81e3d_db1f76b081dc43389df9dd2df7518737_confirmedsuccess">
+  <componenttype>0</componenttype>
+  <description>Intention système - Confirmation de la réussite</description>
+  <iscustomizable>1</iscustomizable>
+  <name>Réussite confirmée</name>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</botcomponent>

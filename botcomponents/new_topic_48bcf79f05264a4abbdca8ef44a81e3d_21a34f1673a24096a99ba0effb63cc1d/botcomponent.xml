@@ -1,0 +1,10 @@
+<botcomponent schemaname="new_topic_48bcf79f05264a4abbdca8ef44a81e3d_21a34f1673a24096a99ba0effb63cc1d">
+  <componenttype>0</componenttype>
+  <description>Leçon 2 - Dans cette leçon, vous allez apprendre à créer une rubrique simple avec une branche conditionnelle et une variable.
+
+Une variable est un nom pour un élément qui sera utilisé ultérieurement dans le flux de la rubrique.  Dans cet exemple, "pva_StoreLocation" est le nom de la variable lorsque vous demandez à l'utilisateur quel est l'emplacement de leur magasin préféré.</description>
+  <iscustomizable>1</iscustomizable>
+  <name>Leçon 2 - Une rubrique simple avec une condition et une variable</name>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</botcomponent>

@@ -1,0 +1,8 @@
+<botcomponent schemaname="new_customtype_de8da38b438648ef9e6583ef64a9773d">
+  <componenttype>3</componenttype>
+  <description>Regroupe la liste des catégories d'articles que peur contenir une expression besoin</description>
+  <iscustomizable>1</iscustomizable>
+  <name>Catégories d'articles</name>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</botcomponent>

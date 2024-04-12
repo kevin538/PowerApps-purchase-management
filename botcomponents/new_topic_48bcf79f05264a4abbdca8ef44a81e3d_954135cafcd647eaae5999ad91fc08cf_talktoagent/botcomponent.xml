@@ -1,0 +1,8 @@
+<botcomponent schemaname="new_topic_48bcf79f05264a4abbdca8ef44a81e3d_954135cafcd647eaae5999ad91fc08cf_talktoagent">
+  <componenttype>0</componenttype>
+  <description>Intention système - Remontée au support</description>
+  <iscustomizable>1</iscustomizable>
+  <name>Remontée au support</name>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</botcomponent>

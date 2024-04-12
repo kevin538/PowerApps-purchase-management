@@ -1,0 +1,378 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_SharePoint_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_List_Utilisateur (cm237_Ev_Con_List_Utilisateur)": {
+          "defaultValue": "60fc3dfa-5efc-479b-8bdc-492f217c6303",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_Utilisateur",
+            "description": "Connexion à la liste sharepoint des utilisateurs"
+          }
+        },
+        "Ev_Con_List_RoleUtilisateurEntite (cm237_Ev_Con_List_RoleUtilisateurEntite)": {
+          "defaultValue": "75498800-933b-422f-b569-66094d49900f",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_RoleUtilisateurEntite",
+            "description": "RoleUtilisateurEntite"
+          }
+        },
+        "Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)": {
+          "defaultValue": "https://teamsite.msc.com/sites/NL001-SITE_ACHAT",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Site_ZulaaDev",
+            "description": "Site de la dev où sont stockés les templates des documents de bon de commande, expression de besoin, réception et sortie de stock"
+          }
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "b3c626cf-aefd-4e36-b1d2-4c02c253223e"
+          },
+          "type": "Request",
+          "kind": "VirtualAgent",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text_1": {
+                  "title": "Username",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text_1"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Return_value(s)_to_Power_Virtual_Agents": {
+          "runAfter": {
+            "Condition": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "78c640ae-7055-480a-9524-8d6fdeb67505"
+          },
+          "type": "Response",
+          "kind": "VirtualAgent",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "droit": "@variables('Droit')",
+              "entiteid": "@{variables('IdEntite')}",
+              "entitevalue": "@variables('EntiteValue')"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "droit": {
+                  "title": "DROIT",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                },
+                "entiteid": {
+                  "title": "EntiteId",
+                  "x-ms-dynamically-added": true,
+                  "type": "number"
+                },
+                "entitevalue": {
+                  "title": "EntiteValue",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "GetitemsUtilisateur": {
+          "runAfter": {
+            "InitializeEntiteValue": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "fa5a6567-b6d7-4af1-9394-247f8d52c76c"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline",
+              "operationId": "GetItems"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_Utilisateur (cm237_Ev_Con_List_Utilisateur)')",
+              "$filter": "Nom eq '@{triggerBody()['text_1']}'",
+              "$top": 1
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "InitializeEmail": {
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "2c7a0c40-a328-4fe3-8773-e8b633148243"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Email",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Apply_to_each": {
+          "foreach": "@outputs('GetitemsUtilisateur')?['body/value']",
+          "actions": {
+            "SetvariableEmail": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "92574053-932a-48b0-b58c-3c792d9d17f6"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "Email",
+                "value": "@items('Apply_to_each')?['Personne/Email']"
+              }
+            }
+          },
+          "runAfter": {
+            "GetitemsUtilisateur": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6e4a4c24-1b88-4f7b-94e1-f5c6d13f65e4"
+          },
+          "type": "Foreach"
+        },
+        "Condition": {
+          "actions": {
+            "SetvariableDroit": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "850102ee-05ae-4b81-9c57-e060e921b343"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "Droit",
+                "value": "OUI"
+              }
+            },
+            "Apply_to_each_2": {
+              "foreach": "@outputs('GetitemsDroitprivilege')?['body/value']",
+              "actions": {
+                "SetvariableIdEntite": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "e928e18e-dc2c-4e29-8cb3-330c95ce3509"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "IdEntite",
+                    "value": "@items('Apply_to_each_2')?['EntiteId/Id']"
+                  }
+                },
+                "SetvariableEntiteValue": {
+                  "runAfter": {
+                    "SetvariableIdEntite": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "05f66a27-058b-418e-befd-249bb470412f"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "EntiteValue",
+                    "value": "@items('Apply_to_each_2')?['EntiteId/Value']"
+                  }
+                }
+              },
+              "runAfter": {
+                "SetvariableDroit": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "8df5aafa-97ba-4a05-afdf-74e876300bd6"
+              },
+              "type": "Foreach"
+            }
+          },
+          "runAfter": {
+            "GetitemsDroitprivilege": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Set_variable": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "76b3c983-ce55-496f-b4ef-6cff67d37830"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "Droit",
+                  "value": "NON"
+                }
+              }
+            }
+          },
+          "expression": {
+            "greaterOrEquals": [
+              "@length(outputs('GetitemsDroitprivilege')?['body/value'])",
+              1
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "984be6fb-b898-4380-b1d7-6949e654765a"
+          },
+          "type": "If"
+        },
+        "InitializeDroit": {
+          "runAfter": {
+            "InitializeEmail": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "99ccdf3c-cc0b-4005-bb28-523d3ef3e6fb"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Droit",
+                "type": "string",
+                "value": "NON"
+              }
+            ]
+          }
+        },
+        "InitializeEntiteId": {
+          "runAfter": {
+            "InitializeDroit": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a7e79176-5837-48e5-b1ca-ddd527c20701"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "IdEntite",
+                "type": "integer",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "GetitemsDroitprivilege": {
+          "runAfter": {
+            "Apply_to_each": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "df1553fa-2266-4700-9fa4-c66efdb049c5"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline",
+              "operationId": "GetItems"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_RoleUtilisateurEntite (cm237_Ev_Con_List_RoleUtilisateurEntite)')",
+              "$filter": "Personne/EMail eq '@{variables('Email')}' and RoleId/Id eq '@{variables('AcheteurMetier')}'",
+              "$top": 1
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "InitializeEntiteValue": {
+          "runAfter": {
+            "InitializeEntiteId": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "c06d5943-ec4d-4022-a0e6-0dca6acde27d"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "EntiteValue",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Initialize_variable": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "608a8193-2bdd-4451-ae57-ab58811e7ed1"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "AcheteurMetier",
+                "type": "integer",
+                "value": 23
+              }
+            ]
+          }
+        }
+      },
+      "outputs": {}
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

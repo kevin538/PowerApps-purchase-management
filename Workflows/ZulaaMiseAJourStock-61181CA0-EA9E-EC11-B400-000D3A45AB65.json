@@ -1,0 +1,1248 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_SharePoint_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      },
+      "shared_wordonlinebusiness_2": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_Word_Online"
+        },
+        "api": {
+          "name": "shared_wordonlinebusiness"
+        }
+      },
+      "shared_office365_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_Outlook_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_office365"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_List_Article (cm237_Ev_Con_List_Article)": {
+          "defaultValue": "552b7a3d-ccc5-4968-96f3-2c5fc36fbeed",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_Article",
+            "description": "Connexion à la liste sharepoint des articles"
+          }
+        },
+        "Ev_Con_List_MouvementStockEntete (cm237_Ev_Con_List_MouvementStockEntete)": {
+          "defaultValue": "77445d12-c98c-4a04-bbd2-e1e11dd1a63f",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_MouvementStockEntete",
+            "description": "Connexion à la liste Sharepoint  des mouvementsStockEntete"
+          }
+        },
+        "Ev_Con_List_MouvementStockArticle (cm237_Ev_Con_List_MouvementStockArticle)": {
+          "defaultValue": "1767e2a0-48fc-4381-81ba-6a71e4014f11",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_MouvementStockArticle"
+          }
+        },
+        "Ev_Con_List_ActifPersonnelDeparmentActif (cm237_Ev_Con_List_ActifPersonnelDeparmentActif)": {
+          "defaultValue": "7f7c2363-4987-41ee-8483-68d0e2041fcf",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_ActifPersonnelDeparmentActif"
+          }
+        },
+        "Ev_Con_List_Actif (cm237_Ev_Con_List_Actif)": {
+          "defaultValue": "83fb9eb2-446f-4495-96aa-250ed144a848",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_Actif",
+            "description": "Connexion à la liste sharepoint des actifs"
+          }
+        },
+        "Ev_Con_List_MagasinArticle (cm237_Ev_Con_List_MagasinArticle)": {
+          "defaultValue": "f7e1760d-9cd4-40fc-bc9d-70bad0bdc08b",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_MagasinArticle"
+          }
+        },
+        "Ev_Con_List_MouvementStockActif (cm237_Ev_Con_List_MouvementStockActif)": {
+          "defaultValue": "1c743d35-bee3-4376-a937-6908861f997a",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_MouvementStockActif"
+          }
+        },
+        "Ev_Con_List_ZulaaMiseAJourStock (cm237_Ev_Con_List_ZulaaMiseAJourStock)": {
+          "defaultValue": "50dfdc5b-8f35-448f-8cb5-b14ff16e51f0",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_ZulaaMiseAJourStock"
+          }
+        },
+        "Hlink_SITE (cm237_Hlink_SITE)": {
+          "defaultValue": "https://teamsite.msc.com/sites/cm004-afr-cio-zulaa-dev",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Hlink_SITE"
+          }
+        },
+        "Ev_Con_SharepointFolder (cm237_Ev_Con_SharepointFolder)": {
+          "defaultValue": "Shared Documents",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_SharepointFolder",
+            "description": "Dossier Racine (Documents partages ou Shared Documents) d'un site Sharepoint"
+          }
+        },
+        "Ev_Folder_WordDocumentsPrd (cm237_Ev_Folder_WordDocumentsPrd)": {
+          "defaultValue": "b!6il7iNrwPkeAZSj9H9rwyazn-jhiKtFMi0sIUrDzB6JOL6oEzXHaR6Vfi6CTHCt9",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Folder_WordDocumentsPrd",
+            "description": "Bibliothèque de documents à renseigner pour le site en cours dans le connecteur Word"
+          }
+        },
+        "Ev_Folder_WordDocumentsDev (cm237_Ev_Folder_WordDocumentsDev)": {
+          "defaultValue": "b!k96lwjFNDUaziZSPUOuxJ1i-bfgg3rVNuHAJu2j6vnEmPfALr06mRrmsPmN5a42U",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Folder_WordDocumentsDev",
+            "description": "Biblithèque de documents à renseigner pour les templates de documents"
+          }
+        },
+        "Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)": {
+          "defaultValue": "https://teamsite.msc.com/sites/cm004-afr-cio-zulaa-dev",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Site_ZulaaDev",
+            "description": "Site de la dev où sont stockés les templates des documents de bon de commande, expression de besoin, réception et sortie de stock"
+          }
+        },
+        "Ev_Con_List_DemandeSortieStock (cm237_Ev_Con_List_DemandeSortieStock)": {
+          "defaultValue": "bb587b57-a2ff-49f5-90ea-9d328222f3bf",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_DemandeSortieStock"
+          }
+        },
+        "EV_CON_ZULAA_DEV (cm237_EV_CON_ZULAA_DEV)": {
+          "defaultValue": "https://teamsite.msc.com/sites/cm004-afr-cio-zulaa-dev",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_EV_CON_ZULAA_DEV"
+          }
+        }
+      },
+      "triggers": {
+        "When_an_item_is_created": {
+          "recurrence": {
+            "interval": 1,
+            "frequency": "Minute"
+          },
+          "splitOn": "@triggerOutputs()?['body/value']",
+          "metadata": {
+            "operationMetadataId": "a4d3fa45-c1b6-4e9f-a663-8638f0269a51"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetOnNewItems",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_ZulaaMiseAJourStock (cm237_Ev_Con_List_ZulaaMiseAJourStock)')"
+            },
+            "authentication": "@parameters('$authentication')"
+          },
+          "runtimeConfiguration": {
+            "concurrency": {
+              "runs": 1
+            }
+          }
+        }
+      },
+      "actions": {
+        "Initialize_variable": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "97475e6d-f5a6-41a9-b4a4-e8a34960d731"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "MouvementEntreeStock",
+                "type": "integer"
+              }
+            ]
+          }
+        },
+        "Get_items_MouvementStockArticle": {
+          "runAfter": {
+            "Get_item_Demande_de_sortie": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "0b6ebd53-4125-48d0-8809-471fddf2f5b3"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItems",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_MouvementStockArticle (cm237_Ev_Con_List_MouvementStockArticle)')",
+              "$filter": "MouvementStockId/Id eq '@{outputs('Get_item_MouvementStockEntete')?['body/ID']}'"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Get_items_MouvementStockActif": {
+          "runAfter": {
+            "Get_items_MouvementStockArticle": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "b67e955c-decd-44f9-b0da-8760f8fb17fa"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItems",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_MouvementStockActif (cm237_Ev_Con_List_MouvementStockActif)')",
+              "$filter": "MouvementStockId/Id eq '@{outputs('Get_item_MouvementStockEntete')?['body/ID']}'"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Apply_to_each": {
+          "foreach": "@outputs('Get_items_MouvementStockArticle')?['body/value']",
+          "actions": {
+            "Set_variable_3": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "b1c9c486-8c80-440f-b048-ca45e0b1f5d4"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "QuantiteAjoutee",
+                "value": "@items('Apply_to_each')?['Qte']"
+              }
+            },
+            "Get_items_MagasinArticle": {
+              "runAfter": {
+                "Set_variable_3": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "3f623eb8-ad39-4751-a99b-c18ed978ec29"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_1",
+                  "operationId": "GetItems",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                  "table": "@parameters('Ev_Con_List_MagasinArticle (cm237_Ev_Con_List_MagasinArticle)')",
+                  "$filter": "MagasinId/Id eq '@{outputs('Get_item_MouvementStockEntete')?['body/MagasinId/Id']}' and ArticleId/Id eq '@{items('Apply_to_each')?['ArticleId/Id']}'"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Condition": {
+              "actions": {
+                "Create_item": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "afb2a118-d9ed-45ae-b7a4-568c1bcda602"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_sharepointonline_1",
+                      "operationId": "PostItem",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                    },
+                    "parameters": {
+                      "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                      "table": "@parameters('Ev_Con_List_MagasinArticle (cm237_Ev_Con_List_MagasinArticle)')",
+                      "item/MagasinId/Id": "@outputs('Get_item_MouvementStockEntete')?['body/MagasinId/Id']",
+                      "item/ArticleId/Id": "@items('Apply_to_each')?['ArticleId/Id']",
+                      "item/QuantiteStock": 0
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  }
+                }
+              },
+              "runAfter": {
+                "Get_items_MagasinArticle": [
+                  "Succeeded"
+                ]
+              },
+              "else": {
+                "actions": {
+                  "Apply_to_each_2": {
+                    "foreach": "@outputs('Get_items_MagasinArticle')?['body/value']",
+                    "actions": {
+                      "Set_variable": {
+                        "runAfter": {},
+                        "metadata": {
+                          "operationMetadataId": "98da6472-e0cf-4794-8f2a-91e9a68ae483"
+                        },
+                        "type": "SetVariable",
+                        "inputs": {
+                          "name": "QuantiteDansleMagasin",
+                          "value": "@items('Apply_to_each_2')?['QuantiteStock']"
+                        }
+                      },
+                      "Set_variable_2": {
+                        "runAfter": {
+                          "Set_variable": [
+                            "Succeeded"
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "ad597d1c-4e3a-464b-a02d-666196c2d991"
+                        },
+                        "type": "SetVariable",
+                        "inputs": {
+                          "name": "IDMagasinArticle",
+                          "value": "@items('Apply_to_each_2')?['ID']"
+                        }
+                      }
+                    },
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "b4a74cd6-7dee-499a-8f4a-81dd4af5be0d"
+                    },
+                    "type": "Foreach"
+                  },
+                  "Update_item": {
+                    "runAfter": {
+                      "Apply_to_each_2": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "1a7b35e8-14de-491c-963e-78040d2eef1f"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_sharepointonline_1",
+                        "operationId": "PatchItem",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                      },
+                      "parameters": {
+                        "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                        "table": "@parameters('Ev_Con_List_MagasinArticle (cm237_Ev_Con_List_MagasinArticle)')",
+                        "id": "@variables('IDMagasinArticle')",
+                        "item/QuantiteStock": "@sub(variables('QuantiteDansleMagasin'),variables('QuantiteAjoutee'))"
+                      },
+                      "authentication": "@parameters('$authentication')"
+                    }
+                  }
+                }
+              },
+              "expression": {
+                "equals": [
+                  "@length(outputs('Get_items_MagasinArticle')?['body/value'])",
+                  0
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "6eeead89-d920-4792-b02a-a32c49e16387"
+              },
+              "type": "If"
+            },
+            "Set_variable_6": {
+              "runAfter": {
+                "Condition": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "9d14d1bf-2652-495c-8ff7-125de2b43702"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "Increment",
+                "value": "@add(variables('increment2'),1)"
+              }
+            },
+            "Set_variable_7": {
+              "runAfter": {
+                "Set_variable_6": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "e8ffe0d8-e543-4faf-b1a8-9e72fb9435ae"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "increment2",
+                "value": "@variables('Increment')"
+              }
+            },
+            "Get_item": {
+              "runAfter": {
+                "Set_variable_7": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "795a7e80-2636-44ce-a9b1-2318798cb642"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_1",
+                  "operationId": "GetItem",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                  "table": "@parameters('Ev_Con_List_Article (cm237_Ev_Con_List_Article)')",
+                  "id": "@items('Apply_to_each')?['ArticleId/Id']"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Append_to_array_variable_2": {
+              "runAfter": {
+                "Get_item": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "a2180e7f-694f-47d2-b859-c2c1f82d45cb"
+              },
+              "type": "AppendToArrayVariable",
+              "inputs": {
+                "name": "LigneActif",
+                "value": {
+                  "numero": "@variables('Increment')",
+                  "ref": "",
+                  "designation": "@items('Apply_to_each')?['ArticleId/Value']",
+                  "qte": "@items('Apply_to_each')?['Qte']",
+                  "modele": "@outputs('Get_item')?['body/Modele']",
+                  "casier": "",
+                  "affectera": "@outputs('Get_item_Demande_de_sortie')?['body/Demandeur/DisplayName']"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Get_items_MouvementStockActif": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "3d027247-055a-4715-ae94-311907d4c1fd"
+          },
+          "type": "Foreach"
+        },
+        "QuantiteDansleMagasin": {
+          "runAfter": {
+            "QuantiteAjoutee": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "9bf89055-0c8a-462e-bcd4-25005564629e"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "QuantiteDansleMagasin",
+                "type": "float"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_2": {
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "47e23c1c-4515-4048-9ef3-eb7e8e089d5b"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "IDMagasinArticle",
+                "type": "integer"
+              }
+            ]
+          }
+        },
+        "QuantiteAjoutee": {
+          "runAfter": {
+            "Initialize_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e92dea41-c6bc-4568-9e2c-80b658bde0d2"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "QuantiteAjoutee",
+                "type": "float"
+              }
+            ]
+          }
+        },
+        "Get_item_MouvementStockEntete": {
+          "runAfter": {
+            "Compose": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "760aa4a6-22ee-44ee-be0f-a59ec1af7f5a"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_MouvementStockEntete (cm237_Ev_Con_List_MouvementStockEntete)')",
+              "id": "@outputs('Compose')"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Apply_to_each_3": {
+          "foreach": "@outputs('Get_items_MouvementStockActif')?['body/value']",
+          "actions": {
+            "Get_item_Actif": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "587b0229-4b71-4230-b1e9-87748d28f72a"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_1",
+                  "operationId": "GetItem",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                  "table": "@parameters('Ev_Con_List_Actif (cm237_Ev_Con_List_Actif)')",
+                  "id": "@items('Apply_to_each_3')?['ActifId/Id']"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Update_item_2": {
+              "runAfter": {
+                "Create_item_Attribution": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "6ae35dd1-35ef-4b01-bf49-8ecd0172352f"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_1",
+                  "operationId": "PatchItem",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                  "table": "@parameters('Ev_Con_List_Actif (cm237_Ev_Con_List_Actif)')",
+                  "id": "@items('Apply_to_each_3')?['ActifId/Id']",
+                  "item/Title": "@outputs('Get_item_Actif')?['body/Title']",
+                  "item/Statut/Value": "Attribué",
+                  "item/MagasinId/Id": -1,
+                  "item/Utilisateur/Claims": "@items('Apply_to_each_3')?['PersonneAttribution/Claims']",
+                  "item/UtilisateurText": "@items('Apply_to_each_3')?['PersonneAttribution/DisplayName']"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Create_item_Attribution": {
+              "runAfter": {
+                "Get_item_Article": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "26169fcf-9574-4365-8363-959f2ad5acad"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_1",
+                  "operationId": "PostItem",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                  "table": "@parameters('Ev_Con_List_ActifPersonnelDeparmentActif (cm237_Ev_Con_List_ActifPersonnelDeparmentActif)')",
+                  "item/Personnel/Claims": "@items('Apply_to_each_3')?['PersonneAttribution/Claims']",
+                  "item/DateAttribution": "@utcNow()",
+                  "item/ActifId/Id": "@outputs('Get_item_Actif')?['body/ID']",
+                  "item/Actif": true,
+                  "item/MouvementStockEnteteId/Id": "@outputs('Get_item_MouvementStockEntete')?['body/ID']"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Append_to_array_variable": {
+              "runAfter": {
+                "Set_variable_5": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "b96d1a5c-8394-47f6-9c70-9f9ef1effba9"
+              },
+              "type": "AppendToArrayVariable",
+              "inputs": {
+                "name": "LigneActif",
+                "value": {
+                  "numero": "@variables('Increment')",
+                  "ref": "@outputs('Get_item_Actif')?['body/Title']",
+                  "designation": "@outputs('Get_item_Actif')?['body/ArticleId/Value']",
+                  "qte": 1,
+                  "modele": "@outputs('Get_item_Article')?['body/Modele']",
+                  "casier": "@outputs('Get_item_Actif')?['body/NumeroSerie']",
+                  "affectera": "@items('Apply_to_each_3')?['PersonneAttribution/DisplayName']"
+                }
+              }
+            },
+            "Get_item_Article": {
+              "runAfter": {
+                "Get_item_Actif": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "67565e64-87de-47b8-bad8-e7e6dcf5965c"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_1",
+                  "operationId": "GetItem",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                  "table": "@parameters('Ev_Con_List_Article (cm237_Ev_Con_List_Article)')",
+                  "id": "@outputs('Get_item_Actif')?['body/ArticleId/Id']"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Set_variable_4": {
+              "runAfter": {
+                "Update_item_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "5aac18f1-1c7c-4635-990d-ef95b62d9244"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "Increment",
+                "value": "@add(variables('increment2'),1)"
+              }
+            },
+            "Set_variable_5": {
+              "runAfter": {
+                "Set_variable_4": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "41351477-2a03-48a5-a713-357d13ba17aa"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "increment2",
+                "value": "@variables('Increment')"
+              }
+            }
+          },
+          "runAfter": {
+            "Apply_to_each": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "b8fcf80d-d957-4cb7-86d6-54f86c111fcf"
+          },
+          "type": "Foreach"
+        },
+        "Initialize_variable_3": {
+          "runAfter": {
+            "QuantiteDansleMagasin": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "32dbc231-89ad-49ac-8260-3c8d69c026fb"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "QuantiteDejaStockee",
+                "type": "float"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_4": {
+          "runAfter": {
+            "Initialize_variable_3": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5ca3404d-6900-4e29-9c45-5dc594589978"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "LigneActif",
+                "type": "array"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_5": {
+          "runAfter": {
+            "Initialize_variable_4": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "4174da86-ab6a-4fbe-a80e-122f6163605d"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Increment",
+                "type": "integer",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "Condition_2": {
+          "actions": {},
+          "runAfter": {
+            "Apply_to_each_3": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Get_file_content_using_path": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "6962651c-feda-4dcf-9712-377b06c53d4b"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_sharepointonline_1",
+                    "operationId": "GetFileContentByPath",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                  },
+                  "parameters": {
+                    "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                    "path": "/@{parameters('Ev_Con_SharepointFolder (cm237_Ev_Con_SharepointFolder)')}/logo/@{outputs('Get_item_MouvementStockEntete')?['body/EntiteId/Value']}.png",
+                    "inferContentType": true
+                  },
+                  "authentication": "@parameters('$authentication')"
+                }
+              },
+              "Condition_3": {
+                "actions": {
+                  "Remplir_un_modèle_Microsoft_Word": {
+                    "runAfter": {},
+                    "metadata": {
+                      "01A5PEFY64NNDFR5ER6BCI2YGWDUSCOALH": "/templateTest/Template PV Sortie CAMRAIL.docx",
+                      "operationMetadataId": "b3adfa95-3318-4ebc-9289-8ac556d5ade3",
+                      "01ZC5VHPYHM45PGV26VVBLJV5EHBN5QZBG": "/templateTest/Template PV Sortie CAMRAIL.docx"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_wordonlinebusiness_2",
+                        "operationId": "CreateFileItem",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness"
+                      },
+                      "parameters": {
+                        "source": "@parameters('EV_CON_ZULAA_DEV (cm237_EV_CON_ZULAA_DEV)')",
+                        "drive": "@parameters('Ev_Folder_WordDocumentsDev (cm237_Ev_Folder_WordDocumentsDev)')",
+                        "file": "/templateTest/Template PV Sortie CAMRAIL.docx",
+                        "dynamicFileSchema/824010986": "@outputs('Get_item_MouvementStockEntete')?['body/Created']",
+                        "dynamicFileSchema/1075936123": "@outputs('Get_item_MouvementStockEntete')?['body/Title']",
+                        "dynamicFileSchema/1801344954": "@body('Get_file_content_using_path')",
+                        "dynamicFileSchema/-2018300243": "@outputs('Get_item_MouvementStockEntete')?['body/DemandeSotieStockId/Value']",
+                        "dynamicFileSchema/-1673250955": "@outputs('Get_item_MouvementStockEntete')?['body/MagasinId/Value']",
+                        "dynamicFileSchema/-1547360136": "@variables('LigneActif')",
+                        "dynamicFileSchema/-1907760575": "@formatDateTime(utcNow(),'dd/MM/yyyy HH:mm')"
+                      },
+                      "authentication": "@parameters('$authentication')"
+                    }
+                  },
+                  "Créer_un_fichier": {
+                    "runAfter": {
+                      "Remplir_un_modèle_Microsoft_Word": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "35e2d3a3-2a81-4bca-8261-e11aab4dab29"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_sharepointonline_1",
+                        "operationId": "CreateFile",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                      },
+                      "parameters": {
+                        "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                        "folderPath": "/@{parameters('Ev_Con_SharepointFolder (cm237_Ev_Con_SharepointFolder)')}/Doc/@{outputs('Get_item_MouvementStockEntete')?['body/EntiteId/Value']}/BordereauSortie",
+                        "name": "@{outputs('Get_item_MouvementStockEntete')?['body/Title']}.docx",
+                        "body": "@body('Remplir_un_modèle_Microsoft_Word')"
+                      },
+                      "authentication": "@parameters('$authentication')"
+                    },
+                    "runtimeConfiguration": {
+                      "contentTransfer": {
+                        "transferMode": "Chunked"
+                      }
+                    }
+                  },
+                  "Convertir_le_document_Word_en_PDF": {
+                    "runAfter": {
+                      "Créer_un_fichier": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "c2d7c227-b62f-45a7-909a-244a02491d1b"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_wordonlinebusiness_2",
+                        "operationId": "GetFilePDF",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness"
+                      },
+                      "parameters": {
+                        "source": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                        "drive": "@parameters('Ev_Folder_WordDocumentsPrd (cm237_Ev_Folder_WordDocumentsPrd)')",
+                        "file": "/Doc/@{outputs('Get_item_MouvementStockEntete')?['body/EntiteId/Value']}/BordereauSortie/@{outputs('Créer_un_fichier')?['body/Name']}"
+                      },
+                      "authentication": "@parameters('$authentication')"
+                    }
+                  },
+                  "Créer_un_fichier_2": {
+                    "runAfter": {
+                      "Convertir_le_document_Word_en_PDF": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "3e576380-e26c-4612-b874-c893dd5e69a5"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_sharepointonline_1",
+                        "operationId": "CreateFile",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                      },
+                      "parameters": {
+                        "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                        "folderPath": "/@{parameters('Ev_Con_SharepointFolder (cm237_Ev_Con_SharepointFolder)')}/Doc/@{outputs('Get_item_MouvementStockEntete')?['body/EntiteId/Value']}/BordereauSortie",
+                        "name": "@{outputs('Get_item_MouvementStockEntete')?['body/Title']}.pdf",
+                        "body": "@body('Convertir_le_document_Word_en_PDF')"
+                      },
+                      "authentication": "@parameters('$authentication')"
+                    },
+                    "runtimeConfiguration": {
+                      "contentTransfer": {
+                        "transferMode": "Chunked"
+                      }
+                    }
+                  },
+                  "Mettre_à_jour_l'élément": {
+                    "runAfter": {
+                      "Créer_un_fichier_2": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "0fa75425-99b6-42f1-b86a-2cf1d18544cb"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_sharepointonline_1",
+                        "operationId": "PatchItem",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                      },
+                      "parameters": {
+                        "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                        "table": "@parameters('Ev_Con_List_MouvementStockEntete (cm237_Ev_Con_List_MouvementStockEntete)')",
+                        "id": "@outputs('Get_item_MouvementStockEntete')?['body/ID']",
+                        "item/lien": "@{parameters('Hlink_SITE (cm237_Hlink_SITE)')}@{outputs('Créer_un_fichier_2')?['body/Path']}"
+                      },
+                      "authentication": "@parameters('$authentication')"
+                    }
+                  }
+                },
+                "runAfter": {
+                  "Get_file_content_using_path": [
+                    "Succeeded"
+                  ]
+                },
+                "else": {
+                  "actions": {
+                    "Populate_a_Microsoft_Word_template": {
+                      "runAfter": {},
+                      "metadata": {
+                        "01VRROURLZXWS4WJS6RNEZVQNMYSW4LKUP": "/template/Template PV Sortie.docx",
+                        "operationMetadataId": "7d3fed49-e038-499f-ad98-a120f1c9b140",
+                        "01A5PEFY3DSLO2SBT3QJA3KDK6P7P5VD4D": "/template/Template PV Sortie.docx",
+                        "01AEFNLSX3PS7SI7CKORGJTME23FVYZE4G": "/template/Template PV Sortie.docx",
+                        "01LIZSE6MRIHKAAFJ32NFZCC7OZKGNTBFG": "/template/Template PV Sortie.docx",
+                        "01VRROUROMOPWQQILIP5CLL7ACEWO7VWEG": "/template/Template PV Sortie.docx",
+                        "01ZC5VHP3FZCTTIAEZ2NAI6MEM26SC2L6Y": "/templateTest/Template PV Sortie.docx",
+                        "01ITEZTYJ3ZEBZ7ER6K5FJTGXBHZALKYW4": "/templateTest/Template PV Sortie.docx"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_wordonlinebusiness_2",
+                          "operationId": "CreateFileItem",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness"
+                        },
+                        "parameters": {
+                          "source": "@parameters('EV_CON_ZULAA_DEV (cm237_EV_CON_ZULAA_DEV)')",
+                          "drive": "b!k96lwjFNDUaziZSPUOuxJ1i-bfgg3rVNuHAJu2j6vnEmPfALr06mRrmsPmN5a42U",
+                          "file": "01ITEZTYJ3ZEBZ7ER6K5FJTGXBHZALKYW4",
+                          "dynamicFileSchema/824010986": "@outputs('Get_item_MouvementStockEntete')?['body/Created']",
+                          "dynamicFileSchema/1075936123": "@outputs('Get_item_MouvementStockEntete')?['body/Title']",
+                          "dynamicFileSchema/1801344954": "@body('Get_file_content_using_path')",
+                          "dynamicFileSchema/-2018300243": "@outputs('Get_item_MouvementStockEntete')?['body/DemandeSotieStockId/Value']",
+                          "dynamicFileSchema/-1673250955": "@outputs('Get_item_MouvementStockEntete')?['body/MagasinId/Value']",
+                          "dynamicFileSchema/-1547360136": "@variables('LigneActif')",
+                          "dynamicFileSchema/-1907760575": "@formatDateTime(utcNow(),'dd/MM/yyyy HH:mm')"
+                        },
+                        "authentication": "@parameters('$authentication')"
+                      }
+                    },
+                    "Create_file": {
+                      "runAfter": {
+                        "Populate_a_Microsoft_Word_template": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "ee8ed2b3-f727-45ed-ae15-0d10e0d81a66"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_sharepointonline_1",
+                          "operationId": "CreateFile",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                        },
+                        "parameters": {
+                          "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                          "folderPath": "/@{parameters('Ev_Con_SharepointFolder (cm237_Ev_Con_SharepointFolder)')}/Doc/@{outputs('Get_item_MouvementStockEntete')?['body/EntiteId/Value']}/BordereauSortie",
+                          "name": "@{outputs('Get_item_MouvementStockEntete')?['body/Title']}.docx",
+                          "body": "@body('Populate_a_Microsoft_Word_template')"
+                        },
+                        "authentication": "@parameters('$authentication')"
+                      },
+                      "runtimeConfiguration": {
+                        "contentTransfer": {
+                          "transferMode": "Chunked"
+                        }
+                      }
+                    },
+                    "Convert_Word_Document_to_PDF": {
+                      "runAfter": {
+                        "Create_file": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "79d80104-36ad-4266-ae7f-85f67c9a9579"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_wordonlinebusiness_2",
+                          "operationId": "GetFilePDF",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness"
+                        },
+                        "parameters": {
+                          "source": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                          "drive": "b!k96lwjFNDUaziZSPUOuxJ1i-bfgg3rVNuHAJu2j6vnEmPfALr06mRrmsPmN5a42U",
+                          "file": "/Doc/@{outputs('Get_item_MouvementStockEntete')?['body/EntiteId/Value']}/BordereauSortie/@{outputs('Create_file')?['body/Name']}"
+                        },
+                        "authentication": "@parameters('$authentication')"
+                      }
+                    },
+                    "Create_file_2": {
+                      "runAfter": {
+                        "Convert_Word_Document_to_PDF": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "0cf3ae8c-cb4f-4c50-9626-e1ecae7f8850"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_sharepointonline_1",
+                          "operationId": "CreateFile",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                        },
+                        "parameters": {
+                          "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                          "folderPath": "/@{parameters('Ev_Con_SharepointFolder (cm237_Ev_Con_SharepointFolder)')}/Doc/@{outputs('Get_item_MouvementStockEntete')?['body/EntiteId/Value']}/BordereauSortie",
+                          "name": "@{outputs('Get_item_MouvementStockEntete')?['body/Title']}.pdf",
+                          "body": "@body('Convert_Word_Document_to_PDF')"
+                        },
+                        "authentication": "@parameters('$authentication')"
+                      },
+                      "runtimeConfiguration": {
+                        "contentTransfer": {
+                          "transferMode": "Chunked"
+                        }
+                      }
+                    },
+                    "Update_item_3": {
+                      "runAfter": {
+                        "Create_file_2": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "8bcc5708-a5d9-4579-91f5-cc8e5c55bd81"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_sharepointonline_1",
+                          "operationId": "PatchItem",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                        },
+                        "parameters": {
+                          "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                          "table": "@parameters('Ev_Con_List_MouvementStockEntete (cm237_Ev_Con_List_MouvementStockEntete)')",
+                          "id": "@outputs('Get_item_MouvementStockEntete')?['body/ID']",
+                          "item/lien": "@{parameters('Hlink_SITE (cm237_Hlink_SITE)')}@{outputs('Create_file_2')?['body/Path']}"
+                        },
+                        "authentication": "@parameters('$authentication')"
+                      }
+                    },
+                    "Condition_4": {
+                      "actions": {
+                        "Envoyer_un_e-mail_(V2)": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "c8a32eb6-7854-4bd1-a76c-95cdc7bfb6fa"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_office365_1",
+                              "operationId": "SendEmailV2",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+                            },
+                            "parameters": {
+                              "emailMessage/To": "@outputs('Get_item_Demande_de_sortie')?['body/Author/Email']",
+                              "emailMessage/Subject": "Status de la demande de sortie",
+                              "emailMessage/Body": "<p>Votre Demande de sortie : @{outputs('Update_item_3')?['body/DemandeSotieStockId/Value']} été validée pour utilisateur @{outputs('Get_item_Demande_de_sortie')?['body/Demandeur/DisplayName']}.<br>\nLe code de la sortie asociée :&nbsp;@{outputs('Get_item_MouvementStockEntete')?['body/Title']} pour effectué la sortie.<br>\nCORDIALMENT ZULAA</p>",
+                              "emailMessage/Importance": "Normal"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        }
+                      },
+                      "runAfter": {
+                        "Update_item_3": [
+                          "Succeeded"
+                        ]
+                      },
+                      "expression": {
+                        "equals": [
+                          "@outputs('Get_item_Demande_de_sortie')?['body/EntiteId/Value']",
+                          "BTLCM"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "85cbea55-93b5-410d-804c-ff5699b3dd3f"
+                      },
+                      "type": "If"
+                    }
+                  }
+                },
+                "expression": {
+                  "equals": [
+                    "@outputs('Get_item_Demande_de_sortie')?['body/EntiteId/Value']",
+                    "CAMRAIL"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "f250b143-3be9-4786-85f8-1ac7e6b7175d"
+                },
+                "type": "If"
+              }
+            }
+          },
+          "expression": {
+            "and": [
+              {
+                "lessOrEquals": [
+                  "@length(outputs('Get_items_MouvementStockActif')?['body/value'])",
+                  0
+                ]
+              },
+              {
+                "lessOrEquals": [
+                  "@length(outputs('Get_items_MouvementStockArticle')?['body/value'])",
+                  0
+                ]
+              }
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "08c3a52e-9ef2-4f1e-b61a-d466b8a33273"
+          },
+          "type": "If"
+        },
+        "Initialize_variable_6": {
+          "runAfter": {
+            "Initialize_variable_5": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "b678c439-95ab-4e8b-bdc8-7b141f29193e"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "increment2",
+                "type": "integer",
+                "value": "@variables('Increment')"
+              }
+            ]
+          }
+        },
+        "Get_item_Demande_de_sortie": {
+          "runAfter": {
+            "Get_item_MouvementStockEntete": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "12366bd1-287c-41f3-a4a2-a20bb391cf05"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_DemandeSortieStock (cm237_Ev_Con_List_DemandeSortieStock)')",
+              "id": "@outputs('Get_item_MouvementStockEntete')?['body/DemandeSotieStockId/Id']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Compose": {
+          "runAfter": {
+            "Initialize_variable_6": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "57306322-b37a-4e77-b240-77b3e9b91a16"
+          },
+          "type": "Compose",
+          "inputs": "@triggerOutputs()?['body/idMouvement']"
+        }
+      },
+      "outputs": {}
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

@@ -1,0 +1,137 @@
+{
+  "namedEntities": [
+    {
+      "id": "2487726a-80f6-4be5-a1ae-1a90348d93d7",
+      "displayName": "Contrôle Opérationnel",
+      "createdTime": "2021-10-25T18:50:58.4446361Z",
+      "updatedTime": "2022-03-29T08:53:41.357782Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    },
+    {
+      "id": "768b09db-7b63-4007-88a4-93573e90f77a",
+      "displayName": "Douane",
+      "createdTime": "2021-10-25T18:50:58.4446361Z",
+      "updatedTime": "2022-03-29T08:53:41.357782Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    },
+    {
+      "synonyms": [
+        "Cargo",
+        "Hinterland"
+      ],
+      "id": "cdf68395-35ea-41af-a712-42acb855fc21",
+      "displayName": "Transit Hinterland General Cargo",
+      "createdTime": "2021-10-25T18:50:58.4446361Z",
+      "updatedTime": "2022-03-29T08:53:41.357782Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    },
+    {
+      "synonyms": [
+        "Kribi"
+      ],
+      "id": "b33b0c1f-2298-4906-bd0a-7c1e68d1d621",
+      "displayName": "Agence Kribi",
+      "createdTime": "2021-10-25T18:50:58.4446361Z",
+      "updatedTime": "2022-03-29T08:53:41.357782Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    },
+    {
+      "synonyms": [
+        "pas de departement",
+        "rien"
+      ],
+      "id": "f8d45a19-f625-44a5-a649-1cb006a48cf7",
+      "displayName": "Aucun",
+      "createdTime": "2021-10-26T10:50:41.6366471Z",
+      "updatedTime": "2022-03-29T08:53:41.357782Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    },
+    {
+      "synonyms": [
+        "Yaoundé"
+      ],
+      "id": "b7c34132-4715-41cb-b0f9-dbbb26fcc864",
+      "displayName": "Agence Yaoundé",
+      "createdTime": "2022-03-29T08:39:22.5726608Z",
+      "updatedTime": "2022-03-29T08:53:41.357782Z",
+      "createdUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    },
+    {
+      "id": "1a44cc02-55d8-4b5f-a193-117d16ffedd9",
+      "displayName": "Assurances",
+      "createdTime": "2022-03-29T08:39:22.5726608Z",
+      "updatedTime": "2022-03-29T08:53:41.357782Z",
+      "createdUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    },
+    {
+      "id": "e8f74a13-8a37-4df7-abe0-6fe55a28e5c6",
+      "displayName": "Audit",
+      "createdTime": "2022-03-29T08:39:22.5726608Z",
+      "updatedTime": "2022-03-29T08:53:41.357782Z",
+      "createdUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    },
+    {
+      "id": "aee8af32-71f1-44db-b515-812904701b7a",
+      "displayName": "Sécurité",
+      "createdTime": "2022-03-29T08:39:22.5726608Z",
+      "updatedTime": "2022-03-29T08:53:41.357782Z",
+      "createdUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    },
+    {
+      "id": "2186edcd-843b-4e0e-81eb-ca261b78febf",
+      "displayName": "Achat",
+      "createdTime": "2022-03-29T08:39:22.5726608Z",
+      "updatedTime": "2022-03-29T08:53:41.357782Z",
+      "createdUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    },
+    {
+      "synonyms": [
+        "Administration du personnel",
+        "personnel",
+        "Recrutement"
+      ],
+      "id": "007ba237-e4cd-41be-b015-c685d507653f",
+      "displayName": "Recrutement et Administration du personnel",
+      "createdTime": "2022-03-29T08:39:22.5726608Z",
+      "updatedTime": "2022-03-29T08:53:41.357782Z",
+      "createdUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    }
+  ],
+  "closedListTypes": [
+    {
+      "namedEntities": [
+        "2487726a-80f6-4be5-a1ae-1a90348d93d7",
+        "768b09db-7b63-4007-88a4-93573e90f77a",
+        "cdf68395-35ea-41af-a712-42acb855fc21",
+        "b33b0c1f-2298-4906-bd0a-7c1e68d1d621",
+        "f8d45a19-f625-44a5-a649-1cb006a48cf7",
+        "b7c34132-4715-41cb-b0f9-dbbb26fcc864",
+        "1a44cc02-55d8-4b5f-a193-117d16ffedd9",
+        "e8f74a13-8a37-4df7-abe0-6fe55a28e5c6",
+        "aee8af32-71f1-44db-b515-812904701b7a",
+        "2186edcd-843b-4e0e-81eb-ca261b78febf",
+        "007ba237-e4cd-41be-b015-c685d507653f"
+      ],
+      "smartMatchingEnabled": true,
+      "customTypeSchema": "ClosedList",
+      "id": "new_customtype_2a390cf8b51642e4aed2fa6d68c7a06c",
+      "displayName": "Départements",
+      "description": "Regroupe la liste des départements",
+      "createdTime": "2021-10-25T18:50:58.4446361Z",
+      "updatedTime": "2022-03-29T08:53:41.357782Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    }
+  ]
+}

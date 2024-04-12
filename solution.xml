@@ -1,0 +1,380 @@
+<ImportExportXml version="9.2.23113.214" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SolutionManifest>
+    <UniqueName>CMXZulaaProd</UniqueName>
+    <LocalizedNames>
+      <LocalizedName description="CMX-Zulaa Prod" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions />
+    <Version>1.0.0.35</Version>
+    <Managed>0</Managed>
+    <Publisher>
+      <UniqueName>BTLCM</UniqueName>
+      <LocalizedNames>
+        <LocalizedName description="BTL Cameroun" languagecode="1033" />
+      </LocalizedNames>
+      <Descriptions />
+      <EMailAddress xsi:nil="true"></EMailAddress>
+      <SupportingWebsiteUrl xsi:nil="true"></SupportingWebsiteUrl>
+      <CustomizationPrefix>cm237</CustomizationPrefix>
+      <CustomizationOptionValuePrefix>10237</CustomizationOptionValuePrefix>
+      <Addresses>
+        <Address>
+          <AddressNumber>1</AddressNumber>
+          <AddressTypeCode>1</AddressTypeCode>
+          <City xsi:nil="true"></City>
+          <County xsi:nil="true"></County>
+          <Country xsi:nil="true"></Country>
+          <Fax xsi:nil="true"></Fax>
+          <FreightTermsCode xsi:nil="true"></FreightTermsCode>
+          <ImportSequenceNumber xsi:nil="true"></ImportSequenceNumber>
+          <Latitude xsi:nil="true"></Latitude>
+          <Line1 xsi:nil="true"></Line1>
+          <Line2 xsi:nil="true"></Line2>
+          <Line3 xsi:nil="true"></Line3>
+          <Longitude xsi:nil="true"></Longitude>
+          <Name xsi:nil="true"></Name>
+          <PostalCode xsi:nil="true"></PostalCode>
+          <PostOfficeBox xsi:nil="true"></PostOfficeBox>
+          <PrimaryContactName xsi:nil="true"></PrimaryContactName>
+          <ShippingMethodCode>1</ShippingMethodCode>
+          <StateOrProvince xsi:nil="true"></StateOrProvince>
+          <Telephone1 xsi:nil="true"></Telephone1>
+          <Telephone2 xsi:nil="true"></Telephone2>
+          <Telephone3 xsi:nil="true"></Telephone3>
+          <TimeZoneRuleVersionNumber xsi:nil="true"></TimeZoneRuleVersionNumber>
+          <UPSZone xsi:nil="true"></UPSZone>
+          <UTCOffset xsi:nil="true"></UTCOffset>
+          <UTCConversionTimeZoneCode xsi:nil="true"></UTCConversionTimeZoneCode>
+        </Address>
+        <Address>
+          <AddressNumber>2</AddressNumber>
+          <AddressTypeCode>1</AddressTypeCode>
+          <City xsi:nil="true"></City>
+          <County xsi:nil="true"></County>
+          <Country xsi:nil="true"></Country>
+          <Fax xsi:nil="true"></Fax>
+          <FreightTermsCode xsi:nil="true"></FreightTermsCode>
+          <ImportSequenceNumber xsi:nil="true"></ImportSequenceNumber>
+          <Latitude xsi:nil="true"></Latitude>
+          <Line1 xsi:nil="true"></Line1>
+          <Line2 xsi:nil="true"></Line2>
+          <Line3 xsi:nil="true"></Line3>
+          <Longitude xsi:nil="true"></Longitude>
+          <Name xsi:nil="true"></Name>
+          <PostalCode xsi:nil="true"></PostalCode>
+          <PostOfficeBox xsi:nil="true"></PostOfficeBox>
+          <PrimaryContactName xsi:nil="true"></PrimaryContactName>
+          <ShippingMethodCode>1</ShippingMethodCode>
+          <StateOrProvince xsi:nil="true"></StateOrProvince>
+          <Telephone1 xsi:nil="true"></Telephone1>
+          <Telephone2 xsi:nil="true"></Telephone2>
+          <Telephone3 xsi:nil="true"></Telephone3>
+          <TimeZoneRuleVersionNumber xsi:nil="true"></TimeZoneRuleVersionNumber>
+          <UPSZone xsi:nil="true"></UPSZone>
+          <UTCOffset xsi:nil="true"></UTCOffset>
+          <UTCConversionTimeZoneCode xsi:nil="true"></UTCConversionTimeZoneCode>
+        </Address>
+      </Addresses>
+    </Publisher>
+    <RootComponents>
+      <RootComponent type="29" id="{000a4b65-52e3-ed11-a7c7-000d3ab76bee}" behavior="0" />
+      <RootComponent type="29" id="{0352dda4-88ae-ec11-9840-0022488125b3}" behavior="0" />
+      <RootComponent type="29" id="{037a3abc-8f33-ee11-bdf4-0022487fe2ef}" behavior="0" />
+      <RootComponent type="29" id="{0c3c873e-5d71-ed11-9561-6045bd8f995d}" behavior="0" />
+      <RootComponent type="29" id="{0ef60181-7c5c-ee11-be6e-0022487fe2ef}" behavior="0" />
+      <RootComponent type="29" id="{0f680bf7-1032-ee11-bdf4-0022487fe2ef}" behavior="0" />
+      <RootComponent type="29" id="{15c47426-3dfd-ec11-82e5-000d3a47d5c9}" behavior="0" />
+      <RootComponent type="29" id="{166072b6-ad32-ec11-b6e6-000d3aa82b12}" behavior="0" />
+      <RootComponent type="29" id="{1723ba4a-8665-ed11-9561-6045bd8f9056}" behavior="0" />
+      <RootComponent type="29" id="{1a3c1289-0bda-ed11-a7c7-6045bd8f91dd}" behavior="0" />
+      <RootComponent type="29" id="{25e5970f-0c32-ee11-bdf4-0022487fe354}" behavior="0" />
+      <RootComponent type="29" id="{2779b0c3-81f7-ec11-bb3d-002248a00b25}" behavior="0" />
+      <RootComponent type="29" id="{2940c187-43af-ec11-9840-0022488125b3}" behavior="0" />
+      <RootComponent type="29" id="{2df43028-08b1-ec11-9840-0022488125b3}" behavior="0" />
+      <RootComponent type="29" id="{31d229fd-9d65-ed11-9561-6045bd8f91d8}" behavior="0" />
+      <RootComponent type="29" id="{36251a73-ea9e-ec11-b400-000d3a45a704}" behavior="0" />
+      <RootComponent type="29" id="{37d5c2b8-7fd7-ed11-a7c7-6045bd8f9871}" behavior="0" />
+      <RootComponent type="29" id="{39370d77-4b5c-ee11-be6e-0022487fe354}" behavior="0" />
+      <RootComponent type="29" id="{3a3fb48a-aa48-ee11-be6d-0022487fe354}" behavior="0" />
+      <RootComponent type="29" id="{3bb7a2e7-aa7e-ec11-8d21-6045bd8d8ffb}" behavior="0" />
+      <RootComponent type="29" id="{43dbb8ae-76ab-ec11-983f-6045bd8d2865}" behavior="0" />
+      <RootComponent type="29" id="{43fb7d9e-2b6f-ed11-9561-6045bd8f9d25}" behavior="0" />
+      <RootComponent type="29" id="{4a6749ff-3535-ee11-bdf4-0022487fe2ef}" behavior="0" />
+      <RootComponent type="29" id="{4d055a4d-f39e-ec11-b400-000d3a45a704}" behavior="0" />
+      <RootComponent type="29" id="{4edd79c0-b739-ed11-9db1-0022487fe918}" behavior="0" />
+      <RootComponent type="29" id="{502f5532-c49e-ec11-b400-000d3a45ab65}" behavior="0" />
+      <RootComponent type="29" id="{5639f8c1-0741-ee11-bdf3-0022487fe2ef}" behavior="0" />
+      <RootComponent type="29" id="{573ea9b7-8111-ed11-b83d-000d3abd032f}" behavior="0" />
+      <RootComponent type="29" id="{5eaa609f-c69e-ec11-b400-000d3a45ab65}" behavior="0" />
+      <RootComponent type="29" id="{6006a258-72da-ec11-bb3d-000d3a224c5e}" behavior="0" />
+      <RootComponent type="29" id="{61181ca0-ea9e-ec11-b400-000d3a45ab65}" behavior="0" />
+      <RootComponent type="29" id="{613e0363-0932-ee11-bdf4-0022487fe354}" behavior="0" />
+      <RootComponent type="29" id="{624f2071-e99e-ec11-b400-000d3a45ab65}" behavior="0" />
+      <RootComponent type="29" id="{68fe4761-86aa-ec11-983f-6045bd8d2865}" behavior="0" />
+      <RootComponent type="29" id="{69eb29ab-59e3-ed11-a7c7-0022489fdfc6}" behavior="0" />
+      <RootComponent type="29" id="{6caf6c05-4d72-ed11-9561-6045bd8f9056}" behavior="0" />
+      <RootComponent type="29" id="{740c0877-71ae-ec11-9840-002248812bc7}" behavior="0" />
+      <RootComponent type="29" id="{7464a061-3898-ee11-be37-0022487fe354}" behavior="0" />
+      <RootComponent type="29" id="{7813a2f6-8c71-ed11-9561-6045bd8f91d8}" behavior="0" />
+      <RootComponent type="29" id="{78312fe4-57e3-ed11-a7c7-0022489fdb79}" behavior="0" />
+      <RootComponent type="29" id="{7f7126b8-32b0-ec11-9840-0022488125b3}" behavior="0" />
+      <RootComponent type="29" id="{81291fcb-3464-ee11-8df0-0022487fe97b}" behavior="0" />
+      <RootComponent type="29" id="{834229fb-96dd-ec11-bb3d-000d3a2e233b}" behavior="0" />
+      <RootComponent type="29" id="{85b917f4-ba7e-ec11-8d21-6045bd8d863b}" behavior="0" />
+      <RootComponent type="29" id="{8a8d5304-742f-ec11-b6e6-000d3aa82b12}" behavior="0" />
+      <RootComponent type="29" id="{8b8a90ba-3935-ee11-bdf4-0022487fe354}" behavior="0" />
+      <RootComponent type="29" id="{8bf7df9b-9071-ed11-9561-6045bd8f9c49}" behavior="0" />
+      <RootComponent type="29" id="{8cfbde69-0464-ed11-9561-6045bd8f937f}" behavior="0" />
+      <RootComponent type="29" id="{91c2bb23-08b1-ec11-9840-002248812bc7}" behavior="0" />
+      <RootComponent type="29" id="{92c2bb23-08b1-ec11-9840-002248812bc7}" behavior="0" />
+      <RootComponent type="29" id="{93c2bb23-08b1-ec11-9840-002248812bc7}" behavior="0" />
+      <RootComponent type="29" id="{945df2e8-3a35-ee11-bdf4-0022487fe354}" behavior="0" />
+      <RootComponent type="29" id="{951f219c-9e65-ed11-9561-6045bd8f91dd}" behavior="0" />
+      <RootComponent type="29" id="{9571f41e-4333-ed11-9db1-0022487fe449}" behavior="0" />
+      <RootComponent type="29" id="{a2a9efb8-ef9e-ec11-b400-000d3a45a704}" behavior="0" />
+      <RootComponent type="29" id="{a3eb9846-9b6c-ed11-9561-6045bd8f995d}" behavior="0" />
+      <RootComponent type="29" id="{a7476bc0-076c-ed11-9561-6045bd8f9b29}" behavior="0" />
+      <RootComponent type="29" id="{a942de78-296f-ed11-9561-6045bd8f901e}" behavior="0" />
+      <RootComponent type="29" id="{ab1a2c2d-6685-ee11-8179-0022487fe2ef}" behavior="0" />
+      <RootComponent type="29" id="{ac279bfd-1372-ed11-9561-6045bd8f9871}" behavior="0" />
+      <RootComponent type="29" id="{af3503d2-0162-ee11-8df0-6045bd9059d9}" behavior="0" />
+      <RootComponent type="29" id="{b03d2086-f558-ed11-9562-000d3aad35f2}" behavior="0" />
+      <RootComponent type="29" id="{b9eeecf9-a96c-ed11-9561-6045bd8f91d8}" behavior="0" />
+      <RootComponent type="29" id="{ba0335cb-8a71-ed11-9561-6045bd8f9b29}" behavior="0" />
+      <RootComponent type="29" id="{bac91fce-ed9e-ec11-b400-000d3a45ab65}" behavior="0" />
+      <RootComponent type="29" id="{bb4a16d3-6edb-ec11-bb3d-000d3a2e233b}" behavior="0" />
+      <RootComponent type="29" id="{bd7f5d52-d564-ed11-9561-6045bd8f9c5d}" behavior="0" />
+      <RootComponent type="29" id="{be46ce28-0e32-ee11-bdf4-0022487fe354}" behavior="0" />
+      <RootComponent type="29" id="{c06ba82f-ba7e-ec11-8d21-6045bd8d8ffb}" behavior="0" />
+      <RootComponent type="29" id="{c21fe17f-ca9e-ec11-b400-000d3a45ab65}" behavior="0" />
+      <RootComponent type="29" id="{c311c827-57e3-ed11-a7c7-0022489fd57f}" behavior="0" />
+      <RootComponent type="29" id="{c38b260f-50e3-ed11-a7c7-0022489fdfc6}" behavior="0" />
+      <RootComponent type="29" id="{c5cadaf8-7871-ed11-9561-6045bd8f9d9d}" behavior="0" />
+      <RootComponent type="29" id="{c7e4afb4-81ae-ec11-9840-002248812bc7}" behavior="0" />
+      <RootComponent type="29" id="{ca143d82-15d1-ec11-a7b5-000d3a4960e1}" behavior="0" />
+      <RootComponent type="29" id="{d039cfb3-e134-ed11-9db1-6045bd8f9b29}" behavior="0" />
+      <RootComponent type="29" id="{d866bad0-c76c-ed11-9561-6045bd8f9b29}" behavior="0" />
+      <RootComponent type="29" id="{db97210e-ec9e-ec11-b400-000d3a45ab65}" behavior="0" />
+      <RootComponent type="29" id="{dd932524-7e65-ed11-9561-6045bd8f9b29}" behavior="0" />
+      <RootComponent type="29" id="{e26da3b7-f853-ee11-be6d-6045bd9051d4}" behavior="0" />
+      <RootComponent type="29" id="{e3865f9a-c26c-ed11-9561-6045bd8f95b7}" behavior="0" />
+      <RootComponent type="29" id="{e6bd40e8-c9dd-ec11-bb3d-000d3a2e233b}" behavior="0" />
+      <RootComponent type="29" id="{ea4abbb7-4de3-ed11-a7c7-0022489fdb79}" behavior="0" />
+      <RootComponent type="29" id="{f1044105-1ad1-ec11-a7b5-000d3a4960e1}" behavior="0" />
+      <RootComponent type="29" id="{f8394db0-266f-ed11-9561-6045bd8f9871}" behavior="0" />
+      <RootComponent type="29" id="{f9ed3e09-4afd-ec11-82e5-000d3a47d5c9}" behavior="0" />
+      <RootComponent type="60" id="{b86694c3-8258-ee11-be6e-0022487fe354}" behavior="0" />
+      <RootComponent type="300" schemaName="cm237_zulaaproductionv1_b01bc" behavior="0" />
+    </RootComponents>
+    <MissingDependencies>
+      <MissingDependency>
+        <Required type="29" displayName="Enregistrement_Des_Articles_Selectionner_Pour_Une_FicheD'inventaire" solution="Active" id="{ce3ab058-4704-ee11-8f6e-6045bd8f91dd}" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cm237_CR_Outlook" solution="Active" id.connectionreferencelogicalname="cm237_CR_Outlook" />
+        <Dependent type="29" displayName="ValidationOTP" id="{0ef60181-7c5c-ee11-be6e-0022487fe2ef}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cm237_CR_SharePoint_ZulaaCamrail" solution="Active" id.connectionreferencelogicalname="cm237_CR_SharePoint_ZulaaCamrail" />
+        <Dependent type="29" displayName="Insertion des actifs" id="{ab1a2c2d-6685-ee11-8179-0022487fe2ef}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cm237_CR_SharePoint_ZulaaCamrail" solution="Active" id.connectionreferencelogicalname="cm237_CR_SharePoint_ZulaaCamrail" />
+        <Dependent type="29" displayName="FlowDirectionLancementEB" id="{ca143d82-15d1-ec11-a7b5-000d3a4960e1}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="new_sharedonedriveforbusiness_28ac5" solution="Active" id.connectionreferencelogicalname="new_sharedonedriveforbusiness_28ac5" />
+        <Dependent type="29" displayName="Copie de -FluxDG" id="{7464a061-3898-ee11-be37-0022487fe354}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_Article_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_Article_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_ArticleEntite_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_ArticleEntite_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_BonCommande_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_BonCommande_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_BonDeReception_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_BonDeReception_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_BonReception_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_BonReception_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_CentreCout_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_CentreCout_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_Compteur_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_Compteur_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_Contrat_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_Contrat_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_ContratActif_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_ContratActif_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_DeclenheurCompteur_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_DeclenheurCompteur_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_DelegationPersonnel_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_DelegationPersonnel_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_DemandeAchatActif_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_DemandeAchatActif_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_DemandeSortieArticle" solution="Active" id.schemaname="cm237_Ev_Con_List_DemandeSortieArticle" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_Departement_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_Departement_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_Devise_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_Devise_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_Direction_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_Direction_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_Emplacement_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_Emplacement_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_Entite_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_Entite_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_ExpressionBesoin_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_ExpressionBesoin_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_Famille_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_Famille_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_FlowHistory_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_FlowHistory_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_FournisseurArticle_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_FournisseurArticle_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_FournisseurEntit_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_FournisseurEntit_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_Inventaire_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_Inventaire_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_InventaireActif_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_InventaireActif_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_InventaireArticle_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_InventaireArticle_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_Magasin_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_Magasin_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_MagasinArticle_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_MagasinArticle_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_MouvementStockEntete_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_MouvementStockEntete_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_NoteFournisseurReception_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_NoteFournisseurReception_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_Pays_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_Pays_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_PersonneMagasin_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_PersonneMagasin_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_Privilege_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_Privilege_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_Role_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_Role_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_RolePrivilege_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_RolePrivilege_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_RoleUtilisateurEntite_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_RoleUtilisateurEntite_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_Trigger_SortieStock_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_Trigger_SortieStock_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_Trigger_Validation_Inventaire_AnalysteInventaire" solution="Active" id.schemaname="cm237_Ev_Con_List_Trigger_Validation_Inventaire_AnalysteInventaire" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_Trigger_Validation_Inventaire_DAF" solution="Active" id.schemaname="cm237_Ev_Con_List_Trigger_Validation_Inventaire_DAF" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_Trigger_Validation_Inventaire_RespGestionStock" solution="Active" id.schemaname="cm237_Ev_Con_List_Trigger_Validation_Inventaire_RespGestionStock" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_Trigger_Validation_Inventaire_RespING" solution="Active" id.schemaname="cm237_Ev_Con_List_Trigger_Validation_Inventaire_RespING" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_Trigger_ZulaaArchivageV2_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_Trigger_ZulaaArchivageV2_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_Trigger_ZulaaPROD_STOCKRECEPTION_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_Trigger_ZulaaPROD_STOCKRECEPTION_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_V2ZulaaPVReception_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_V2ZulaaPVReception_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cm237_Ev_Con_List_Validation_Demande_Sortie_Camrail" solution="Active" id.schemaname="cm237_Ev_Con_List_Validation_Demande_Sortie_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cr1c1_Ev_Con_List_Fiche_Inventaire_Code_Camrail" solution="Active" id.schemaname="cr1c1_Ev_Con_List_Fiche_Inventaire_Code_Camrail" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="cr1c1_Ev_Con_List_V2ZulaaPVReception" solution="Active" id.schemaname="cr1c1_Ev_Con_List_V2ZulaaPVReception" />
+        <Dependent type="300" schemaName="cm237_zulaaproductionv1_b01bc" displayName="ZULAA V2" />
+      </MissingDependency>
+    </MissingDependencies>
+  </SolutionManifest>
+</ImportExportXml>

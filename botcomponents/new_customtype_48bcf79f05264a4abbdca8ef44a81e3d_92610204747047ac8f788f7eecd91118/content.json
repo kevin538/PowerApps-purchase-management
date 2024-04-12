@@ -1,0 +1,14 @@
+{
+  "regexTypes": [
+    {
+      "regExPattern": "\\b[1-5]\\b",
+      "customTypeSchema": "RegexPattern",
+      "id": "new_customtype_48bcf79f05264a4abbdca8ef44a81e3d_92610204747047ac8f788f7eecd91118",
+      "displayName": "CSAT - Note",
+      "createdTime": "2019-01-15T00:00:00Z",
+      "updatedTime": "2019-01-15T00:00:00Z",
+      "createdUserId": "user0",
+      "updatedUserId": "user0"
+    }
+  ]
+}

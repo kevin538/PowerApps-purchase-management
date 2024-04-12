@@ -1,0 +1,67 @@
+{
+  "namedEntities": [
+    {
+      "synonyms": [
+        "Bolloré"
+      ],
+      "id": "dfbb19d7-9881-4b2a-85fe-473d714d3386",
+      "displayName": "BTLCM",
+      "createdTime": "2021-10-17T17:44:59.8043665Z",
+      "updatedTime": "2022-03-28T11:35:54.6881805Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    },
+    {
+      "synonyms": [
+        "Société Commerciale des Ports Africains"
+      ],
+      "id": "7669805b-b2c3-49fc-a7b0-959d6350532c",
+      "displayName": "SOCOPAO",
+      "createdTime": "2021-10-17T17:44:59.8043665Z",
+      "updatedTime": "2022-03-28T11:35:54.6881805Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    },
+    {
+      "synonyms": [
+        "Société D'Exploitation des Parcs A Bois du Cameroun"
+      ],
+      "id": "4f5c1db9-02bd-42f8-bfa0-d6b9cfc2e394",
+      "displayName": "SEPBC",
+      "createdTime": "2021-10-17T17:44:59.8043665Z",
+      "updatedTime": "2022-03-28T11:35:54.6881805Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    },
+    {
+      "synonyms": [
+        "Transport ferroviaire"
+      ],
+      "id": "84c801ae-1cc1-4bcc-b9cf-aac95fab2eb1",
+      "displayName": "CAMRAIL",
+      "createdTime": "2021-10-17T17:44:59.8043665Z",
+      "updatedTime": "2022-03-28T11:35:54.6881805Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    }
+  ],
+  "closedListTypes": [
+    {
+      "namedEntities": [
+        "dfbb19d7-9881-4b2a-85fe-473d714d3386",
+        "7669805b-b2c3-49fc-a7b0-959d6350532c",
+        "4f5c1db9-02bd-42f8-bfa0-d6b9cfc2e394",
+        "84c801ae-1cc1-4bcc-b9cf-aac95fab2eb1"
+      ],
+      "smartMatchingEnabled": true,
+      "customTypeSchema": "ClosedList",
+      "id": "new_customtype_0146b750ff9f4870969101b580deddc2",
+      "displayName": "Entités",
+      "description": "La liste des entités ",
+      "createdTime": "2021-10-17T17:44:59.8043665Z",
+      "updatedTime": "2022-03-28T11:35:54.6881805Z",
+      "createdUserId": "7ffbbcb8-3e60-4baf-8537-9e4ce9286d28",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    }
+  ]
+}

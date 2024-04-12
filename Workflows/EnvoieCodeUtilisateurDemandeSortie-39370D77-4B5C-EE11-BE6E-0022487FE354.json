@@ -1,0 +1,255 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_sharedsharepointonline_e8cbe"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      },
+      "shared_office365_1": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_sharedoffice365_5955d"
+        },
+        "api": {
+          "name": "shared_office365"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_Zulaa (cm237_Ev_Con_Zulaa)": {
+          "defaultValue": "https://teamsite.msc.com/sites/cm004-afr-cio-zulaa-dev",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Zulaa",
+            "description": "Site Sharepoint de production de ZULAA"
+          }
+        },
+        "Ev_Con_List_MouvementStockEntete (cm237_Ev_Con_List_MouvementStockEntete)": {
+          "defaultValue": "77445d12-c98c-4a04-bbd2-e1e11dd1a63f",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_MouvementStockEntete",
+            "description": "Connexion à la liste Sharepoint  des mouvementsStockEntete"
+          }
+        },
+        "Ev_Con_List_DemandeSortieStock (cm237_Ev_Con_List_DemandeSortieStock)": {
+          "defaultValue": "bb587b57-a2ff-49f5-90ea-9d328222f3bf",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_DemandeSortieStock"
+          }
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "262cb92d-0a28-4179-96f5-fd005b2ae882"
+          },
+          "type": "Request",
+          "kind": "PowerApp",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Initialiserlavariable3_Valeur": {
+                  "type": "integer",
+                  "description": "Entrer la valeur initiale",
+                  "x-ms-powerflows-param-ispartial": false
+                }
+              },
+              "required": [
+                "Initialiserlavariable3_Valeur"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Obetnir_la_Sortie_en_Cours_": {
+          "runAfter": {
+            "Initialiser_la_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d0757063-ef57-440e-81cb-eca75bbc5bfa"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Zulaa (cm237_Ev_Con_Zulaa)')",
+              "table": "@parameters('Ev_Con_List_MouvementStockEntete (cm237_Ev_Con_List_MouvementStockEntete)')",
+              "id": "@variables('sortieID')"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        },
+        "Obtenir_la_demande_de_Sortie_de_Cette_Sortie": {
+          "runAfter": {
+            "Obetnir_la_Sortie_en_Cours_": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f8b83778-6fa5-42a8-a5fd-9af158a329c4"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Zulaa (cm237_Ev_Con_Zulaa)')",
+              "table": "@parameters('Ev_Con_List_DemandeSortieStock (cm237_Ev_Con_List_DemandeSortieStock)')",
+              "id": "@outputs('Obetnir_la_Sortie_en_Cours_')?['body/DemandeSotieStockId/Id']"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        },
+        "Mettre_à_jour_l'élément": {
+          "runAfter": {
+            "Obtenir_la_demande_de_Sortie_de_Cette_Sortie": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a463a583-2f15-4932-9937-4f2c7ce4d3ae"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline",
+              "operationId": "PatchItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Zulaa (cm237_Ev_Con_Zulaa)')",
+              "table": "@parameters('Ev_Con_List_DemandeSortieStock (cm237_Ev_Con_List_DemandeSortieStock)')",
+              "id": "@outputs('Obtenir_la_demande_de_Sortie_de_Cette_Sortie')?['body/ID']",
+              "item/Otp": "@variables('OTP')"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        },
+        "Envoyer_un_e-mail_(V2)": {
+          "runAfter": {
+            "Initialiser_la_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5e8843ea-3d5a-43ef-8969-5fd340b0102e"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_office365_1",
+              "operationId": "SendEmailV2",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+            },
+            "parameters": {
+              "emailMessage/To": "@variables('addresseDEMANDEUR')",
+              "emailMessage/Subject": "Numero Sortie: @{outputs('Obetnir_la_Sortie_en_Cours_')?['body/Title']}",
+              "emailMessage/Body": "<p><span style=\"font-size: 14px\">Votre demande à été prise en compte vous devez vous presenter avec le code</span> <strong>: </strong><strong>@{variables('OTP')}</strong><strong> &nbsp;chez </strong><strong>@{outputs('Obtenir_la_demande_de_Sortie_de_Cette_Sortie')?['body/Author/DisplayName']}</strong><strong><br>\n<br>\npour effectuer la sortie pour la sortie : </strong><strong>@{outputs('Obtenir_la_demande_de_Sortie_de_Cette_Sortie')?['body/Title']}</strong><strong></strong><br>\n<br>\n<span style=\"font-size: 16px\"><strong>Cordialement Zulaa</strong></span></p>",
+              "emailMessage/Importance": "Normal"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        },
+        "Initialiser_la_variable": {
+          "runAfter": {
+            "Mettre_à_jour_l'élément": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "3ecf1698-1e51-4022-9491-0aa875719a70"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "addresseDEMANDEUR",
+                "type": "string",
+                "value": "@outputs('Mettre_à_jour_l''élément')?['body/Demandeur/Email']"
+              }
+            ]
+          }
+        },
+        "Initialiser_la_variable_2": {
+          "runAfter": {
+            "Initialiser_la_variable_3": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "7911c31c-b8dd-4254-a505-e4ae5a6c7450"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "OTP",
+                "type": "integer",
+                "value": "@rand(00100,99999)"
+              }
+            ]
+          }
+        },
+        "Initialiser_la_variable_3": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "4c44d2d1-195b-425e-be48-e12788c186c5"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "sortieID",
+                "type": "integer",
+                "value": "@triggerBody()['Initialiserlavariable3_Valeur']"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

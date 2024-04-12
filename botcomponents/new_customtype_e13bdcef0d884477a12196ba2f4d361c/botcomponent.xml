@@ -1,0 +1,8 @@
+<botcomponent schemaname="new_customtype_e13bdcef0d884477a12196ba2f4d361c">
+  <componenttype>3</componenttype>
+  <description>Regroupes la listes des centre de couts de l'applications</description>
+  <iscustomizable>1</iscustomizable>
+  <name>Centres de couts</name>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</botcomponent>

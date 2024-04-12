@@ -1,0 +1,202 @@
+{
+  "intents": [
+    {
+      "systemIntentTypes": [
+        "ConversationStart",
+        "Greeting"
+      ],
+      "intentType": "System",
+      "triggerQueries": [
+        "Bonjour",
+        "Bonjour",
+        "Bonjour l'agent !",
+        "Bonjour à vous",
+        "Bonjour à toi",
+        "Bonjour pouvez-vous m'aider ?",
+        "Bonjour peux-tu m'aider ?",
+        "Bonjour pouvez-vous m'aider s'il vous plaît ?",
+        "Bonjour peux-tu m'aider s'il te plaît ?",
+        "Bonjour",
+        "Bonsoir",
+        "Bonjour ça va ?",
+        "Bonjour comment allez-vous ?",
+        "Bonjour comment vas-tu ?",
+        "Bonjour j'ai besoin d'aide",
+        "Bonjour madame",
+        "Bonjour mon ami",
+        "Bonjour monsieur",
+        "Bonjour l'équipe de support",
+        "Bonjour l'équipe",
+        "Bonjour l'agent virtuel",
+        "Bonjour !",
+        "Bonjour à vous",
+        "Bonjour à toi",
+        "Bonjour, comment allez-vous aujourd'hui ?",
+        "Bonjour, comment vas-tu aujourd'hui ?",
+        "Bonjour comment allez-vous ?",
+        "Bonjour comment vas-tu ?",
+        "Bonjour, j'ai besoin d'aide",
+        "Salut",
+        "Salut !",
+        "Salut :)",
+        "Salut ça va",
+        "Salut j'ai besoin d'aide",
+        "Salut mon pote",
+        "Salut",
+        "Salut l'agent",
+        "Salut pouvez-vous m'aider",
+        "Salut peux-tu m'aider",
+        "Salut",
+        "Salut comment ça va",
+        "Salut comment ça va aujourd'hui ?",
+        "Salut j'espère que vous pouvez m'aider",
+        "Salut j'espère que tu peux m'aider",
+        "Salut le support",
+        "Salut l'équipe de support",
+        "Salut l'agent virtuel",
+        "Hi I need help here",
+        "Hi support",
+        "Hi support team",
+        "Hi there!",
+        "Hi virtual agent"
+      ],
+      "dialogId": "new_topic_48bcf79f05264a4abbdca8ef44a81e3d_ba7b967c97ba4c39bca58a8bb6a72d59_conversationstart",
+      "isTriggeringEnabled": true,
+      "id": "new_topic_48bcf79f05264a4abbdca8ef44a81e3d_ba7b967c97ba4c39bca58a8bb6a72d59_conversationstart",
+      "displayName": "Salutations",
+      "description": "Voici les salutations par défaut au début d'une conversation. Dans un premier temps, le bot ou agent virtuel doit se présenter. Lorsque vous concevez des rubriques, vérifiez si vous devez respecter des lois en vigueur.",
+      "createdTime": "2019-01-15T00:00:00Z",
+      "updatedTime": "2022-07-06T14:51:33.5853565Z",
+      "createdUserId": "user0",
+      "updatedUserId": "c67588e6-fb9d-4231-ad5b-eb9277ce1719"
+    }
+  ],
+  "namedEntities": [
+    {
+      "id": "35b5c46b-353e-43d8-abea-b19f274f3528",
+      "displayName": "Créer une expression de besoin"
+    },
+    {
+      "id": "d1f6d7d5-2b86-4402-959c-5a152219c303",
+      "displayName": "Vérifier lʼétat dʼune expression de besoin"
+    },
+    {
+      "id": "2cc8473a-364f-4d05-ba34-b08bcec6df75",
+      "displayName": "Faire une commande mensuelle"
+    }
+  ],
+  "dialogs": [
+    {
+      "rootNodeId": "8a32ebd1-bec3-4cde-a75a-1977a561b019",
+      "dialogType": "System",
+      "messageNodes": [
+        {
+          "botMessageId": "987e1575-01b0-467b-a98e-33f113cb7dcb",
+          "nodeType": "BotMessageNode",
+          "id": "8a32ebd1-bec3-4cde-a75a-1977a561b019",
+          "defaultTargetNodeId": "79156294-7424-42e2-9e2b-66e06ad95196"
+        }
+      ],
+      "dialogChangeNodes": [
+        {
+          "targetDialogId": "new_topic_e04dd864d98c45eeb4cfd19069006b46",
+          "nodeType": "DialogChangeNode",
+          "id": "d889a608-d439-46c6-9f39-260e625a42d9"
+        },
+        {
+          "targetDialogId": "new_topic_96a2518ebfaf4b02b2acb82c48a32ac5",
+          "nodeType": "DialogChangeNode",
+          "id": "eaca21b3-d6e3-4d37-8be2-207884447328"
+        },
+        {
+          "targetDialogId": "new_topic_a55ab61cfc3f4fe396dd0d72024eca3c",
+          "nodeType": "DialogChangeNode",
+          "id": "9ac949d7-1bb9-44c2-ae63-2136836789f0"
+        }
+      ],
+      "questionNodes": [
+        {
+          "contextVariableId": "2b881e7d-343a-4308-8c1e-a7365903663b",
+          "nodeType": "QuestionNode",
+          "id": "79156294-7424-42e2-9e2b-66e06ad95196",
+          "routes": [
+            {
+              "expression": "@equals(parameters('2b881e7d-343a-4308-8c1e-a7365903663b'), '35b5c46b-353e-43d8-abea-b19f274f3528')",
+              "targetNodeId": "d889a608-d439-46c6-9f39-260e625a42d9"
+            },
+            {
+              "expression": "@equals(parameters('2b881e7d-343a-4308-8c1e-a7365903663b'), 'd1f6d7d5-2b86-4402-959c-5a152219c303')",
+              "targetNodeId": "eaca21b3-d6e3-4d37-8be2-207884447328"
+            },
+            {
+              "expression": "@equals(parameters('2b881e7d-343a-4308-8c1e-a7365903663b'), '2cc8473a-364f-4d05-ba34-b08bcec6df75')",
+              "targetNodeId": "9ac949d7-1bb9-44c2-ae63-2136836789f0"
+            }
+          ],
+          "defaultTargetNodeId": "79156294-7424-42e2-9e2b-66e06ad95196"
+        }
+      ],
+      "id": "new_topic_48bcf79f05264a4abbdca8ef44a81e3d_ba7b967c97ba4c39bca58a8bb6a72d59_conversationstart",
+      "displayName": "Boîte de dialogue",
+      "createdTime": "2019-01-15T00:00:00Z",
+      "updatedTime": "2022-07-06T14:51:33.5853565Z",
+      "createdUserId": "user0",
+      "updatedUserId": "c67588e6-fb9d-4231-ad5b-eb9277ce1719"
+    }
+  ],
+  "botMessages": [
+    {
+      "channelContent": {
+        "web": {
+          "contentFormat": "Markdown",
+          "content": "Dites moi comment je peux vous aider"
+        }
+      },
+      "id": "349ccaf7-e52a-46de-b0d0-2a17f77b9c4d",
+      "createdTime": "2021-10-25T19:06:35.411Z",
+      "updatedTime": "2021-10-25T19:06:35.411Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "user-0"
+    },
+    {
+      "channelContent": {
+        "web": {
+          "contentFormat": "Markdown",
+          "content": "Salut {7bd4f62b-7262-40bc-8c63-8c540568cf6c}! Je suis **Zulaa.** Je peux vous aider à créer et à suivre des expressions de besoins."
+        }
+      },
+      "id": "987e1575-01b0-467b-a98e-33f113cb7dcb",
+      "createdTime": "2019-01-15T00:00:00Z",
+      "updatedTime": "2019-01-15T00:00:00Z",
+      "createdUserId": "user0",
+      "updatedUserId": "user0"
+    }
+  ],
+  "contextVariables": [
+    {
+      "systemType": "String",
+      "initializerType": "UserQuestion",
+      "scope": "Dialog",
+      "greedySlotFillingEnabled": true,
+      "isInput": false,
+      "externalInitializationAllowed": false,
+      "namedEntityOptions": [
+        "35b5c46b-353e-43d8-abea-b19f274f3528",
+        "d1f6d7d5-2b86-4402-959c-5a152219c303",
+        "2cc8473a-364f-4d05-ba34-b08bcec6df75"
+      ],
+      "messages": {
+        "GetValue": [
+          "349ccaf7-e52a-46de-b0d0-2a17f77b9c4d"
+        ]
+      },
+      "isGlobal": false,
+      "id": "2b881e7d-343a-4308-8c1e-a7365903663b",
+      "displayName": "Var",
+      "createdTime": "2021-10-25T19:06:35.411Z",
+      "updatedTime": "2022-07-06T14:51:33.5853565Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "c67588e6-fb9d-4231-ad5b-eb9277ce1719"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+<botcomponent schemaname="new_topic_48bcf79f05264a4abbdca8ef44a81e3d_dbafebd526364487911b63a2a774389f">
+  <componenttype>0</componenttype>
+  <description>Leçon 3 - Dans cette leçon, vous allez apprendre à créer une rubrique simple avec une branche conditionnelle, une variable et une entité.
+
+Lorsque vous utilisez des entités dans votre rubrique, le bot peut identifier des informations clés dans ce que renseigne l'utilisateur. Il renseigne ces informations de manière proactive dans vos variables. Par exemple, si le client indique "Je veux acheter une voiture rouge," vous n'avez pas besoin de lui demander la couleur de la voiture, car le bot reconnaît l'entité Couleur dans le texte saisi. Le bot ignore alors la question relative à la couleur. 
+
+Vous pouvez également utiliser des entités pour reconnaître une liste d'options spécifique. Dans cette leçon, vous identifiez l'entité Ville, et le bot reconnaîtra les villes saisies par l'utilisateur.</description>
+  <iscustomizable>1</iscustomizable>
+  <name>Leçon 3 - Une rubrique avec des conditions, des variables et une entité prédéfinie</name>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</botcomponent>

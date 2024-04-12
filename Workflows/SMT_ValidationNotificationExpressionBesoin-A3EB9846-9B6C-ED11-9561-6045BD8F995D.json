@@ -1,0 +1,1113 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_SharePoint_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      },
+      "shared_approvals_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_Approval_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_approvals"
+        }
+      },
+      "shared_office365_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_Outlook_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_office365"
+        }
+      },
+      "shared_wordonlinebusiness": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_Word_Online"
+        },
+        "api": {
+          "name": "shared_wordonlinebusiness"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_List_Direction (cm237_Ev_Con_List_Direction)": {
+          "defaultValue": "82024a7f-cecf-4881-a135-9fbaa9636a13",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_Direction",
+            "description": "Connexion à la liste sharepoint des directions"
+          }
+        },
+        "Ev_Con_List_CategorieExpresisonBesoin (cm237_Ev_Con_List_CategorieExpresisonBesoin)": {
+          "defaultValue": "9b043bbf-72f8-4eeb-9160-b0246c1de6da",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_CategorieExpresisonBesoin",
+            "description": "Connexion à la liste Sharepoint des Categories d'expression de besoin"
+          }
+        },
+        "Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)": {
+          "defaultValue": "d8dfb529-f01e-47b3-bb55-710c65c63e74",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_SiteCentreCout",
+            "description": "Connexion à la liste sharepoint des SiteCentreCout"
+          }
+        },
+        "Ev_Con_List_FlowHistory (cm237_Ev_Con_List_FlowHistory)": {
+          "defaultValue": "0f6df2ea-31ab-40c8-afcf-9a12a9a7c8eb",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_FlowHistory"
+          }
+        },
+        "Ev_Con_List_ExpressionBesoin (cm237_Ev_Con_List_ExpressionBesoin)": {
+          "defaultValue": "0ff6249c-664c-454b-a5d6-9ae8c5b6242e",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_ExpressionBesoin",
+            "description": "Connexion à la liste Sharepoint des Exxpressions de Besoins"
+          }
+        },
+        "Ev_Con_List_RoleUtilisateurEntite (cm237_Ev_Con_List_RoleUtilisateurEntite)": {
+          "defaultValue": "75498800-933b-422f-b569-66094d49900f",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_RoleUtilisateurEntite",
+            "description": "RoleUtilisateurEntite"
+          }
+        },
+        "Ev_Con__List_SMT_Flow_ValidationExpressionBesoin (cm237_Ev_Con__List_SMT_Flow_ValidationExpressionBesoin)": {
+          "defaultValue": "84fe9702-4d12-43f6-b644-386a6ed83514",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con__List_SMT_Flow_ValidationExpressionBesoin",
+            "description": "SMT_Flow_ValidationExpressionBesoin"
+          }
+        },
+        "EV_CON_ZULAA_DEV (cm237_EV_CON_ZULAA_DEV)": {
+          "defaultValue": "https://teamsite.msc.com/sites/cm004-afr-cio-zulaa-dev",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_EV_CON_ZULAA_DEV"
+          }
+        },
+        "Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)": {
+          "defaultValue": "https://teamsite.msc.com/sites/NL001-SITE_ACHAT",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Site_ZulaaDev",
+            "description": "Site de la dev où sont stockés les templates des documents de bon de commande, expression de besoin, réception et sortie de stock"
+          }
+        },
+        "Ev_Folder_WordDocumentsDev (cm237_Ev_Folder_WordDocumentsDev)": {
+          "defaultValue": "b!k96lwjFNDUaziZSPUOuxJ1i-bfgg3rVNuHAJu2j6vnEmPfALr06mRrmsPmN5a42U",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Folder_WordDocumentsDev",
+            "description": "Biblithèque de documents à renseigner pour les templates de documents"
+          }
+        }
+      },
+      "triggers": {
+        "When_an_item_is_created": {
+          "recurrence": {
+            "interval": 1,
+            "frequency": "Minute"
+          },
+          "splitOn": "@triggerOutputs()?['body/value']",
+          "metadata": {
+            "operationMetadataId": "ba2cc3b7-4a76-451d-b99b-65cf1411ee62"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline",
+              "operationId": "GetOnNewItems",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con__List_SMT_Flow_ValidationExpressionBesoin (cm237_Ev_Con__List_SMT_Flow_ValidationExpressionBesoin)')"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "VarListCategorie": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "65427419-f409-46d0-9a39-83e708c0f81a"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "VarListCategorie",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "VarListResponsableMétier": {
+          "runAfter": {
+            "VarListCategorie": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "46231719-36e4-488c-9b77-22dcc09d5774"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "VarListResponsableMetier",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Get_item_Expression_Besoin": {
+          "runAfter": {
+            "Compose": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "ecb97e6c-64fc-4d9f-910f-c9f2357acc3f"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_ExpressionBesoin (cm237_Ev_Con_List_ExpressionBesoin)')",
+              "id": "@outputs('Compose')"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Get_items_Categorie_Expression_Besoin": {
+          "runAfter": {
+            "Get_item_SiteCentreCout": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f1fa5787-9ff0-4b87-b6c7-9c369c19ec97"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline",
+              "operationId": "GetItems",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_CategorieExpresisonBesoin (cm237_Ev_Con_List_CategorieExpresisonBesoin)')",
+              "$filter": "ExpressionBesoinId/Id eq '@{outputs('Get_item_Expression_Besoin')?['body/ID']}'"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Apply_to_each_CategoryEB": {
+          "foreach": "@outputs('Get_items_Categorie_Expression_Besoin')?['body/value']",
+          "actions": {
+            "Append_to_string_variable": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "94ebda05-8a29-4275-b7f9-2657132ce2e0"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "VarListCategorie",
+                "value": "- Catégorie: @{items('Apply_to_each_CategoryEB')?['CategorieArticleId/Value']}, Description: @{items('Apply_to_each_CategoryEB')?['Description']};\n\n"
+              }
+            },
+            "Ajouter_à_la_variable_de_chaîne_2": {
+              "runAfter": {
+                "Append_to_string_variable": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "95e191e2-91da-4bdd-9d85-7201a74ca2a0"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "listHTML",
+                "value": "<li><h3>Catégorie: @{items('Apply_to_each_CategoryEB')?['CategorieArticleId/Value']}, Description: @{items('Apply_to_each_CategoryEB')?['Description']};</h3></li>"
+              }
+            },
+            "Append_to_array_variable": {
+              "runAfter": {
+                "Ajouter_à_la_variable_de_chaîne_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ea1a77dc-55a8-4344-bfd2-f9083c2f999b"
+              },
+              "type": "AppendToArrayVariable",
+              "inputs": {
+                "name": "listCategorieDescription",
+                "value": {
+                  "categorie": "@items('Apply_to_each_CategoryEB')?['CategorieArticleId/Value']",
+                  "contenue": "@items('Apply_to_each_CategoryEB')?['Description']"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Get_items_Categorie_Expression_Besoin": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5a74e569-6ed2-4924-a54b-3b577222a961"
+          },
+          "type": "Foreach"
+        },
+        "Apply_to_each_RM": {
+          "foreach": "@outputs('Get_item_SiteCentreCout')?['body/ValidateurEB']",
+          "actions": {
+            "Append_to_string_variable_2": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "77c270b6-27a0-4c35-a738-60b747f15b57"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "VarListResponsableMetier",
+                "value": "@items('Apply_to_each_RM')?['Email']"
+              }
+            },
+            "Set_variable": {
+              "runAfter": {
+                "Append_to_string_variable_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "11546b79-0246-486d-9102-7132b416c20b"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "VarListResponsableMetier",
+                "value": "@items('Apply_to_each_RM')?['Email']"
+              }
+            }
+          },
+          "runAfter": {
+            "Ajouter_à_la_variable_de_chaîne_3": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f63628db-eec4-4d73-b12f-5bd9b4eb60d6"
+          },
+          "type": "Foreach"
+        },
+        "Get_item_SiteCentreCout": {
+          "runAfter": {
+            "Apply_to_each_PJ": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "abb8cd3d-c705-4def-bf63-a62007078108"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+              "id": "@outputs('Get_item_Expression_Besoin')?['body/SiteCentreCoutId/Id']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Start_and_wait_for_an_approval": {
+          "runAfter": {
+            "Historique": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "4ff6e968-cd07-4a7e-9810-348205318d6c"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_approvals_1",
+              "operationId": "StartAndWaitForAnApproval",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_approvals"
+            },
+            "parameters": {
+              "approvalType": "Basic",
+              "WebhookApprovalCreationInput/title": "Expression de Besoin - SMT -  N°  @{outputs('Get_item_Expression_Besoin')?['body/Code']};  \nDépartement:  @{outputs('Get_item_Expression_Besoin')?['body/DepartementId/Value']};   \nDirection: @{outputs('Get_item_Expression_Besoin')?['body/DirectionId/Value']};\nDemandeur:  @{outputs('Get_item_Expression_Besoin')?['body/Author/DisplayName']}",
+              "WebhookApprovalCreationInput/assignedTo": "@{variables('VarListResponsableMetier')};",
+              "WebhookApprovalCreationInput/details": "Les détails de l'expression de besoin (Catégorie + raison) :\n\n@{variables('VarListCategorie')}\n\nFichier(s) joint(s) :\n@{variables('listAttachment')}\n\n\n@{variables('dateWarning')}",
+              "WebhookApprovalCreationInput/requestor": "@{outputs('Get_item_Expression_Besoin')?['body/Author/Email']};",
+              "WebhookApprovalCreationInput/enableNotifications": true,
+              "WebhookApprovalCreationInput/enableReassignment": true,
+              "WebhookApprovalCreationInput/attachments": "@variables('Attachments')"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Condition": {
+          "actions": {
+            "Apply_to_each_2": {
+              "foreach": "@outputs('Start_and_wait_for_an_approval')?['body/responses']",
+              "actions": {
+                "Update_item_2": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "88778ffd-f8d5-4cf3-9f32-1243954e3933"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_sharepointonline",
+                      "operationId": "PatchItem",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                    },
+                    "parameters": {
+                      "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                      "table": "@parameters('Ev_Con_List_ExpressionBesoin (cm237_Ev_Con_List_ExpressionBesoin)')",
+                      "id": "@outputs('Get_item_Expression_Besoin')?['body/ID']",
+                      "item/Validateur": "@items('Apply_to_each_2')?['responder/displayName']",
+                      "item/DateValidation": "@outputs('Start_and_wait_for_an_approval')?['body/completionDate']",
+                      "item/Statut/Value": "Validé",
+                      "item/Raison": "@items('Apply_to_each_2')?['comments']"
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  }
+                }
+              },
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "f813ccc6-53a5-48b9-a559-eb3f7435e294"
+              },
+              "type": "Foreach"
+            },
+            "Obtenir_les_éléments": {
+              "runAfter": {
+                "Apply_to_each_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "87e4d7c6-27ad-46c2-879c-6d1e19be26de"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline",
+                  "operationId": "GetItems",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                  "table": "@parameters('Ev_Con_List_RoleUtilisateurEntite (cm237_Ev_Con_List_RoleUtilisateurEntite)')",
+                  "$filter": "RoleId/Id eq '@{variables('idRoleServiceAchat')}' and EntiteId/Id eq '@{outputs('Get_item_Expression_Besoin')?['body/EntiteId/Id']}'"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Appliquer_à_chacun": {
+              "foreach": "@outputs('Obtenir_les_éléments')?['body/value']",
+              "actions": {
+                "Ajouter_à_la_variable_de_chaîne": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "15da6417-70b2-4bbb-a282-d809b5ae6b30"
+                  },
+                  "type": "AppendToStringVariable",
+                  "inputs": {
+                    "name": "listEmailServisceAChat",
+                    "value": "@{items('Appliquer_à_chacun')?['Personne/Email']};"
+                  }
+                }
+              },
+              "runAfter": {
+                "Get_item_EB_MAJ": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "81d9e525-9746-46b8-9b07-2aa9d1b219f9"
+              },
+              "type": "Foreach"
+            },
+            "Envoyer_un_e-mail_(V2)": {
+              "runAfter": {
+                "Create_file_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "aea672c9-5d59-4fb9-975e-c13b8d19a993"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_office365_1",
+                  "operationId": "SendEmailV2",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+                },
+                "parameters": {
+                  "emailMessage/To": "@variables('listEmailServisceAChat')",
+                  "emailMessage/Subject": "@{variables('CodeDirection')} -  EB n° @{outputs('Get_item_Expression_Besoin')?['body/Code']} - @{outputs('Get_item_Expression_Besoin')?['body/LibelleEB']}",
+                  "emailMessage/Body": "<p><br></p>",
+                  "emailMessage/Attachments": [
+                    {
+                      "Name": "@{outputs('Get_item_Expression_Besoin')?['body/Code']}.pdf",
+                      "ContentBytes": "@body('Convert_Word_Document_to_PDF')"
+                    }
+                  ]
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Populate_a_Microsoft_Word_template": {
+              "runAfter": {
+                "Appliquer_à_chacun": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "01VRROURO7XUX4C3NR2ZCLWTWCK7H77BG4": "/template/TemplateEb valide.docx",
+                "operationMetadataId": "d6ee6ce4-1c8f-430b-93ed-52ca600c8025",
+                "01A5PEFYYJOGHJFUU3PRCKKSKOI54NMKUT": "/template/TemplateEb valide.docx",
+                "01AEFNLSSUYMCAA4WRCVDZYEO6ZIKEQJD5": "/template/TemplateEb valide.docx",
+                "01LIZSE6LH7VU4I6YMMRHIVNQXE3343BHA": "/template/TemplateEb valide.docx",
+                "01VRROURPFVHDBRBJ3QBCIL27EFTATLE76": "/template/TemplateEb valide.docx",
+                "01A5PEFYYGVPCRZA3JX5EKSTJMIKEABPPB": "/templateTest/TemplateEb valide.docx",
+                "01ITEZTYICB6JMEA7VR5EJJO6HFMMJEC4C": "/templateTest/TemplateEb valide.docx"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_wordonlinebusiness",
+                  "operationId": "CreateFileItem",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness"
+                },
+                "parameters": {
+                  "source": "@parameters('EV_CON_ZULAA_DEV (cm237_EV_CON_ZULAA_DEV)')",
+                  "drive": "@parameters('Ev_Folder_WordDocumentsDev (cm237_Ev_Folder_WordDocumentsDev)')",
+                  "file": "01ITEZTYICB6JMEA7VR5EJJO6HFMMJEC4C",
+                  "dynamicFileSchema/856932921": "@outputs('Get_item_EB_MAJ')?['body/Validateur']",
+                  "dynamicFileSchema/964707228": "@outputs('Get_item_Expression_Besoin')?['body/Author/DisplayName']",
+                  "dynamicFileSchema/1303273336": "@outputs('Get_item_Expression_Besoin')?['body/Code']",
+                  "dynamicFileSchema/1981503401": "@outputs('Get_item_Expression_Besoin')?['body/DepartementId/Value']",
+                  "dynamicFileSchema/-968896585": "@outputs('Get_item_Expression_Besoin')?['body/DirectionId/Value']",
+                  "dynamicFileSchema/-1594169970": "@outputs('Get_item_Expression_Besoin')?['body/SiteCentreCoutId/Value']",
+                  "dynamicFileSchema/-932973856": "@formatDateTime(outputs('Get_item_Expression_Besoin')?['body/Created'],'dd/MM/yyyy HH:mm')",
+                  "dynamicFileSchema/-458727495": "@formatDateTime(outputs('Get_item_EB_MAJ')?['body/DateValidation'],'dd/MM/yyyy HH:mm')",
+                  "dynamicFileSchema/-1456398558": "@variables('listCategorieDescription')",
+                  "dynamicFileSchema/-365911044": "@formatDateTime(utcNow(),'dd/MM/yyyy HH:mm')"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Convert_Word_Document_to_PDF": {
+              "runAfter": {
+                "Create_file": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "1cb9eeb9-7b91-4ccb-b02d-6fc059774c7b"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_wordonlinebusiness",
+                  "operationId": "GetFilePDF",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness"
+                },
+                "parameters": {
+                  "source": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                  "drive": "b!6il7iNrwPkeAZSj9H9rwyazn-jhiKtFMi0sIUrDzB6JOL6oEzXHaR6Vfi6CTHCt9",
+                  "file": "/state/@{outputs('Create_file')?['body/Name']}"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Create_file": {
+              "runAfter": {
+                "Populate_a_Microsoft_Word_template": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "e0ff2966-9ac8-4ef4-be28-a883247eb0ba"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline",
+                  "operationId": "CreateFile",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                  "folderPath": "/Shared Documents/state",
+                  "name": "@{outputs('Get_item_Expression_Besoin')?['body/Code']}.docx",
+                  "body": "@outputs('Populate_a_Microsoft_Word_template')?['body']"
+                },
+                "authentication": "@parameters('$authentication')"
+              },
+              "runtimeConfiguration": {
+                "contentTransfer": {
+                  "transferMode": "Chunked"
+                }
+              }
+            },
+            "Get_item_EB_MAJ": {
+              "runAfter": {
+                "Obtenir_les_éléments": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "df7cbdf3-abda-47c0-b156-0da63a73b526"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline",
+                  "operationId": "GetItem",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                  "table": "@parameters('Ev_Con_List_ExpressionBesoin (cm237_Ev_Con_List_ExpressionBesoin)')",
+                  "id": "@outputs('Get_item_Expression_Besoin')?['body/ID']"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Create_file_2": {
+              "runAfter": {
+                "Convert_Word_Document_to_PDF": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "f5989383-41f6-4c6f-803a-d11ad075427c"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline",
+                  "operationId": "CreateFile",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                  "folderPath": "/Shared Documents/Doc/SMT/EB",
+                  "name": "@{outputs('Get_item_Expression_Besoin')?['body/Code']}.pdf",
+                  "body": "@body('Convert_Word_Document_to_PDF')"
+                },
+                "authentication": "@parameters('$authentication')"
+              },
+              "runtimeConfiguration": {
+                "contentTransfer": {
+                  "transferMode": "Chunked"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Start_and_wait_for_an_approval": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Apply_to_each": {
+                "foreach": "@outputs('Start_and_wait_for_an_approval')?['body/responses']",
+                "actions": {
+                  "Update_item": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "fe010f41-e8ef-4ca9-ab8e-3a8f9d40b9b6"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_sharepointonline",
+                        "operationId": "PatchItem",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                      },
+                      "parameters": {
+                        "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                        "table": "@parameters('Ev_Con_List_ExpressionBesoin (cm237_Ev_Con_List_ExpressionBesoin)')",
+                        "id": "@outputs('Get_item_Expression_Besoin')?['body/ID']",
+                        "item/Validateur": "@items('Apply_to_each')?['responder/displayName']",
+                        "item/DateValidation": "@outputs('Start_and_wait_for_an_approval')?['body/completionDate']",
+                        "item/Statut/Value": "Refusé",
+                        "item/Raison": "@items('Apply_to_each')?['comments']"
+                      },
+                      "authentication": "@parameters('$authentication')"
+                    }
+                  }
+                },
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "8b097ab7-7d2d-4d7a-9220-e643100bb3e7"
+                },
+                "type": "Foreach"
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@outputs('Start_and_wait_for_an_approval')?['body/outcome']",
+              "Approve"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d4e44751-b9ad-4dd7-8dbf-a45e2da0f087"
+          },
+          "type": "If"
+        },
+        "Initialiser_la_variable": {
+          "runAfter": {
+            "VarListResponsableMétier": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e17e7dbb-e30d-459d-ab2f-ce932b1c97e5"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "idRoleServiceAchat",
+                "type": "integer",
+                "value": 16
+              }
+            ]
+          }
+        },
+        "Initialiser_la_variable_2": {
+          "runAfter": {
+            "Initialiser_la_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "1ec3ca7a-0009-4181-b1b3-35112c771a9a"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "listEmailServisceAChat",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Initialiser_la_variable_3": {
+          "runAfter": {
+            "Initialiser_la_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "855b4cd9-a0ad-495e-864e-4c4bf07a0b9f"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "listHTML",
+                "type": "string",
+                "value": "<ul>"
+              }
+            ]
+          }
+        },
+        "Ajouter_à_la_variable_de_chaîne_3": {
+          "runAfter": {
+            "Apply_to_each_CategoryEB": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "8c9721ee-bd07-4695-9193-f5f2fd0aa4ac"
+          },
+          "type": "AppendToStringVariable",
+          "inputs": {
+            "name": "listHTML",
+            "value": "</ul>"
+          }
+        },
+        "Obtenir_les_pièces_jointes": {
+          "runAfter": {
+            "Initialiser_la_variable_5": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e46c7dba-a47e-4287-829d-599f58a8b484"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline",
+              "operationId": "GetItemAttachments",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_ExpressionBesoin (cm237_Ev_Con_List_ExpressionBesoin)')",
+              "itemId": "@outputs('Get_item_Expression_Besoin')?['body/ID']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Initialiser_la_variable_4": {
+          "runAfter": {
+            "Condition_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "7034e43c-b306-4582-92d0-f7f873a9bd75"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "listAttachment",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Apply_to_each_PJ": {
+          "foreach": "@body('Obtenir_les_pièces_jointes')",
+          "actions": {
+            "Ajouter_à_la_variable_de_chaîne_4": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "b363fec8-44ed-49ca-801d-fbc78f06ea22"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "listAttachment",
+                "value": "- Nom du fichier : @{items('Apply_to_each_PJ')?['DisplayName']}; lien : @{join(split(items('Apply_to_each_PJ')?['AbsoluteUri'],' '),'%20')}\n"
+              }
+            },
+            "Obtenir_le_contenu_du_fichier": {
+              "runAfter": {
+                "Ajouter_à_la_variable_de_chaîne_4": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "78530a5c-8464-4136-8a7a-5b9a733df9fe"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline",
+                  "operationId": "GetFileContent",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                  "id": "@items('Apply_to_each_PJ')?['Id']",
+                  "inferContentType": true
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Ajouter_à_la_variable_de_tableau": {
+              "runAfter": {
+                "Obtenir_le_contenu_du_fichier": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "6aaf813a-11f2-4a8f-b852-79448d511afb"
+              },
+              "type": "AppendToArrayVariable",
+              "inputs": {
+                "name": "Attachments",
+                "value": {
+                  "Name": "@items('Apply_to_each_PJ')?['DisplayName']",
+                  "content": "@body('Obtenir_le_contenu_du_fichier')"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Obtenir_les_pièces_jointes": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "7b21589a-e224-4f57-97c5-75acccfc0c40"
+          },
+          "type": "Foreach"
+        },
+        "Initialize_variable": {
+          "runAfter": {
+            "Initialiser_la_variable_3": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "420627aa-6a6e-436a-84aa-5350fa17fc76"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "listCategorieDescription",
+                "type": "array",
+                "value": []
+              }
+            ]
+          }
+        },
+        "Date_Warning": {
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "0e2bf671-ab7d-4313-b935-703c3f2ef209"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "dateWarning",
+                "type": "string",
+                "value": "NB : Veuillez donner votre approbation avant le : @{addDays(utcNow(), 28, 'dd/MM/yyyy')}"
+              }
+            ]
+          }
+        },
+        "Code_Direction": {
+          "runAfter": {
+            "Date_Warning": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "cf3ad8fa-0378-4f86-8c37-e3291840c633"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "CodeDirection",
+                "type": "string",
+                "value": "\"\""
+              }
+            ]
+          }
+        },
+        "Condition_2": {
+          "actions": {
+            "Set_variable_2": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "38759714-10c3-443b-9109-1bc41891ae39"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "CodeDirection",
+                "value": "\"\""
+              }
+            }
+          },
+          "runAfter": {
+            "Get_item_Expression_Besoin": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Get_item_direction": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "dae5e9c5-7a92-454b-8525-e43d1f12b39d"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_sharepointonline",
+                    "operationId": "GetItem",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                  },
+                  "parameters": {
+                    "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                    "table": "@parameters('Ev_Con_List_Direction (cm237_Ev_Con_List_Direction)')",
+                    "id": "@outputs('Get_item_Expression_Besoin')?['body/DirectionId/Id']"
+                  },
+                  "authentication": "@parameters('$authentication')"
+                }
+              },
+              "Set_variable_3": {
+                "runAfter": {
+                  "Get_item_direction": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "9ae6db6b-d5e2-4a71-b0b4-a52b9589f9f7"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "CodeDirection",
+                  "value": "@outputs('Get_item_direction')?['body/CodeDirection']"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@empty(outputs('Get_item_Expression_Besoin')?['body/DirectionId'])",
+              true
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "1661583c-3233-4892-b3f6-f4fa8ba9ac2b"
+          },
+          "type": "If"
+        },
+        "Initialiser_la_variable_5": {
+          "runAfter": {
+            "Initialiser_la_variable_4": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "ebbe8a87-9d95-4dac-8c0e-16102daa0e7c"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Attachments",
+                "type": "array",
+                "value": []
+              }
+            ]
+          }
+        },
+        "Historique": {
+          "runAfter": {
+            "Update_item_3": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "82fd920d-dcfb-4f4d-85ae-7b6fcc493416"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline",
+              "operationId": "PostItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_FlowHistory (cm237_Ev_Con_List_FlowHistory)')",
+              "item/Title": "SMT_ValidationNotificationExpression",
+              "item/ElementId": "EB",
+              "item/ValidateurName": "@variables('VarListResponsableMetier')",
+              "item/FlowType/Value": "Classic"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Compose": {
+          "runAfter": {
+            "Code_Direction": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "65831669-6d60-46d9-aac6-617390ce521b"
+          },
+          "type": "Compose",
+          "inputs": "@triggerOutputs()?['body/idExpressionBesoin']"
+        },
+        "Update_item_3": {
+          "runAfter": {
+            "Apply_to_each_RM": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5b0d5673-cb70-4ffb-b729-fc0256b087b7"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline",
+              "operationId": "PatchItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_ExpressionBesoin (cm237_Ev_Con_List_ExpressionBesoin)')",
+              "id": "@outputs('Get_item_Expression_Besoin')?['body/ID']",
+              "item/ValidateurActuelle": "@variables('VarListResponsableMetier')"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "outputs": {}
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

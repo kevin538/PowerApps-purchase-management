@@ -1,0 +1,13 @@
+<environmentvariabledefinition schemaname="cm237_Ev_Folder_WordDocumentsDev">
+  <description default="Biblithèque de documents à renseigner pour les templates de documents">
+    <label description="Biblithèque de documents à renseigner pour les templates de documents" languagecode="1033" />
+  </description>
+  <displayname default="Ev_Folder_WordDocumentsDev">
+    <label description="Ev_Folder_WordDocumentsDev" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.19</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>

@@ -1,0 +1,624 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_SharePoint_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_List_DemandeAchat (cm237_Ev_Con_List_DemandeAchat)": {
+          "defaultValue": "dc29577c-7a2d-443c-a0dc-4b40672fc0cf",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_DemandeAchat",
+            "description": "DEMANDEACHAT"
+          }
+        },
+        "Ev_Con_List_ExpressionBesoin (cm237_Ev_Con_List_ExpressionBesoin)": {
+          "defaultValue": "0ff6249c-664c-454b-a5d6-9ae8c5b6242e",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_ExpressionBesoin",
+            "description": "Connexion à la liste Sharepoint des Exxpressions de Besoins"
+          }
+        },
+        "Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)": {
+          "defaultValue": "https://teamsite.msc.com/sites/NL001-SITE_ACHAT",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Site_ZulaaDev",
+            "description": "Site de la dev où sont stockés les templates des documents de bon de commande, expression de besoin, réception et sortie de stock"
+          }
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "55fa546b-dd7e-4128-834d-3ea2b7a9561e"
+          },
+          "type": "Request",
+          "kind": "VirtualAgent",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "numEb",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Tapez votre entrée",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_1": {
+                  "title": "Username",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text",
+                "text_1"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Return_value(s)_to_Power_Virtual_Agents": {
+          "runAfter": {
+            "Condition": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "83fa0b24-159f-44bd-a63b-e4ccadcec793"
+          },
+          "type": "Response",
+          "kind": "VirtualAgent",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "resulteb": "@variables('result')",
+              "existeb": "@variables('ExistEB')",
+              "existda": "@variables('ExistDA')",
+              "resultda": "@variables('davar')"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "resulteb": {
+                  "title": "resultEB",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                },
+                "existeb": {
+                  "title": "ExistEB",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                },
+                "existda": {
+                  "title": "ExistDA",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                },
+                "resultda": {
+                  "title": "ResultDA",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Initialiser_la_variable": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "79927a36-4f34-4984-9faf-f033bf5c543c"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "idEb",
+                "type": "integer"
+              }
+            ]
+          }
+        },
+        "Initialiser_la_variable_2": {
+          "runAfter": {
+            "Initialize_variable_4": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "575d77c5-915e-4845-a2ba-ba3f23b7023b"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "result",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Initialiser_la_variable_3": {
+          "runAfter": {
+            "Initialiser_la_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "3d78505b-fc51-43ee-b701-66d0f5291e0a"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "davar",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Initialize_variable": {
+          "runAfter": {
+            "Initialiser_la_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6c54df11-a480-4fe7-a838-01bc3acb009b"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "CodeEb",
+                "type": "string",
+                "value": "@{toUpper(triggerBody()['text'])}"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_2": {
+          "runAfter": {
+            "Initialize_variable_5": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d4e03542-efe5-4790-a658-0a646fc1522a"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "UserEmail",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "GetitemsEB": {
+          "runAfter": {
+            "Initialize_variable_6": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "2a653311-d615-46f7-a3ca-069fbe96f92b"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline",
+              "operationId": "GetItems"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_ExpressionBesoin (cm237_Ev_Con_List_ExpressionBesoin)')",
+              "$filter": "Code eq '@{variables('CodeEb')}'"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Initialize_variable_3": {
+          "runAfter": {
+            "Initialize_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "69f86b36-8c57-4439-b6ee-57a1e9144538"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ExistEB",
+                "type": "string",
+                "value": "NON"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_4": {
+          "runAfter": {
+            "Initialize_variable_3": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "aa10bfc4-8362-40e8-b9c6-88c62c6368d3"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ExistDA",
+                "type": "string",
+                "value": "NON"
+              }
+            ]
+          }
+        },
+        "Condition": {
+          "actions": {
+            "Set_variable_2": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "b2648b75-8244-4a3d-b1a6-c7d94ad61e84"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "ExistEB",
+                "value": "OUI"
+              }
+            },
+            "Apply_to_each": {
+              "foreach": "@outputs('GetitemsEB')?['body/value']",
+              "actions": {
+                "Set_variable_3": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "378b91dd-b1d6-4855-aec0-8a633dee108a"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "idEb",
+                    "value": "@items('Apply_to_each')?['ID']"
+                  }
+                },
+                "Set_variable_4": {
+                  "runAfter": {
+                    "Set_variable_3": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "6d116f4e-2cda-42df-9492-53b8ec7a54f7"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "CodeEb",
+                    "value": "@items('Apply_to_each')?['Code']"
+                  }
+                }
+              },
+              "runAfter": {
+                "Set_variable_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "477dae47-ebbe-439f-85cc-856d2190b3ba"
+              },
+              "type": "Foreach"
+            },
+            "Get_item": {
+              "runAfter": {
+                "Apply_to_each": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "f3df96b7-3a69-4b56-bb2f-2e28ed0ef416"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                  "connectionName": "shared_sharepointonline",
+                  "operationId": "GetItem"
+                },
+                "parameters": {
+                  "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                  "table": "@parameters('Ev_Con_List_ExpressionBesoin (cm237_Ev_Con_List_ExpressionBesoin)')",
+                  "id": "@variables('idEb')"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Set_variable_5": {
+              "runAfter": {
+                "Condition_3": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "4479a6fd-6d75-49bc-adf4-24623ed5392a"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "result",
+                "value": "Expression de besoin Numéro : @{outputs('Get_item')?['body/Code']},\n- Valideur  : @{outputs('Get_item')?['body/Validateur']},\n- Décision Valideur :@{outputs('Get_item')?['body/Statut/Value']} ,\n- Date de Validation : @{variables('DateValidation')},\n- Raison de la Validation: @{outputs('Get_item')?['body/Raison']}"
+              }
+            },
+            "GetitemsDA": {
+              "runAfter": {
+                "Set_variable_5": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "9aa62bc9-5cb9-4c7e-80b7-7b5e9de80739"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                  "connectionName": "shared_sharepointonline",
+                  "operationId": "GetItems"
+                },
+                "parameters": {
+                  "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                  "table": "@parameters('Ev_Con_List_DemandeAchat (cm237_Ev_Con_List_DemandeAchat)')",
+                  "$filter": "ExpressionBesoinId/Id eq '@{variables('idEb')}'",
+                  "$top": 1
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Condition_2": {
+              "actions": {
+                "Set_variable_7": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "0ea0aea2-5843-4116-bc5c-78efef43c288"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "ExistDA",
+                    "value": "OUI"
+                  }
+                },
+                "Apply_to_each_2": {
+                  "foreach": "@outputs('GetitemsDA')?['body/value']",
+                  "actions": {
+                    "Set_variable_8": {
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "d8b63a49-6890-45a3-ab73-775a92b1360d"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "idDa",
+                        "value": "@items('Apply_to_each_2')?['ID']"
+                      }
+                    }
+                  },
+                  "runAfter": {
+                    "Set_variable_7": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "0d4d6aff-4326-48ed-9079-e776f8dbb44e"
+                  },
+                  "type": "Foreach"
+                },
+                "GetitemDA": {
+                  "runAfter": {
+                    "Apply_to_each_2": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "9ee8c563-a6ca-433e-bfa1-7a58ba0d0d37"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                      "connectionName": "shared_sharepointonline",
+                      "operationId": "GetItem"
+                    },
+                    "parameters": {
+                      "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                      "table": "@parameters('Ev_Con_List_DemandeAchat (cm237_Ev_Con_List_DemandeAchat)')",
+                      "id": "@variables('idDa')"
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  }
+                },
+                "Set_variable_9": {
+                  "runAfter": {
+                    "GetitemDA": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "3d33aa1c-8026-4a6f-8861-47329795d3f0"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "davar",
+                    "value": " \nInformations sur la demande d'achat : \n- Demande D'achat Numero :  @{outputs('GetitemDA')?['body/ID']},\n- Montant HT :  @{outputs('GetitemDA')?['body/Montant']}  @{outputs('GetitemDA')?['body/Devise/Value']},\n- Montant TTC : @{outputs('GetitemDA')?['body/MontantTTC']}   @{outputs('GetitemDA')?['body/Devise/Value']},\n- Acheteur : @{outputs('GetitemDA')?['body/Author/DisplayName']},\n- Date de création :  @{formatDateTime(outputs('GetitemDA')?['body/Created'], 'dd/MM/yyyy hh:mm')} , \n\nInformations sur la validation de la demande d'achat\n - Statut final : @{outputs('GetitemDA')?['body/Statut/Value']}\n\n"
+                  }
+                }
+              },
+              "runAfter": {
+                "GetitemsDA": [
+                  "Succeeded"
+                ]
+              },
+              "else": {
+                "actions": {
+                  "Set_variable_6": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "520d1c37-f483-4c7b-b9c6-7864a2f3e420"
+                    },
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "ExistDA",
+                      "value": "NON"
+                    }
+                  }
+                }
+              },
+              "expression": {
+                "greaterOrEquals": [
+                  "@length(outputs('GetitemsDA')?['body/value'])",
+                  1
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ea87f032-c136-4e37-9172-baa2607ad0ec"
+              },
+              "type": "If"
+            },
+            "Condition_3": {
+              "actions": {},
+              "runAfter": {
+                "Get_item": [
+                  "Succeeded"
+                ]
+              },
+              "else": {
+                "actions": {
+                  "Set_variable_10": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "a32d5dcb-5926-4e3e-b2d5-d15ac8699f17"
+                    },
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "DateValidation",
+                      "value": "@{formatDateTime(outputs('Get_item')?['body/DateValidation'], 'dd/MM/yyyy hh:mm')}"
+                    }
+                  }
+                }
+              },
+              "expression": {
+                "equals": [
+                  "@outputs('Get_item')?['body/DateValidation']",
+                  "@null"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "dcfcfe06-38a5-4b7b-a5ec-15779d96aaf5"
+              },
+              "type": "If"
+            }
+          },
+          "runAfter": {
+            "GetitemsEB": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Set_variable": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "6abe4d70-79e3-4444-97aa-1f21313fa324"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "ExistEB",
+                  "value": "NON"
+                }
+              }
+            }
+          },
+          "expression": {
+            "greaterOrEquals": [
+              "@length(outputs('GetitemsEB')?['body/value'])",
+              1
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "19089f24-d214-4e98-b15d-85c484ca8848"
+          },
+          "type": "If"
+        },
+        "Initialize_variable_5": {
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "1525c75d-0246-48db-8212-bbd7439f7c16"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "idDa",
+                "type": "integer"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_6": {
+          "runAfter": {
+            "Initialiser_la_variable_3": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "8edfaed7-0502-4cd8-a8d1-9eaf48d65b99"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "DateValidation",
+                "type": "string",
+                "value": "\"\""
+              }
+            ]
+          }
+        }
+      },
+      "outputs": {}
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

@@ -1,0 +1,548 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_SharePoint_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      },
+      "shared_approvals_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_Approval_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_approvals"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_List_Magasin (cm237_Ev_Con_List_Magasin)": {
+          "defaultValue": "47b8ce17-219e-4ef5-81c2-6ff20137a431",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_Magasin",
+            "description": "Connexion à la liste sharepoint des magasins"
+          }
+        },
+        "Ev_Con_List_FlowHistory (cm237_Ev_Con_List_FlowHistory)": {
+          "defaultValue": "0f6df2ea-31ab-40c8-afcf-9a12a9a7c8eb",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_FlowHistory"
+          }
+        },
+        "Ev_Con_List_Trigger_DS_Magasinier (cm237_Ev_Con_List_Trigger_DS_Magasinier)": {
+          "defaultValue": "035b29ef-38b6-4182-9830-e34a24ad29c3",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_Trigger_DS_Magasinier",
+            "description": "Table de lancement de la validation de la demande de sortie par le magasinier"
+          }
+        },
+        "Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)": {
+          "defaultValue": "https://teamsite.msc.com/sites/NL001-SITE_ACHAT",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Site_ZulaaDev",
+            "description": "Site de la dev où sont stockés les templates des documents de bon de commande, expression de besoin, réception et sortie de stock"
+          }
+        },
+        "Ev_Con_List_DemandeSortieStock (cm237_Ev_Con_List_DemandeSortieStock)": {
+          "defaultValue": "0aaad5c2-6862-45c9-88fe-806bcba397aa",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_DemandeSortieStock"
+          }
+        }
+      },
+      "triggers": {
+        "When_an_item_is_created": {
+          "recurrence": {
+            "frequency": "Minute",
+            "interval": 1
+          },
+          "splitOn": "@triggerOutputs()?['body/value']",
+          "metadata": {
+            "operationMetadataId": "3d2032b3-a8af-4486-be36-fd9969c6c097"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetOnNewItems"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_Trigger_DS_Magasinier (cm237_Ev_Con_List_Trigger_DS_Magasinier)')"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "Get_item_DemandeSortie": {
+          "runAfter": {
+            "AttachmentsJSON": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "93e96d38-f633-41e3-b3b8-8dcafd3876a6"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItem"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_DemandeSortieStock (cm237_Ev_Con_List_DemandeSortieStock)')",
+              "id": "@outputs('Compose')"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Get_item_Magasin": {
+          "runAfter": {
+            "Apply_to_each_8": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a04dc3d9-1d4b-4ebd-8a29-42dada3967f5"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItem"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_Magasin (cm237_Ev_Con_List_Magasin)')",
+              "id": "@outputs('Get_item_DemandeSortie')?['body/MagasinId/Id']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Initialize_variable_Gestionnaire_Stock": {
+          "runAfter": {
+            "changa_email": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5293335a-4755-49ed-9a1c-09a9c0548f70"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "GestionnaireStock",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_Proprietaire_Stock": {
+          "runAfter": {
+            "Initialize_variable_Gestionnaire_Stock": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "4e61fb2a-54d5-467d-8528-c3346e65b9ac"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ProprietaireStock",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Apply_to_each": {
+          "foreach": "@outputs('Get_item_Magasin')?['body/Gestionnaire']",
+          "actions": {
+            "Set_variable": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "eeab0b75-09a7-4ebf-bf62-376f759dcef8"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "GestionnaireStock",
+                "value": "@items('Apply_to_each')?['Email']"
+              }
+            }
+          },
+          "runAfter": {
+            "Get_item_Magasin": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "917ea8b1-b420-4981-b692-46a5dcf86f40"
+          },
+          "type": "Foreach"
+        },
+        "Initialize_variable_Ligne_DS": {
+          "runAfter": {
+            "Initialize_variable_Proprietaire_Stock": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d963e5d8-bf7e-451e-b8cb-439b61f684f7"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "LigneDS",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Start_and_wait_for_an_approval_Gestionnaire": {
+          "runAfter": {
+            "Create_item_Historique_Flow": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f41d9767-8c19-445e-81bc-57e22b4395de"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_approvals",
+              "connectionName": "shared_approvals_1",
+              "operationId": "StartAndWaitForAnApproval"
+            },
+            "parameters": {
+              "approvalType": "CustomResponse",
+              "WebhookApprovalCreationInput/responseOptions": [
+                "Valider",
+                "Refuser",
+                "Annuler"
+              ],
+              "WebhookApprovalCreationInput/title": "Validation Gestionnaire du Magasin:  Demande de Sortie @{outputs('Get_item_DemandeSortie')?['body/Title']}",
+              "WebhookApprovalCreationInput/assignedTo": "@{variables('GestionnaireStock')};",
+              "WebhookApprovalCreationInput/details": "\nMagasin: @{outputs('Get_item_DemandeSortie')?['body/MagasinId/Value']},\nDemandeur: @{outputs('Get_item_DemandeSortie')?['body/Demandeur/DisplayName']},\nDétails:  @{outputs('Get_item_DemandeSortie')?['body/Commentaires']},\nPièces jointes:\n @{variables('FileLink')}",
+              "WebhookApprovalCreationInput/requestor": "@{outputs('Get_item_DemandeSortie')?['body/Author/Email']};",
+              "WebhookApprovalCreationInput/enableNotifications": true,
+              "WebhookApprovalCreationInput/enableReassignment": true,
+              "WebhookApprovalCreationInput/attachments": "@variables('AttachmentsFichiers')"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Condition": {
+          "actions": {
+            "Apply_to_each_5": {
+              "foreach": "@outputs('Start_and_wait_for_an_approval_Gestionnaire')?['body/responses']",
+              "actions": {
+                "Update_item_2": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "adfc045b-d385-4aa2-93d7-35381d5d7642"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                      "connectionName": "shared_sharepointonline_1",
+                      "operationId": "PatchItem"
+                    },
+                    "parameters": {
+                      "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                      "table": "@parameters('Ev_Con_List_DemandeSortieStock (cm237_Ev_Con_List_DemandeSortieStock)')",
+                      "id": "@outputs('Get_item_DemandeSortie')?['body/ID']",
+                      "item/DateValidationResponsanbleMetier": "@outputs('Start_and_wait_for_an_approval_Gestionnaire')?['body/completionDate']",
+                      "item/RaisonResponsableMetier": "@items('Apply_to_each_5')?['comments']",
+                      "item/StatutValidationResponsableMetie/Value": "Valider",
+                      "item/Statut/Value": "Valider",
+                      "item/ValidateurGestionnaire": "@items('Apply_to_each_5')?['responder/displayName']"
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  }
+                }
+              },
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "1a162171-a2d0-4db0-9b22-1a18bd0adfc0"
+              },
+              "type": "Foreach"
+            }
+          },
+          "runAfter": {
+            "Start_and_wait_for_an_approval_Gestionnaire": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Apply_to_each_4": {
+                "foreach": "@outputs('Start_and_wait_for_an_approval_Gestionnaire')?['body/responses']",
+                "actions": {
+                  "Update_item": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "b80bb2e0-a90d-4147-8c68-c2d447ca172f"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                        "connectionName": "shared_sharepointonline_1",
+                        "operationId": "PatchItem"
+                      },
+                      "parameters": {
+                        "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                        "table": "@parameters('Ev_Con_List_DemandeSortieStock (cm237_Ev_Con_List_DemandeSortieStock)')",
+                        "id": "@outputs('Get_item_DemandeSortie')?['body/ID']",
+                        "item/DateValidationResponsanbleMetier": "@outputs('Start_and_wait_for_an_approval_Gestionnaire')?['body/completionDate']",
+                        "item/RaisonResponsableMetier": "@items('Apply_to_each_4')?['comments']",
+                        "item/StatutValidationResponsableMetie/Value": "@outputs('Start_and_wait_for_an_approval_Gestionnaire')?['body/outcome']",
+                        "item/Statut/Value": "@outputs('Start_and_wait_for_an_approval_Gestionnaire')?['body/outcome']",
+                        "item/ValidateurGestionnaire": "@items('Apply_to_each_4')?['responder/displayName']"
+                      },
+                      "authentication": "@parameters('$authentication')"
+                    }
+                  }
+                },
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "eacce924-e1f0-431a-8b5d-a095c3906022"
+                },
+                "type": "Foreach"
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@outputs('Start_and_wait_for_an_approval_Gestionnaire')?['body/outcome']",
+              "Valider"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "2ab03367-5386-4bef-8489-42e99247e425"
+          },
+          "type": "If"
+        },
+        "Get_attachments": {
+          "runAfter": {
+            "Get_item_DemandeSortie": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "2c909af3-76df-4031-8a40-1ee61741fee8"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItemAttachments"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_DemandeSortieStock (cm237_Ev_Con_List_DemandeSortieStock)')",
+              "itemId": "@outputs('Get_item_DemandeSortie')?['body/ID']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Apply_to_each_8": {
+          "foreach": "@body('Get_attachments')",
+          "actions": {
+            "Get_attachment_content": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "4e763ca0-7c5d-40a6-94d1-21f2be875c31"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                  "connectionName": "shared_sharepointonline_1",
+                  "operationId": "GetAttachmentContent"
+                },
+                "parameters": {
+                  "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                  "table": "@parameters('Ev_Con_List_DemandeSortieStock (cm237_Ev_Con_List_DemandeSortieStock)')",
+                  "itemId": "@outputs('Get_item_DemandeSortie')?['body/ID']",
+                  "attachmentId": "@item()?['Id']"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Append_to_string_variable_2": {
+              "runAfter": {
+                "Get_attachment_content": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "32efa9fb-1b72-42b7-b673-e66219492051"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "FileLink",
+                "value": "- @{item()?['DisplayName']}: @{join(split(items('Apply_to_each_8')?['AbsoluteUri'],' '),'%20')};\n\n"
+              }
+            },
+            "Append_to_array_variable": {
+              "runAfter": {
+                "Append_to_string_variable_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "203d3c53-f9c6-462a-9029-ba611d53bdc7"
+              },
+              "type": "AppendToArrayVariable",
+              "inputs": {
+                "name": "AttachmentsFichiers",
+                "value": {
+                  "name": "@item()?['DisplayName']",
+                  "content": "@base64(outputs('Get_attachment_content')?['body'])"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Get_attachments": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "0c777b65-4fa0-439b-9f04-62af8f4c0afc"
+          },
+          "type": "Foreach"
+        },
+        "Initialize_variable": {
+          "runAfter": {
+            "Initialize_variable_Ligne_DS": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "22cc4600-6378-4f5c-8630-0ce8b5e07671"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "FileLink",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "AttachmentsJSON": {
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6f210356-2bff-454b-9e29-eacae1fc8fbb"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "AttachmentsFichiers",
+                "type": "array"
+              }
+            ]
+          }
+        },
+        "Create_item_Historique_Flow": {
+          "runAfter": {
+            "Apply_to_each": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a5000b93-015e-4a4b-bae3-503ecd02e4a0"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "PostItem"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_FlowHistory (cm237_Ev_Con_List_FlowHistory)')",
+              "item/Title": "ZulaaValidationDemandeSortie",
+              "item/ElementId": "@outputs('Get_item_DemandeSortie')?['body/Title']",
+              "item/ValidateurName": "@variables('GestionnaireStock')",
+              "item/FlowType/Value": "Classic"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Compose": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "fea0e207-4923-4382-952c-957354117c77"
+          },
+          "type": "Compose",
+          "inputs": "@int(string(triggerOutputs()?['body/IdDemandeSortieStock']))"
+        },
+        "changa_email": {
+          "runAfter": {
+            "Compose": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "90529cbe-4bb0-46ea-bfa7-56adbb802295"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Changa",
+                "type": "string",
+                "value": "ext.lionel.changa@aglgroup.com"
+              }
+            ]
+          }
+        }
+      },
+      "outputs": {}
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

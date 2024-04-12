@@ -1,0 +1,115 @@
+{
+  "intents": [
+    {
+      "dialogId": "new_topic_5aea724fdd0c41c184fcf4112c72bc4a",
+      "isTriggeringEnabled": true,
+      "id": "new_topic_5aea724fdd0c41c184fcf4112c72bc4a",
+      "displayName": "Centre de cout",
+      "createdTime": "2022-03-04T13:10:19.5814982Z",
+      "updatedTime": "2022-03-04T13:14:37.0152635Z",
+      "createdUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    }
+  ],
+  "dialogs": [
+    {
+      "rootNodeId": "97ea36a2-6a1e-429a-921e-628059432382",
+      "messageNodes": [
+        {
+          "botMessageId": "f6ec0228-0ade-45e6-8d09-434d36b22889",
+          "nodeType": "BotMessageNode",
+          "id": "3cc4504a-4c9e-4fae-bab4-f448f5373aca"
+        },
+        {
+          "botMessageId": "69b21994-2e18-439b-87f7-dc6b12f77742",
+          "nodeType": "BotMessageNode",
+          "id": "dfbf1308-706b-4c87-9fa8-40a5594576cf",
+          "defaultTargetNodeId": "97ea36a2-6a1e-429a-921e-628059432382"
+        }
+      ],
+      "questionNodes": [
+        {
+          "contextVariableId": "8f8c363c-d055-4d9e-90cb-c012a73bd525",
+          "nodeType": "QuestionNode",
+          "id": "97ea36a2-6a1e-429a-921e-628059432382",
+          "routes": [
+            {
+              "expression": "@equals(parameters('new_variable_48bcf79f05264a4abbdca8ef44a81e3d_d6dc6489604f4517b3414bb9acd52b7f'), '9c8a2ae8-905d-4771-8494-a1c2758c1dd6')",
+              "targetNodeId": "3cc4504a-4c9e-4fae-bab4-f448f5373aca"
+            }
+          ],
+          "defaultTargetNodeId": "dfbf1308-706b-4c87-9fa8-40a5594576cf"
+        }
+      ],
+      "id": "new_topic_5aea724fdd0c41c184fcf4112c72bc4a",
+      "displayName": "Untitled",
+      "createdTime": "2022-03-04T13:10:19.5814982Z",
+      "updatedTime": "2022-03-04T13:14:37.0152635Z",
+      "createdUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    }
+  ],
+  "botMessages": [
+    {
+      "channelContent": {
+        "web": {
+          "contentFormat": "Markdown",
+          "content": "veuillez entre le centre de cout"
+        }
+      },
+      "id": "18bd459b-7ae6-4d18-b859-b53a09cf1311",
+      "createdTime": "2022-03-04T13:08:32.345Z",
+      "updatedTime": "2022-03-04T13:08:32.345Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "user-0"
+    },
+    {
+      "channelContent": {
+        "web": {
+          "contentFormat": "Markdown",
+          "content": "D'accord"
+        }
+      },
+      "id": "f6ec0228-0ade-45e6-8d09-434d36b22889",
+      "createdTime": "2022-03-04T13:09:29.194Z",
+      "updatedTime": "2022-03-04T13:09:29.194Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "user-0"
+    },
+    {
+      "channelContent": {
+        "web": {
+          "contentFormat": "Markdown",
+          "content": "Centre de cout introuvable"
+        }
+      },
+      "id": "69b21994-2e18-439b-87f7-dc6b12f77742",
+      "createdTime": "2022-03-04T13:09:38.073Z",
+      "updatedTime": "2022-03-04T13:09:38.073Z",
+      "createdUserId": "user-0",
+      "updatedUserId": "user-0"
+    }
+  ],
+  "contextVariables": [
+    {
+      "customTypeId": "new_customtype_e13bdcef0d884477a12196ba2f4d361c",
+      "initializerType": "UserQuestion",
+      "scope": "Dialog",
+      "greedySlotFillingEnabled": true,
+      "isInput": false,
+      "externalInitializationAllowed": false,
+      "messages": {
+        "GetValue": [
+          "18bd459b-7ae6-4d18-b859-b53a09cf1311"
+        ]
+      },
+      "isGlobal": false,
+      "id": "8f8c363c-d055-4d9e-90cb-c012a73bd525",
+      "displayName": "centreCout",
+      "createdTime": "2022-03-04T13:10:19.5814982Z",
+      "updatedTime": "2022-03-04T13:14:37.0152635Z",
+      "createdUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4",
+      "updatedUserId": "c8e8bdc3-9feb-4aa6-9939-348e28e103f4"
+    }
+  ]
+}

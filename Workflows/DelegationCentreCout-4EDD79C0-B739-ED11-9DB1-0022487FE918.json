@@ -1,0 +1,2055 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_SharePoint_ZulaaProd"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      },
+      "shared_teams_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_sharedteams_da33c"
+        },
+        "api": {
+          "name": "shared_teams"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_List_DelegationPersonnel (cm237_Ev_Con_List_DelegationPersonnel)": {
+          "defaultValue": "ba191c5e-eebc-4601-b0b3-0209b4fae7ed",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_DelegationPersonnel",
+            "description": "Connexion à la liste sharepoint de DélegationPersonnel"
+          }
+        },
+        "Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)": {
+          "defaultValue": "d8dfb529-f01e-47b3-bb55-710c65c63e74",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_SiteCentreCout",
+            "description": "Connexion à la liste sharepoint des SiteCentreCout"
+          }
+        },
+        "Ev_Con_Zulaa (cm237_Ev_Con_Zulaa)": {
+          "defaultValue": "https://teamsite.msc.com/sites/NL001-SITE_ACHAT",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Zulaa",
+            "description": "Site Sharepoint de production de ZULAA"
+          }
+        },
+        "Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)": {
+          "defaultValue": "https://teamsite.msc.com/sites/NL001-SITE_ACHAT",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Site_ZulaaDev",
+            "description": "Site de la dev où sont stockés les templates des documents de bon de commande, expression de besoin, réception et sortie de stock"
+          }
+        }
+      },
+      "triggers": {
+        "Lorsqu’un_élément_est_créé": {
+          "recurrence": {
+            "interval": 1,
+            "frequency": "Minute"
+          },
+          "splitOn": "@triggerOutputs()?['body/value']",
+          "metadata": {
+            "operationMetadataId": "1e5e2157-320e-4da3-a591-cb3979c0d20c"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetOnNewItems",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Zulaa (cm237_Ev_Con_Zulaa)')",
+              "table": "@parameters('Ev_Con_List_DelegationPersonnel (cm237_Ev_Con_List_DelegationPersonnel)')"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "Condition": {
+          "actions": {
+            "Commutateur": {
+              "runAfter": {},
+              "cases": {
+                "Casse_2": {
+                  "case": "Directeur Métier",
+                  "actions": {
+                    "Condition_2": {
+                      "actions": {
+                        "Appliquer_à_chacun": {
+                          "foreach": "@outputs('Obtenir_les_éléments_SiteCentreCout')?['body/value']",
+                          "actions": {
+                            "Obtenir_l’élément_CC": {
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "c6639ef7-8cab-43ea-a306-f20e73993f1a"
+                              },
+                              "type": "OpenApiConnection",
+                              "inputs": {
+                                "host": {
+                                  "connectionName": "shared_sharepointonline_1",
+                                  "operationId": "GetItem",
+                                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                                },
+                                "parameters": {
+                                  "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                                  "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+                                  "id": "@items('Appliquer_à_chacun')?['ID']"
+                                },
+                                "authentication": "@parameters('$authentication')"
+                              }
+                            },
+                            "Appliquer_à_chacun_3": {
+                              "foreach": "@outputs('Obtenir_l’élément_CC')?['body/ResponsableMetier']",
+                              "actions": {
+                                "Ajouter_à_la_variable_de_chaîne": {
+                                  "runAfter": {},
+                                  "metadata": {
+                                    "operationMetadataId": "695220ba-50a0-43a7-bf6a-0aad91b51041"
+                                  },
+                                  "type": "AppendToStringVariable",
+                                  "inputs": {
+                                    "name": "EmailDeTousLesValidateurs",
+                                    "value": "@{items('Appliquer_à_chacun_3')?['Email']};"
+                                  }
+                                }
+                              },
+                              "runAfter": {
+                                "Obtenir_l’élément_CC": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "ed44caa3-a6e7-4bae-a3f1-0de4efdf6c2b"
+                              },
+                              "type": "Foreach"
+                            },
+                            "Condition_3": {
+                              "actions": {
+                                "ResponsableMetier": {
+                                  "runAfter": {},
+                                  "metadata": {
+                                    "operationMetadataId": "e37a46b6-597a-4b4c-84de-e5b47c385527"
+                                  },
+                                  "type": "Select",
+                                  "inputs": {
+                                    "from": "@outputs('Obtenir_l’élément_CC')?['body/ResponsableMetier']",
+                                    "select": {
+                                      "Claims": "@item()?['Claims']"
+                                    }
+                                  }
+                                },
+                                "PersonnelDelegue": {
+                                  "runAfter": {
+                                    "ResponsableMetier": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "b050ecdb-ccb5-4035-8dd8-0e03c1c8f2f0"
+                                  },
+                                  "type": "Select",
+                                  "inputs": {
+                                    "from": "@outputs('Obtenir_l’élément')?['body/Personnel']",
+                                    "select": {
+                                      "Claims": "@item()?['Claims']"
+                                    }
+                                  }
+                                },
+                                "UnionRM+PD": {
+                                  "runAfter": {
+                                    "PersonnelDelegue": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "56ec6a19-bf1c-4b6e-ac39-703e35e0ae87"
+                                  },
+                                  "type": "Compose",
+                                  "inputs": "@union(body('ResponsableMetier'),body('PersonnelDelegue'))"
+                                },
+                                "Mettre_à_jour_l'élément": {
+                                  "runAfter": {
+                                    "UnionRM+PD": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "f903f58e-f4a4-4dd4-a0d2-ab8812f24da3"
+                                  },
+                                  "type": "OpenApiConnection",
+                                  "inputs": {
+                                    "host": {
+                                      "connectionName": "shared_sharepointonline_1",
+                                      "operationId": "PatchItem",
+                                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                                    },
+                                    "parameters": {
+                                      "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                                      "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+                                      "id": "@outputs('Obtenir_l’élément_CC')?['body/ID']",
+                                      "item/ResponsableMetier": "@outputs('UnionRM+PD')"
+                                    },
+                                    "authentication": "@parameters('$authentication')"
+                                  }
+                                },
+                                "Incrémenter_une_variable": {
+                                  "runAfter": {
+                                    "Mettre_à_jour_l'élément": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "a4003673-8967-410c-8bbf-d5b544bc4d5c"
+                                  },
+                                  "type": "IncrementVariable",
+                                  "inputs": {
+                                    "name": "NombreDeCC",
+                                    "value": 1
+                                  }
+                                }
+                              },
+                              "runAfter": {
+                                "Appliquer_à_chacun_3": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "expression": {
+                                "contains": [
+                                  "@variables('EmailDeTousLesValidateurs')",
+                                  "@outputs('Obtenir_l’élément')?['body/PersonnelDelegateur/Email']"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "a288fa46-b57a-4da3-8aa3-822ecfee3f10"
+                              },
+                              "type": "If"
+                            }
+                          },
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "fa6ae171-fd1a-4777-8400-0eb176ccfc35"
+                          },
+                          "type": "Foreach"
+                        }
+                      },
+                      "runAfter": {},
+                      "else": {
+                        "actions": {
+                          "Appliquer_à_chacun_2": {
+                            "foreach": "@outputs('Obtenir_l’élément')?['body/SiteCentreCoutId']",
+                            "actions": {
+                              "Obtenir_l’élément_DelegationPersonnelCC": {
+                                "runAfter": {},
+                                "metadata": {
+                                  "operationMetadataId": "ca6a5ee4-756f-4c35-8a3a-3fe5801d2b81"
+                                },
+                                "type": "OpenApiConnection",
+                                "inputs": {
+                                  "host": {
+                                    "connectionName": "shared_sharepointonline_1",
+                                    "operationId": "GetItem",
+                                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                                  },
+                                  "parameters": {
+                                    "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                                    "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+                                    "id": "@items('Appliquer_à_chacun_2')?['Id']"
+                                  },
+                                  "authentication": "@parameters('$authentication')"
+                                }
+                              },
+                              "ResponsableMetier2": {
+                                "runAfter": {
+                                  "Obtenir_l’élément_DelegationPersonnelCC": [
+                                    "Succeeded"
+                                  ]
+                                },
+                                "metadata": {
+                                  "operationMetadataId": "c3a046f5-0d1c-4769-94f6-2f5037912b42"
+                                },
+                                "type": "Select",
+                                "inputs": {
+                                  "from": "@outputs('Obtenir_l’élément_DelegationPersonnelCC')?['body/ResponsableMetier']",
+                                  "select": {
+                                    "Claims": "@item()?['Claims']"
+                                  }
+                                }
+                              },
+                              "PersonneDelegue2": {
+                                "runAfter": {
+                                  "ResponsableMetier2": [
+                                    "Succeeded"
+                                  ]
+                                },
+                                "metadata": {
+                                  "operationMetadataId": "45b6d0ff-5101-4e0b-898c-62b388800da9"
+                                },
+                                "type": "Select",
+                                "inputs": {
+                                  "from": "@outputs('Obtenir_l’élément')?['body/Personnel']",
+                                  "select": {
+                                    "Claims": "@item()?['Claims']"
+                                  }
+                                }
+                              },
+                              "UnionRP2+PD2": {
+                                "runAfter": {
+                                  "PersonneDelegue2": [
+                                    "Succeeded"
+                                  ]
+                                },
+                                "metadata": {
+                                  "operationMetadataId": "d5d80424-0c3e-48ea-8b8d-f0120f0d1c28"
+                                },
+                                "type": "Compose",
+                                "inputs": "@union(body('ResponsableMetier2'),body('PersonneDelegue2'))"
+                              },
+                              "Mettre_à_jour_l'élément_2": {
+                                "runAfter": {
+                                  "UnionRP2+PD2": [
+                                    "Succeeded"
+                                  ]
+                                },
+                                "metadata": {
+                                  "operationMetadataId": "0a071693-3cab-4c95-9492-ddbc19adb8e4"
+                                },
+                                "type": "OpenApiConnection",
+                                "inputs": {
+                                  "host": {
+                                    "connectionName": "shared_sharepointonline_1",
+                                    "operationId": "PatchItem",
+                                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                                  },
+                                  "parameters": {
+                                    "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                                    "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+                                    "id": "@outputs('Obtenir_l’élément_DelegationPersonnelCC')?['body/ID']",
+                                    "item/ResponsableMetier": "@outputs('UnionRP2+PD2')"
+                                  },
+                                  "authentication": "@parameters('$authentication')"
+                                }
+                              },
+                              "Incrémenter_une_variable_2": {
+                                "runAfter": {
+                                  "Mettre_à_jour_l'élément_2": [
+                                    "Succeeded"
+                                  ]
+                                },
+                                "metadata": {
+                                  "operationMetadataId": "d46e0f70-54b5-4b5e-8aaf-de0a55aebcc9"
+                                },
+                                "type": "IncrementVariable",
+                                "inputs": {
+                                  "name": "NombreDeCC",
+                                  "value": 1
+                                }
+                              }
+                            },
+                            "runAfter": {},
+                            "metadata": {
+                              "operationMetadataId": "eea37909-646b-4237-a50f-2a847587b5e2"
+                            },
+                            "type": "Foreach"
+                          }
+                        }
+                      },
+                      "expression": {
+                        "lessOrEquals": [
+                          "@length(outputs('Obtenir_l’élément')?['body/SiteCentreCoutId'])",
+                          0
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "b7d18bc6-35ec-4bc0-be49-597abaa447b9"
+                      },
+                      "type": "If"
+                    },
+                    "Condition_17": {
+                      "actions": {},
+                      "runAfter": {
+                        "Condition_2": [
+                          "Succeeded"
+                        ]
+                      },
+                      "else": {
+                        "actions": {
+                          "Publier_le_message_dans_une_conversation_instantanée_ou_un_canal": {
+                            "runAfter": {},
+                            "metadata": {
+                              "operationMetadataId": "c44ce84b-d2e7-4f64-abda-472bddca024d"
+                            },
+                            "type": "OpenApiConnection",
+                            "inputs": {
+                              "host": {
+                                "connectionName": "shared_teams_1",
+                                "operationId": "PostMessageToConversation",
+                                "apiId": "/providers/Microsoft.PowerApps/apis/shared_teams"
+                              },
+                              "parameters": {
+                                "poster": "Flow bot",
+                                "location": "Chat with Flow bot",
+                                "body/recipient": "@{outputs('Obtenir_l’élément')?['body/Author/Email']};",
+                                "body/messageBody": "<p><span style=\"font-size: 14px\"><strong>DELEGATION DU RESPONSABLE METIER EFFECTUEE</strong></span></p>"
+                              },
+                              "authentication": "@parameters('$authentication')"
+                            }
+                          }
+                        }
+                      },
+                      "expression": {
+                        "lessOrEquals": [
+                          "@variables('NombreDeCC')",
+                          0
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "2e67fa19-0178-4ff9-a285-aae714051fe1"
+                      },
+                      "type": "If"
+                    }
+                  }
+                },
+                "Casse_3": {
+                  "case": "Contrôle de Gestion",
+                  "actions": {
+                    "Condition_4": {
+                      "actions": {
+                        "Appliquer_à_chacun_4": {
+                          "foreach": "@outputs('Obtenir_les_éléments_SiteCentreCout')?['body/value']",
+                          "actions": {
+                            "Obtenir_l’élément_2": {
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "7a63fddb-8279-4409-8767-628585d8526b"
+                              },
+                              "type": "OpenApiConnection",
+                              "inputs": {
+                                "host": {
+                                  "connectionName": "shared_sharepointonline_1",
+                                  "operationId": "GetItem",
+                                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                                },
+                                "parameters": {
+                                  "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                                  "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+                                  "id": "@items('Appliquer_à_chacun_4')?['ID']"
+                                },
+                                "authentication": "@parameters('$authentication')"
+                              }
+                            },
+                            "Appliquer_à_chacun_5": {
+                              "foreach": "@outputs('Obtenir_l’élément_2')?['body/ControleurGestion']",
+                              "actions": {
+                                "Ajouter_à_la_variable_de_chaîne_2": {
+                                  "runAfter": {},
+                                  "metadata": {
+                                    "operationMetadataId": "61be0b72-d5dc-4517-be3b-40724f9e5524"
+                                  },
+                                  "type": "AppendToStringVariable",
+                                  "inputs": {
+                                    "name": "EmailDeTousLesValidateurs",
+                                    "value": "@{items('Appliquer_à_chacun_5')?['Email']};"
+                                  }
+                                }
+                              },
+                              "runAfter": {
+                                "Obtenir_l’élément_2": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "4d2e027b-b53c-417c-8375-4a9b0d31e0ed"
+                              },
+                              "type": "Foreach"
+                            },
+                            "Condition_5": {
+                              "actions": {
+                                "ControleGestionCC": {
+                                  "runAfter": {},
+                                  "metadata": {
+                                    "operationMetadataId": "21089575-ae8d-46c8-862c-a68960099827"
+                                  },
+                                  "type": "Select",
+                                  "inputs": {
+                                    "from": "@outputs('Obtenir_l’élément_2')?['body/ControleurGestion']",
+                                    "select": {
+                                      "Claims": "@item()?['Claims']"
+                                    }
+                                  }
+                                },
+                                "PersonnelDelegue2": {
+                                  "runAfter": {
+                                    "ControleGestionCC": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "cdb72057-4a95-46ec-bdf2-a545062cb677"
+                                  },
+                                  "type": "Select",
+                                  "inputs": {
+                                    "from": "@outputs('Obtenir_l’élément')?['body/Personnel']",
+                                    "select": {
+                                      "Claims": "@item()?['Claims']"
+                                    }
+                                  }
+                                },
+                                "UnionCGCC+PD2": {
+                                  "runAfter": {
+                                    "PersonnelDelegue2": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "b1504905-73ef-421d-aa73-25a7e0e65774"
+                                  },
+                                  "type": "Compose",
+                                  "inputs": "@union(body('ControleGestionCC'),body('PersonnelDelegue2'))"
+                                },
+                                "Mettre_à_jour_l'élément_3": {
+                                  "runAfter": {
+                                    "UnionCGCC+PD2": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "183bd29e-3d1e-457c-8dc1-a7ef94ad913e"
+                                  },
+                                  "type": "OpenApiConnection",
+                                  "inputs": {
+                                    "host": {
+                                      "connectionName": "shared_sharepointonline_1",
+                                      "operationId": "PatchItem",
+                                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                                    },
+                                    "parameters": {
+                                      "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                                      "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+                                      "id": "@outputs('Obtenir_l’élément_2')?['body/ID']",
+                                      "item/ControleurGestion": "@outputs('UnionCGCC+PD2')"
+                                    },
+                                    "authentication": "@parameters('$authentication')"
+                                  }
+                                },
+                                "Incrémenter_une_variable_3": {
+                                  "runAfter": {
+                                    "Mettre_à_jour_l'élément_3": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "2645f8ff-bab4-4c7e-a5ff-0519726741fa"
+                                  },
+                                  "type": "IncrementVariable",
+                                  "inputs": {
+                                    "name": "NombreDeCC",
+                                    "value": 1
+                                  }
+                                }
+                              },
+                              "runAfter": {
+                                "Appliquer_à_chacun_5": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "expression": {
+                                "contains": [
+                                  "@variables('EmailDeTousLesValidateurs')",
+                                  "@outputs('Obtenir_l’élément')?['body/PersonnelDelegateur/Email']"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "8d638bc6-5e6b-45e7-ba25-4f1400555db6"
+                              },
+                              "type": "If"
+                            }
+                          },
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "e83ce7ea-2c29-4dc3-9881-01f6b77c0106"
+                          },
+                          "type": "Foreach"
+                        }
+                      },
+                      "runAfter": {},
+                      "else": {
+                        "actions": {
+                          "Appliquer_à_chacun_6": {
+                            "foreach": "@outputs('Obtenir_l’élément')?['body/SiteCentreCoutId']",
+                            "actions": {
+                              "Obtenir_l’élément_3": {
+                                "runAfter": {},
+                                "metadata": {
+                                  "operationMetadataId": "00725d1b-6137-4668-a5d7-47eff8c852a1"
+                                },
+                                "type": "OpenApiConnection",
+                                "inputs": {
+                                  "host": {
+                                    "connectionName": "shared_sharepointonline_1",
+                                    "operationId": "GetItem",
+                                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                                  },
+                                  "parameters": {
+                                    "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                                    "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+                                    "id": "@items('Appliquer_à_chacun_6')?['Id']"
+                                  },
+                                  "authentication": "@parameters('$authentication')"
+                                }
+                              },
+                              "ControleGestionCC2": {
+                                "runAfter": {
+                                  "Obtenir_l’élément_3": [
+                                    "Succeeded"
+                                  ]
+                                },
+                                "metadata": {
+                                  "operationMetadataId": "3dadb95b-7b82-4a13-a6b1-39c4560f8130"
+                                },
+                                "type": "Select",
+                                "inputs": {
+                                  "from": "@outputs('Obtenir_l’élément_3')?['body/ControleurGestion']",
+                                  "select": {
+                                    "Claims": "@item()?['Claims']"
+                                  }
+                                }
+                              },
+                              "PersonneDelegue3": {
+                                "runAfter": {
+                                  "ControleGestionCC2": [
+                                    "Succeeded"
+                                  ]
+                                },
+                                "metadata": {
+                                  "operationMetadataId": "e4abb982-8e0b-43ac-8603-80676bf7d552"
+                                },
+                                "type": "Select",
+                                "inputs": {
+                                  "from": "@outputs('Obtenir_l’élément')?['body/Personnel']",
+                                  "select": {
+                                    "Claims": "@item()?['Claims']"
+                                  }
+                                }
+                              },
+                              "UnionCGCC2+PD3": {
+                                "runAfter": {
+                                  "PersonneDelegue3": [
+                                    "Succeeded"
+                                  ]
+                                },
+                                "metadata": {
+                                  "operationMetadataId": "15c19cc7-2997-4a84-b322-1247e8238571"
+                                },
+                                "type": "Compose",
+                                "inputs": "@union(body('ControleGestionCC2'),body('PersonneDelegue3'))"
+                              },
+                              "Mettre_à_jour_l'élément_4": {
+                                "runAfter": {
+                                  "UnionCGCC2+PD3": [
+                                    "Succeeded"
+                                  ]
+                                },
+                                "metadata": {
+                                  "operationMetadataId": "ceef1373-2a56-4d29-901e-9c633e6941de"
+                                },
+                                "type": "OpenApiConnection",
+                                "inputs": {
+                                  "host": {
+                                    "connectionName": "shared_sharepointonline_1",
+                                    "operationId": "PatchItem",
+                                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                                  },
+                                  "parameters": {
+                                    "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                                    "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+                                    "id": "@outputs('Obtenir_l’élément_3')?['body/ID']",
+                                    "item/ControleurGestion": "@outputs('UnionCGCC2+PD3')"
+                                  },
+                                  "authentication": "@parameters('$authentication')"
+                                }
+                              },
+                              "Incrémenter_une_variable_4": {
+                                "runAfter": {
+                                  "Mettre_à_jour_l'élément_4": [
+                                    "Succeeded"
+                                  ]
+                                },
+                                "metadata": {
+                                  "operationMetadataId": "57f7bcf9-619d-41eb-959d-0c0a1ad151a1"
+                                },
+                                "type": "IncrementVariable",
+                                "inputs": {
+                                  "name": "NombreDeCC",
+                                  "value": 1
+                                }
+                              }
+                            },
+                            "runAfter": {},
+                            "metadata": {
+                              "operationMetadataId": "1fb94a45-6c03-4895-a1e0-557800afeb48"
+                            },
+                            "type": "Foreach"
+                          }
+                        }
+                      },
+                      "expression": {
+                        "lessOrEquals": [
+                          "@length(outputs('Obtenir_l’élément')?['body/SiteCentreCoutId'])",
+                          0
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "f949074b-5736-4b63-b6c4-81c5c4abce30"
+                      },
+                      "type": "If"
+                    },
+                    "Condition_18": {
+                      "actions": {},
+                      "runAfter": {
+                        "Condition_4": [
+                          "Succeeded"
+                        ]
+                      },
+                      "else": {
+                        "actions": {
+                          "Publier_le_message_dans_une_conversation_instantanée_ou_un_canal_2": {
+                            "runAfter": {},
+                            "metadata": {
+                              "operationMetadataId": "f568091b-7a94-4990-aefc-3948b7a7166f"
+                            },
+                            "type": "OpenApiConnection",
+                            "inputs": {
+                              "host": {
+                                "connectionName": "shared_teams_1",
+                                "operationId": "PostMessageToConversation",
+                                "apiId": "/providers/Microsoft.PowerApps/apis/shared_teams"
+                              },
+                              "parameters": {
+                                "poster": "Flow bot",
+                                "location": "Chat with Flow bot",
+                                "body/recipient": "@{outputs('Obtenir_l’élément')?['body/Author/Email']};",
+                                "body/messageBody": "<p>DELEGATION DU CONTROLE DE GESTION EFFECTUEE</p>"
+                              },
+                              "authentication": "@parameters('$authentication')"
+                            }
+                          }
+                        }
+                      },
+                      "expression": {
+                        "lessOrEquals": [
+                          "@variables('NombreDeCC')",
+                          0
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "9c7450ca-11b1-41cd-bdac-35f013df393f"
+                      },
+                      "type": "If"
+                    }
+                  }
+                },
+                "Casse_4": {
+                  "case": "Validateur EB",
+                  "actions": {
+                    "Condition_6": {
+                      "actions": {
+                        "Appliquer_à_chacun_7": {
+                          "foreach": "@outputs('Obtenir_les_éléments_SiteCentreCout')?['body/value']",
+                          "actions": {
+                            "Obtenir_l’élément_4": {
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "4aa8841c-31ff-46fa-a3b0-5d4bbe7c3ff4"
+                              },
+                              "type": "OpenApiConnection",
+                              "inputs": {
+                                "host": {
+                                  "connectionName": "shared_sharepointonline_1",
+                                  "operationId": "GetItem",
+                                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                                },
+                                "parameters": {
+                                  "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                                  "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+                                  "id": "@items('Appliquer_à_chacun_7')?['ID']"
+                                },
+                                "authentication": "@parameters('$authentication')"
+                              }
+                            },
+                            "Appliquer_à_chacun_8": {
+                              "foreach": "@outputs('Obtenir_l’élément_4')?['body/ValidateurEB']",
+                              "actions": {
+                                "Ajouter_à_la_variable_de_chaîne_3": {
+                                  "runAfter": {},
+                                  "metadata": {
+                                    "operationMetadataId": "1b31cc9d-0d33-462e-abad-001b6e08adf1"
+                                  },
+                                  "type": "AppendToStringVariable",
+                                  "inputs": {
+                                    "name": "EmailDeTousLesValidateurs",
+                                    "value": "@items('Appliquer_à_chacun_8')?['Email']"
+                                  }
+                                }
+                              },
+                              "runAfter": {
+                                "Obtenir_l’élément_4": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "a9ec791b-1312-45b1-a05d-909a86d61e35"
+                              },
+                              "type": "Foreach"
+                            },
+                            "Condition_7": {
+                              "actions": {
+                                "ValidateurEBCC": {
+                                  "runAfter": {},
+                                  "metadata": {
+                                    "operationMetadataId": "27633abf-3eb5-47e6-8366-13e42c161ab5"
+                                  },
+                                  "type": "Select",
+                                  "inputs": {
+                                    "from": "@outputs('Obtenir_l’élément_4')?['body/ValidateurEB']",
+                                    "select": {
+                                      "Claims": "@item()?['Claims']"
+                                    }
+                                  }
+                                },
+                                "PersonnelDelegue4": {
+                                  "runAfter": {
+                                    "ValidateurEBCC": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "ac313802-0e8a-481d-8ee3-1bf670ac6e26"
+                                  },
+                                  "type": "Select",
+                                  "inputs": {
+                                    "from": "@outputs('Obtenir_l’élément')?['body/Personnel']",
+                                    "select": {
+                                      "Claims": "@item()?['Claims']"
+                                    }
+                                  }
+                                },
+                                "UnionVEBCC+PD4": {
+                                  "runAfter": {
+                                    "PersonnelDelegue4": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "78dc6ba0-e781-4692-a906-eb47353b30ee"
+                                  },
+                                  "type": "Compose",
+                                  "inputs": "@union(body('ValidateurEBCC'),body('PersonnelDelegue4'))"
+                                },
+                                "Mettre_à_jour_l'élément_5": {
+                                  "runAfter": {
+                                    "UnionVEBCC+PD4": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "b98e2c72-fcdd-4ed7-852c-4aad204901c2"
+                                  },
+                                  "type": "OpenApiConnection",
+                                  "inputs": {
+                                    "host": {
+                                      "connectionName": "shared_sharepointonline_1",
+                                      "operationId": "PatchItem",
+                                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                                    },
+                                    "parameters": {
+                                      "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                                      "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+                                      "id": "@outputs('Obtenir_l’élément_4')?['body/ID']",
+                                      "item/ValidateurEB": "@outputs('UnionVEBCC+PD4')"
+                                    },
+                                    "authentication": "@parameters('$authentication')"
+                                  }
+                                },
+                                "Incrémenter_une_variable_5": {
+                                  "runAfter": {
+                                    "Mettre_à_jour_l'élément_5": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "4ff47e7a-1034-45d5-89f2-a9cf4c578bb9"
+                                  },
+                                  "type": "IncrementVariable",
+                                  "inputs": {
+                                    "name": "NombreDeCC",
+                                    "value": 1
+                                  }
+                                }
+                              },
+                              "runAfter": {
+                                "Appliquer_à_chacun_8": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "expression": {
+                                "contains": [
+                                  "@variables('EmailDeTousLesValidateurs')",
+                                  "@outputs('Obtenir_l’élément')?['body/PersonnelDelegateur/Email']"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "bd1ba5bb-6328-47db-b8a7-938f30a624cb"
+                              },
+                              "type": "If"
+                            }
+                          },
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "0dbcc6a4-45f9-4032-9da2-97bc46c576fb"
+                          },
+                          "type": "Foreach"
+                        }
+                      },
+                      "runAfter": {},
+                      "else": {
+                        "actions": {
+                          "Appliquer_à_chacun_9": {
+                            "foreach": "@outputs('Obtenir_l’élément')?['body/SiteCentreCoutId']",
+                            "actions": {
+                              "Obtenir_l’élément_5": {
+                                "runAfter": {},
+                                "metadata": {
+                                  "operationMetadataId": "e31fb47a-7e83-48c1-bf7e-f9e5dfcbf43b"
+                                },
+                                "type": "OpenApiConnection",
+                                "inputs": {
+                                  "host": {
+                                    "connectionName": "shared_sharepointonline_1",
+                                    "operationId": "GetItem",
+                                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                                  },
+                                  "parameters": {
+                                    "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                                    "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+                                    "id": "@items('Appliquer_à_chacun_9')?['Id']"
+                                  },
+                                  "authentication": "@parameters('$authentication')"
+                                }
+                              },
+                              "ValidateurEBCC2": {
+                                "runAfter": {
+                                  "Obtenir_l’élément_5": [
+                                    "Succeeded"
+                                  ]
+                                },
+                                "metadata": {
+                                  "operationMetadataId": "0f5cedc8-7796-40b8-8261-a58b549dc5d2"
+                                },
+                                "type": "Select",
+                                "inputs": {
+                                  "from": "@outputs('Obtenir_l’élément_5')?['body/ValidateurEB']",
+                                  "select": {
+                                    "Claims": "@item()?['Claims']"
+                                  }
+                                }
+                              },
+                              "PeronneDelegue6": {
+                                "runAfter": {
+                                  "ValidateurEBCC2": [
+                                    "Succeeded"
+                                  ]
+                                },
+                                "metadata": {
+                                  "operationMetadataId": "f76e5be9-14a7-4071-a9b7-607f75f59f56"
+                                },
+                                "type": "Select",
+                                "inputs": {
+                                  "from": "@outputs('Obtenir_l’élément')?['body/Personnel']",
+                                  "select": {
+                                    "Claims": "@item()?['Claims']"
+                                  }
+                                }
+                              },
+                              "UnionVEBCC2+PD6": {
+                                "runAfter": {
+                                  "PeronneDelegue6": [
+                                    "Succeeded"
+                                  ]
+                                },
+                                "metadata": {
+                                  "operationMetadataId": "0cd38a39-c48b-4fd3-86c7-9ee436e1b429"
+                                },
+                                "type": "Compose",
+                                "inputs": "@union(body('ValidateurEBCC2'),body('PeronneDelegue6'))"
+                              },
+                              "Mettre_à_jour_l'élément_6": {
+                                "runAfter": {
+                                  "UnionVEBCC2+PD6": [
+                                    "Succeeded"
+                                  ]
+                                },
+                                "metadata": {
+                                  "operationMetadataId": "50022a0a-8538-45a4-81e0-ebb2afe615ba"
+                                },
+                                "type": "OpenApiConnection",
+                                "inputs": {
+                                  "host": {
+                                    "connectionName": "shared_sharepointonline_1",
+                                    "operationId": "PatchItem",
+                                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                                  },
+                                  "parameters": {
+                                    "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                                    "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+                                    "id": "@outputs('Obtenir_l’élément_5')?['body/ID']",
+                                    "item/ValidateurEB": "@outputs('UnionVEBCC2+PD6')"
+                                  },
+                                  "authentication": "@parameters('$authentication')"
+                                }
+                              },
+                              "Incrémenter_une_variable_6": {
+                                "runAfter": {
+                                  "Mettre_à_jour_l'élément_6": [
+                                    "Succeeded"
+                                  ]
+                                },
+                                "metadata": {
+                                  "operationMetadataId": "7f802b87-52d8-45bd-9600-43a8e2364d2f"
+                                },
+                                "type": "IncrementVariable",
+                                "inputs": {
+                                  "name": "NombreDeCC",
+                                  "value": 1
+                                }
+                              }
+                            },
+                            "runAfter": {},
+                            "metadata": {
+                              "operationMetadataId": "39436937-f867-42a2-b907-d97a04b39b9f"
+                            },
+                            "type": "Foreach"
+                          }
+                        }
+                      },
+                      "expression": {
+                        "lessOrEquals": [
+                          "@length(outputs('Obtenir_les_éléments_SiteCentreCout')?['body/value'])",
+                          0
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "213bb2c4-a47f-4745-a138-921475a62695"
+                      },
+                      "type": "If"
+                    },
+                    "Condition_19": {
+                      "actions": {},
+                      "runAfter": {
+                        "Condition_6": [
+                          "Succeeded"
+                        ]
+                      },
+                      "else": {
+                        "actions": {
+                          "Publier_le_message_dans_une_conversation_instantanée_ou_un_canal_3": {
+                            "runAfter": {},
+                            "metadata": {
+                              "operationMetadataId": "146dc0f6-99ad-4553-8c7e-be6d24e32729"
+                            },
+                            "type": "OpenApiConnection",
+                            "inputs": {
+                              "host": {
+                                "connectionName": "shared_teams_1",
+                                "operationId": "PostMessageToConversation",
+                                "apiId": "/providers/Microsoft.PowerApps/apis/shared_teams"
+                              },
+                              "parameters": {
+                                "poster": "Flow bot",
+                                "location": "Chat with Flow bot",
+                                "body/recipient": "@{outputs('Obtenir_l’élément')?['body/Author/Email']};",
+                                "body/messageBody": "<p><span style=\"font-size: 14px\"><strong>DELEGATION DU VALIDATEUR DES EB EFFECTUEE</strong></span></p>"
+                              },
+                              "authentication": "@parameters('$authentication')"
+                            }
+                          }
+                        }
+                      },
+                      "expression": {
+                        "lessOrEquals": [
+                          "@variables('NombreDeCC')",
+                          0
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "959d2051-5eaa-4288-9b50-43648a1daaec"
+                      },
+                      "type": "If"
+                    }
+                  }
+                }
+              },
+              "default": {
+                "actions": {}
+              },
+              "expression": "@outputs('Obtenir_l’élément')?['body/Role/Value']",
+              "metadata": {
+                "operationMetadataId": "e16bbac1-84fe-489c-8a43-70b1b4e5d70e"
+              },
+              "type": "Switch"
+            }
+          },
+          "runAfter": {
+            "Initialiser_la_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Commutateur_2": {
+                "runAfter": {},
+                "cases": {
+                  "Casse": {
+                    "case": "Directeur Métier",
+                    "actions": {
+                      "Condition_8": {
+                        "actions": {
+                          "Appliquer_à_chacun_10": {
+                            "foreach": "@outputs('Obtenir_les_éléments_SiteCentreCout')?['body/value']",
+                            "actions": {
+                              "Obtenir_l’élément_6": {
+                                "runAfter": {},
+                                "metadata": {
+                                  "operationMetadataId": "0ce09c09-7777-4865-986f-2caccaed9189"
+                                },
+                                "type": "OpenApiConnection",
+                                "inputs": {
+                                  "host": {
+                                    "connectionName": "shared_sharepointonline_1",
+                                    "operationId": "GetItem",
+                                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                                  },
+                                  "parameters": {
+                                    "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                                    "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+                                    "id": "@items('Appliquer_à_chacun_10')?['ID']"
+                                  },
+                                  "authentication": "@parameters('$authentication')"
+                                }
+                              },
+                              "Condition_9": {
+                                "actions": {
+                                  "Mettre_à_jour_l'élément_7": {
+                                    "runAfter": {},
+                                    "metadata": {
+                                      "operationMetadataId": "99a24a63-e6e3-4cd0-bb05-4f32fd938c9d"
+                                    },
+                                    "type": "OpenApiConnection",
+                                    "inputs": {
+                                      "host": {
+                                        "connectionName": "shared_sharepointonline_1",
+                                        "operationId": "PatchItem",
+                                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                                      },
+                                      "parameters": {
+                                        "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                                        "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+                                        "id": "@outputs('Obtenir_l’élément_6')?['body/ID']",
+                                        "item/ResponsableMetier": [
+                                          {
+                                            "Claims": "@outputs('Obtenir_l’élément')?['body/PersonnelDelegateur/Claims']"
+                                          }
+                                        ]
+                                      },
+                                      "authentication": "@parameters('$authentication')"
+                                    }
+                                  },
+                                  "Incrémenter_une_variable_7": {
+                                    "runAfter": {
+                                      "Mettre_à_jour_l'élément_7": [
+                                        "Succeeded"
+                                      ]
+                                    },
+                                    "metadata": {
+                                      "operationMetadataId": "aa79abdb-ae6a-4ff3-bcdd-6e28acf6e96d"
+                                    },
+                                    "type": "IncrementVariable",
+                                    "inputs": {
+                                      "name": "NombreDeCC",
+                                      "value": 1
+                                    }
+                                  }
+                                },
+                                "runAfter": {
+                                  "Message": [
+                                    "Succeeded"
+                                  ]
+                                },
+                                "expression": {
+                                  "equals": [
+                                    "@outputs('Obtenir_l’élément_6')?['body/ResponsableMetier'][0]?['Email']",
+                                    "@outputs('Obtenir_l’élément')?['body/PersonnelDelegateur/Email']"
+                                  ]
+                                },
+                                "metadata": {
+                                  "operationMetadataId": "d14542c3-0bd4-498e-a7d9-4af56db5a80b"
+                                },
+                                "type": "If"
+                              },
+                              "Message": {
+                                "runAfter": {
+                                  "Obtenir_l’élément_6": [
+                                    "Succeeded"
+                                  ]
+                                },
+                                "metadata": {
+                                  "operationMetadataId": "78d3f8eb-6a68-4157-a838-50ef4f0e2127"
+                                },
+                                "type": "Compose",
+                                "inputs": "@outputs('Obtenir_l’élément_6')?['body/ResponsableMetier'][0]?['Email']"
+                              }
+                            },
+                            "runAfter": {},
+                            "metadata": {
+                              "operationMetadataId": "1f199f2c-55f1-456c-9598-aab9166c11f3"
+                            },
+                            "type": "Foreach"
+                          }
+                        },
+                        "runAfter": {},
+                        "else": {
+                          "actions": {
+                            "Appliquer_à_chacun_11": {
+                              "foreach": "@outputs('Obtenir_l’élément')?['body/SiteCentreCoutId']",
+                              "actions": {
+                                "Obtenir_l’élément_7": {
+                                  "runAfter": {},
+                                  "metadata": {
+                                    "operationMetadataId": "85faf61d-eb8c-4f2d-ade9-3a0612ede96a"
+                                  },
+                                  "type": "OpenApiConnection",
+                                  "inputs": {
+                                    "host": {
+                                      "connectionName": "shared_sharepointonline_1",
+                                      "operationId": "GetItem",
+                                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                                    },
+                                    "parameters": {
+                                      "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                                      "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+                                      "id": "@items('Appliquer_à_chacun_11')?['Id']"
+                                    },
+                                    "authentication": "@parameters('$authentication')"
+                                  }
+                                },
+                                "Message_2": {
+                                  "runAfter": {
+                                    "Obtenir_l’élément_7": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "cbf21cae-98c3-4415-8ca3-65e3ba0445c7"
+                                  },
+                                  "type": "Compose",
+                                  "inputs": "@outputs('Obtenir_l’élément_7')?['body/ResponsableMetier'][0]?['Email']"
+                                },
+                                "Condition_10": {
+                                  "actions": {
+                                    "Mettre_à_jour_l'élément_8": {
+                                      "runAfter": {},
+                                      "metadata": {
+                                        "operationMetadataId": "232ed940-0100-48d7-a01d-e8d25cbaecee"
+                                      },
+                                      "type": "OpenApiConnection",
+                                      "inputs": {
+                                        "host": {
+                                          "connectionName": "shared_sharepointonline_1",
+                                          "operationId": "PatchItem",
+                                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                                        },
+                                        "parameters": {
+                                          "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                                          "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+                                          "id": "@outputs('Obtenir_l’élément_7')?['body/ID']",
+                                          "item/ResponsableMetier": [
+                                            {
+                                              "Claims": "@outputs('Obtenir_l’élément')?['body/PersonnelDelegateur/Claims']"
+                                            }
+                                          ]
+                                        },
+                                        "authentication": "@parameters('$authentication')"
+                                      }
+                                    },
+                                    "Incrémenter_une_variable_8": {
+                                      "runAfter": {
+                                        "Mettre_à_jour_l'élément_8": [
+                                          "Succeeded"
+                                        ]
+                                      },
+                                      "metadata": {
+                                        "operationMetadataId": "64221654-cc4c-42a8-9bcc-eebc0544f981"
+                                      },
+                                      "type": "IncrementVariable",
+                                      "inputs": {
+                                        "name": "NombreDeCC",
+                                        "value": 1
+                                      }
+                                    }
+                                  },
+                                  "runAfter": {
+                                    "Message_2": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "expression": {
+                                    "equals": [
+                                      "@outputs('Message_2')",
+                                      "@outputs('Obtenir_l’élément')?['body/PersonnelDelegateur/Email']"
+                                    ]
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "64e6619b-a347-4d86-a0db-777d65884e5b"
+                                  },
+                                  "type": "If"
+                                }
+                              },
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "b523c26e-9760-4ea7-b22b-b415e66f6f9d"
+                              },
+                              "type": "Foreach"
+                            }
+                          }
+                        },
+                        "expression": {
+                          "lessOrEquals": [
+                            "@length(outputs('Obtenir_l’élément')?['body/SiteCentreCoutId'])",
+                            0
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "c5255c7a-0ba1-402f-95b0-4aa90390e5f3"
+                        },
+                        "type": "If"
+                      },
+                      "Condition_20": {
+                        "actions": {},
+                        "runAfter": {
+                          "Condition_8": [
+                            "Succeeded"
+                          ]
+                        },
+                        "else": {
+                          "actions": {
+                            "Publier_le_message_dans_une_conversation_instantanée_ou_un_canal_4": {
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "d01d3ebf-b8b7-4c93-9ce2-43fe126ad790"
+                              },
+                              "type": "OpenApiConnection",
+                              "inputs": {
+                                "host": {
+                                  "connectionName": "shared_teams_1",
+                                  "operationId": "PostMessageToConversation",
+                                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_teams"
+                                },
+                                "parameters": {
+                                  "poster": "Flow bot",
+                                  "location": "Chat with Flow bot",
+                                  "body/recipient": "@{outputs('Obtenir_l’élément')?['body/Author/Email']};",
+                                  "body/messageBody": "<p><span style=\"font-size: 14px\"><strong>ANNULATION DE LA DELEGATION DES CENTRES DE COUT DU RESPONSABLE METIER EFFECTUEE</strong></span></p>"
+                                },
+                                "authentication": "@parameters('$authentication')"
+                              }
+                            }
+                          }
+                        },
+                        "expression": {
+                          "lessOrEquals": [
+                            "@variables('NombreDeCC')",
+                            0
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "e919ea88-02b6-44b5-a304-c770cec061d7"
+                        },
+                        "type": "If"
+                      }
+                    }
+                  },
+                  "Casse_2": {
+                    "case": "Contrôle de Gestion",
+                    "actions": {
+                      "Condition_11": {
+                        "actions": {
+                          "Appliquer_à_chacun_12": {
+                            "foreach": "@outputs('Obtenir_les_éléments_SiteCentreCout')?['body/value']",
+                            "actions": {
+                              "Obtenir_l’élément_8": {
+                                "runAfter": {},
+                                "metadata": {
+                                  "operationMetadataId": "eb69997c-0edb-499d-97ae-3c1965118a4c"
+                                },
+                                "type": "OpenApiConnection",
+                                "inputs": {
+                                  "host": {
+                                    "connectionName": "shared_sharepointonline_1",
+                                    "operationId": "GetItem",
+                                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                                  },
+                                  "parameters": {
+                                    "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                                    "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+                                    "id": "@items('Appliquer_à_chacun_12')?['ID']"
+                                  },
+                                  "authentication": "@parameters('$authentication')"
+                                }
+                              },
+                              "Message_3": {
+                                "runAfter": {
+                                  "Obtenir_l’élément_8": [
+                                    "Succeeded"
+                                  ]
+                                },
+                                "metadata": {
+                                  "operationMetadataId": "1a5d2df4-e7ed-4f69-8301-a5fd84c9d634"
+                                },
+                                "type": "Compose",
+                                "inputs": "@outputs('Obtenir_l’élément_8')?['body/ControleurGestion'][0]?['Email']"
+                              },
+                              "Condition_12": {
+                                "actions": {
+                                  "Mettre_à_jour_l'élément_9": {
+                                    "runAfter": {},
+                                    "metadata": {
+                                      "operationMetadataId": "56ec5159-dce7-45da-bed1-e4fa6fcc5f9c"
+                                    },
+                                    "type": "OpenApiConnection",
+                                    "inputs": {
+                                      "host": {
+                                        "connectionName": "shared_sharepointonline_1",
+                                        "operationId": "PatchItem",
+                                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                                      },
+                                      "parameters": {
+                                        "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                                        "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+                                        "id": "@outputs('Obtenir_l’élément_8')?['body/ID']",
+                                        "item/ControleurGestion": [
+                                          {
+                                            "Claims": "@outputs('Obtenir_l’élément')?['body/PersonnelDelegateur/Claims']"
+                                          }
+                                        ]
+                                      },
+                                      "authentication": "@parameters('$authentication')"
+                                    }
+                                  },
+                                  "Incrémenter_une_variable_9": {
+                                    "runAfter": {
+                                      "Mettre_à_jour_l'élément_9": [
+                                        "Succeeded"
+                                      ]
+                                    },
+                                    "metadata": {
+                                      "operationMetadataId": "89857112-592e-4d15-b8c3-aef05373c21b"
+                                    },
+                                    "type": "IncrementVariable",
+                                    "inputs": {
+                                      "name": "NombreDeCC",
+                                      "value": 1
+                                    }
+                                  }
+                                },
+                                "runAfter": {
+                                  "Message_3": [
+                                    "Succeeded"
+                                  ]
+                                },
+                                "expression": {
+                                  "equals": [
+                                    "@outputs('Message_3')",
+                                    "@outputs('Obtenir_l’élément')?['body/PersonnelDelegateur/Email']"
+                                  ]
+                                },
+                                "metadata": {
+                                  "operationMetadataId": "eb0969a1-043c-4777-9f74-cdc55a88dde0"
+                                },
+                                "type": "If"
+                              }
+                            },
+                            "runAfter": {},
+                            "metadata": {
+                              "operationMetadataId": "7791332e-8d06-4429-aa8c-f6b9d2ddecdb"
+                            },
+                            "type": "Foreach"
+                          }
+                        },
+                        "runAfter": {},
+                        "else": {
+                          "actions": {
+                            "Appliquer_à_chacun_13": {
+                              "foreach": "@outputs('Obtenir_l’élément')?['body/SiteCentreCoutId']",
+                              "actions": {
+                                "Obtenir_l’élément_9": {
+                                  "runAfter": {},
+                                  "metadata": {
+                                    "operationMetadataId": "23bedfb3-c90e-424e-8320-68a9e13cbf0d"
+                                  },
+                                  "type": "OpenApiConnection",
+                                  "inputs": {
+                                    "host": {
+                                      "connectionName": "shared_sharepointonline_1",
+                                      "operationId": "GetItem",
+                                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                                    },
+                                    "parameters": {
+                                      "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                                      "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+                                      "id": "@items('Appliquer_à_chacun_13')?['Id']"
+                                    },
+                                    "authentication": "@parameters('$authentication')"
+                                  }
+                                },
+                                "Message_4": {
+                                  "runAfter": {
+                                    "Obtenir_l’élément_9": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "9219b7c7-4654-4d70-915b-0cd03513397b"
+                                  },
+                                  "type": "Compose",
+                                  "inputs": "@outputs('Obtenir_l’élément_9')?['body/ControleurGestion'][0]?['Email']"
+                                },
+                                "Condition_13": {
+                                  "actions": {
+                                    "Mettre_à_jour_l'élément_10": {
+                                      "runAfter": {},
+                                      "metadata": {
+                                        "operationMetadataId": "b1a50a41-5e44-45a5-8113-6cd5343089ae"
+                                      },
+                                      "type": "OpenApiConnection",
+                                      "inputs": {
+                                        "host": {
+                                          "connectionName": "shared_sharepointonline_1",
+                                          "operationId": "PatchItem",
+                                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                                        },
+                                        "parameters": {
+                                          "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                                          "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+                                          "id": "@outputs('Obtenir_l’élément_9')?['body/ID']",
+                                          "item/ControleurGestion": [
+                                            {
+                                              "Claims": "@outputs('Obtenir_l’élément')?['body/PersonnelDelegateur/Claims']"
+                                            }
+                                          ]
+                                        },
+                                        "authentication": "@parameters('$authentication')"
+                                      }
+                                    },
+                                    "Incrémenter_une_variable_10": {
+                                      "runAfter": {
+                                        "Mettre_à_jour_l'élément_10": [
+                                          "Succeeded"
+                                        ]
+                                      },
+                                      "metadata": {
+                                        "operationMetadataId": "c70988a0-e553-4c3f-a551-ae17d96bc684"
+                                      },
+                                      "type": "IncrementVariable",
+                                      "inputs": {
+                                        "name": "NombreDeCC",
+                                        "value": 1
+                                      }
+                                    }
+                                  },
+                                  "runAfter": {
+                                    "Message_4": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "expression": {
+                                    "equals": [
+                                      "@outputs('Message_4')",
+                                      "@outputs('Obtenir_l’élément')?['body/PersonnelDelegateur/Email']"
+                                    ]
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "f9df7ba2-1431-4742-9602-4fea0fb3415c"
+                                  },
+                                  "type": "If"
+                                }
+                              },
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "d020f351-50ca-481d-a25f-a89ab4fc355f"
+                              },
+                              "type": "Foreach"
+                            }
+                          }
+                        },
+                        "expression": {
+                          "lessOrEquals": [
+                            "@length(outputs('Obtenir_l’élément')?['body/SiteCentreCoutId'])",
+                            0
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "ed8c39e0-bdf4-4c72-86fe-b2624deb0239"
+                        },
+                        "type": "If"
+                      },
+                      "Condition_21": {
+                        "actions": {},
+                        "runAfter": {
+                          "Condition_11": [
+                            "Succeeded"
+                          ]
+                        },
+                        "else": {
+                          "actions": {
+                            "Publier_le_message_dans_une_conversation_instantanée_ou_un_canal_5": {
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "2611dde3-d19c-40ca-804b-faf637f9346a"
+                              },
+                              "type": "OpenApiConnection",
+                              "inputs": {
+                                "host": {
+                                  "connectionName": "shared_teams_1",
+                                  "operationId": "PostMessageToConversation",
+                                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_teams"
+                                },
+                                "parameters": {
+                                  "poster": "Flow bot",
+                                  "location": "Chat with Flow bot",
+                                  "body/recipient": "@{outputs('Obtenir_l’élément')?['body/Author/Email']};",
+                                  "body/messageBody": "<p><span style=\"font-size: 14px\"><strong>ANNULATION DE LA DELEGATION DES CENTRES DE COUT DU CONTROLE DE GESTION EFFECTUEE</strong></span></p>"
+                                },
+                                "authentication": "@parameters('$authentication')"
+                              }
+                            }
+                          }
+                        },
+                        "expression": {
+                          "lessOrEquals": [
+                            "@variables('NombreDeCC')",
+                            0
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "851bc8cf-a32c-427f-ab47-a363130550f0"
+                        },
+                        "type": "If"
+                      }
+                    }
+                  },
+                  "Casse_3": {
+                    "case": "Validateur EB",
+                    "actions": {
+                      "Condition_14": {
+                        "actions": {
+                          "Appliquer_à_chacun_14": {
+                            "foreach": "@outputs('Obtenir_les_éléments_SiteCentreCout')?['body/value']",
+                            "actions": {
+                              "Obtenir_l’élément_10": {
+                                "runAfter": {},
+                                "metadata": {
+                                  "operationMetadataId": "c7b46b60-8c3b-4587-bfed-049fce795135"
+                                },
+                                "type": "OpenApiConnection",
+                                "inputs": {
+                                  "host": {
+                                    "connectionName": "shared_sharepointonline_1",
+                                    "operationId": "GetItem",
+                                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                                  },
+                                  "parameters": {
+                                    "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                                    "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+                                    "id": "@items('Appliquer_à_chacun_14')?['ID']"
+                                  },
+                                  "authentication": "@parameters('$authentication')"
+                                }
+                              },
+                              "Message_5": {
+                                "runAfter": {
+                                  "Obtenir_l’élément_10": [
+                                    "Succeeded"
+                                  ]
+                                },
+                                "metadata": {
+                                  "operationMetadataId": "5cc0e598-ad26-4719-8fb5-5235a147ba9f"
+                                },
+                                "type": "Compose",
+                                "inputs": "@outputs('Obtenir_l’élément_10')?['body/ValidateurEB'][0]?['Email']"
+                              },
+                              "Condition_15": {
+                                "actions": {
+                                  "Mettre_à_jour_l'élément_11": {
+                                    "runAfter": {},
+                                    "metadata": {
+                                      "operationMetadataId": "84f71540-6e21-445c-b2b3-3ff082b39e23"
+                                    },
+                                    "type": "OpenApiConnection",
+                                    "inputs": {
+                                      "host": {
+                                        "connectionName": "shared_sharepointonline_1",
+                                        "operationId": "PatchItem",
+                                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                                      },
+                                      "parameters": {
+                                        "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                                        "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+                                        "id": "@outputs('Obtenir_l’élément_10')?['body/ID']",
+                                        "item/ValidateurEB": [
+                                          {
+                                            "Claims": "@outputs('Obtenir_l’élément')?['body/PersonnelDelegateur/Claims']"
+                                          }
+                                        ]
+                                      },
+                                      "authentication": "@parameters('$authentication')"
+                                    }
+                                  },
+                                  "Incrémenter_une_variable_11": {
+                                    "runAfter": {
+                                      "Mettre_à_jour_l'élément_11": [
+                                        "Succeeded"
+                                      ]
+                                    },
+                                    "metadata": {
+                                      "operationMetadataId": "bfaac78e-7a95-4a17-96d1-602c851d1f16"
+                                    },
+                                    "type": "IncrementVariable",
+                                    "inputs": {
+                                      "name": "NombreDeCC",
+                                      "value": 1
+                                    }
+                                  }
+                                },
+                                "runAfter": {
+                                  "Message_5": [
+                                    "Succeeded"
+                                  ]
+                                },
+                                "expression": {
+                                  "equals": [
+                                    "@outputs('Message_5')",
+                                    "@outputs('Obtenir_l’élément')?['body/PersonnelDelegateur/Email']"
+                                  ]
+                                },
+                                "metadata": {
+                                  "operationMetadataId": "cce3d679-aecd-49e8-9e45-6ddd259364bc"
+                                },
+                                "type": "If"
+                              }
+                            },
+                            "runAfter": {},
+                            "metadata": {
+                              "operationMetadataId": "075979a6-a037-4c8b-bca6-a714ed828503"
+                            },
+                            "type": "Foreach"
+                          }
+                        },
+                        "runAfter": {},
+                        "else": {
+                          "actions": {
+                            "Appliquer_à_chacun_15": {
+                              "foreach": "@outputs('Obtenir_l’élément')?['body/SiteCentreCoutId']",
+                              "actions": {
+                                "Obtenir_l’élément_11": {
+                                  "runAfter": {},
+                                  "metadata": {
+                                    "operationMetadataId": "32a0d203-3288-40db-ba0a-053441d12575"
+                                  },
+                                  "type": "OpenApiConnection",
+                                  "inputs": {
+                                    "host": {
+                                      "connectionName": "shared_sharepointonline_1",
+                                      "operationId": "GetItem",
+                                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                                    },
+                                    "parameters": {
+                                      "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                                      "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+                                      "id": "@items('Appliquer_à_chacun_15')?['Id']"
+                                    },
+                                    "authentication": "@parameters('$authentication')"
+                                  }
+                                },
+                                "Message_6": {
+                                  "runAfter": {
+                                    "Obtenir_l’élément_11": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "867045a9-fee4-4f05-83da-dc90c9b33a6f"
+                                  },
+                                  "type": "Compose",
+                                  "inputs": "@outputs('Obtenir_l’élément_11')?['body/ValidateurEB'][0]?['Email']"
+                                },
+                                "Condition_16": {
+                                  "actions": {
+                                    "Mettre_à_jour_l'élément_12": {
+                                      "runAfter": {},
+                                      "metadata": {
+                                        "operationMetadataId": "49c07e19-5497-4bac-94b4-eaedd76d9b21"
+                                      },
+                                      "type": "OpenApiConnection",
+                                      "inputs": {
+                                        "host": {
+                                          "connectionName": "shared_sharepointonline_1",
+                                          "operationId": "PatchItem",
+                                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                                        },
+                                        "parameters": {
+                                          "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+                                          "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+                                          "id": "@outputs('Obtenir_l’élément_11')?['body/ID']",
+                                          "item/ValidateurEB": [
+                                            {
+                                              "Claims": "@outputs('Obtenir_l’élément')?['body/PersonnelDelegateur/Claims']"
+                                            }
+                                          ]
+                                        },
+                                        "authentication": "@parameters('$authentication')"
+                                      }
+                                    },
+                                    "Incrémenter_une_variable_12": {
+                                      "runAfter": {
+                                        "Mettre_à_jour_l'élément_12": [
+                                          "Succeeded"
+                                        ]
+                                      },
+                                      "metadata": {
+                                        "operationMetadataId": "c20da5e9-8850-4590-8b9c-ad8ebd0c76c5"
+                                      },
+                                      "type": "IncrementVariable",
+                                      "inputs": {
+                                        "name": "NombreDeCC",
+                                        "value": 1
+                                      }
+                                    }
+                                  },
+                                  "runAfter": {
+                                    "Message_6": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "expression": {
+                                    "equals": [
+                                      "@outputs('Message_6')",
+                                      "@outputs('Obtenir_l’élément')?['body/PersonnelDelegateur/Email']"
+                                    ]
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "d248b189-1bbe-44fd-8c68-74824afe1768"
+                                  },
+                                  "type": "If"
+                                }
+                              },
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "4a8e5a79-d429-4536-8b39-51cc7299044d"
+                              },
+                              "type": "Foreach"
+                            }
+                          }
+                        },
+                        "expression": {
+                          "lessOrEquals": [
+                            "@length(outputs('Obtenir_l’élément')?['body/SiteCentreCoutId'])",
+                            0
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "68b959e7-4521-47e6-ad2c-a9a208e5e762"
+                        },
+                        "type": "If"
+                      },
+                      "Condition_22": {
+                        "actions": {},
+                        "runAfter": {
+                          "Condition_14": [
+                            "Succeeded"
+                          ]
+                        },
+                        "else": {
+                          "actions": {
+                            "Publier_le_message_dans_une_conversation_instantanée_ou_un_canal_6": {
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "7592e2a8-89b8-456d-9c0e-c3e9ac64c7ba"
+                              },
+                              "type": "OpenApiConnection",
+                              "inputs": {
+                                "host": {
+                                  "connectionName": "shared_teams_1",
+                                  "operationId": "PostMessageToConversation",
+                                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_teams"
+                                },
+                                "parameters": {
+                                  "poster": "Flow bot",
+                                  "location": "Chat with Flow bot",
+                                  "body/recipient": "@{outputs('Obtenir_l’élément')?['body/Author/Email']};",
+                                  "body/messageBody": "<p><span style=\"font-size: 14px\"><strong>ANNULATION DE LA DELEGATION DES &nbsp;CENTRES DE COUT DU VALIDATEUR DES EXPRESSIONS DE BESOIN EFFECTUEE</strong></span></p>"
+                                },
+                                "authentication": "@parameters('$authentication')"
+                              }
+                            }
+                          }
+                        },
+                        "expression": {
+                          "lessOrEquals": [
+                            "@variables('NombreDeCC')",
+                            0
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "f21a52f9-ec07-45cf-b604-400ed291304d"
+                        },
+                        "type": "If"
+                      }
+                    }
+                  }
+                },
+                "default": {
+                  "actions": {}
+                },
+                "expression": "@outputs('Obtenir_l’élément')?['body/Role/Value']",
+                "metadata": {
+                  "operationMetadataId": "2df1cce7-c60d-4acc-93e8-0036c0512e6b"
+                },
+                "type": "Switch"
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@outputs('Obtenir_l’élément')?['body/TypeDelegation']",
+              true
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a0ff2a90-960a-4b37-b2ef-b1594ac120ca"
+          },
+          "type": "If"
+        },
+        "Obtenir_l’élément": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "5f7c1a1a-5d94-4e78-bbb4-5fedace2b78e"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Zulaa (cm237_Ev_Con_Zulaa)')",
+              "table": "@parameters('Ev_Con_List_DelegationPersonnel (cm237_Ev_Con_List_DelegationPersonnel)')",
+              "id": "@triggerOutputs()?['body/ID']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Obtenir_les_éléments_SiteCentreCout": {
+          "runAfter": {
+            "Obtenir_l’élément": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "cb2e5d34-3257-49c1-be22-a1e5fc7a1dd5"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetItems",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Site_ZulaaProd (cm237_Ev_Con_Site_ZulaaDev)')",
+              "table": "@parameters('Ev_Con_List_SiteCentreCout (cm237_Ev_Con_List_SiteCentreCout)')",
+              "$filter": "EntiteId/Id eq '@{triggerOutputs()?['body/EntiteId/Id']}'"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Initialiser_la_variable": {
+          "runAfter": {
+            "Obtenir_les_éléments_SiteCentreCout": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "87c3415d-b78c-448e-b371-29d966454ae5"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "EmailDeTousLesValidateurs",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Initialiser_la_variable_2": {
+          "runAfter": {
+            "Initialiser_la_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "bd92ecd2-3a7f-45d1-96f9-5a347293f491"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "NombreDeCC",
+                "type": "integer",
+                "value": 0
+              }
+            ]
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

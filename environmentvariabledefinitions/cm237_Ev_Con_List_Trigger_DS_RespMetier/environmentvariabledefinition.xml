@@ -1,0 +1,18 @@
+<environmentvariabledefinition schemaname="cm237_Ev_Con_List_Trigger_DS_RespMetier">
+  <apiid>/providers/microsoft.powerapps/apis/shared_sharepointonline</apiid>
+  <description default="Variable d'environnement pour le déclencheur de la validation par le responsable métier">
+    <label description="Variable d'environnement pour le déclencheur de la validation par le responsable métier" languagecode="1033" />
+  </description>
+  <displayname default="Ev_Con_List_Trigger_DS_RespMetier">
+    <label description="Ev_Con_List_Trigger_DS_RespMetier" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.14</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <parameterkey>table</parameterkey>
+  <parentdefinitionid>
+    <schemaname>cm237_Ev_Con_Site_ZulaaDev</schemaname>
+  </parentdefinitionid>
+  <secretstore>0</secretstore>
+  <type>100000004</type>
+</environmentvariabledefinition>

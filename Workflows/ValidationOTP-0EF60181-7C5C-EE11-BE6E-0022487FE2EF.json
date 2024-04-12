@@ -1,0 +1,352 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_sharedsharepointonline_e8cbe"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      },
+      "shared_office365": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "cm237_CR_Outlook"
+        },
+        "api": {
+          "name": "shared_office365"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Ev_Con_Zulaa (cm237_Ev_Con_Zulaa)": {
+          "defaultValue": "https://teamsite.msc.com/sites/cm004-afr-cio-zulaa-dev",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_Zulaa",
+            "description": "Site Sharepoint de production de ZULAA"
+          }
+        },
+        "Ev_Con_List_DemandeSortieStock (cm237_Ev_Con_List_DemandeSortieStock)": {
+          "defaultValue": "bb587b57-a2ff-49f5-90ea-9d328222f3bf",
+          "type": "String",
+          "metadata": {
+            "schemaName": "cm237_Ev_Con_List_DemandeSortieStock"
+          }
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "b694bf24-c61e-487f-868a-499843f0980f"
+          },
+          "type": "Request",
+          "kind": "PowerApp",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Initialiserlavariable_Valeur": {
+                  "type": "integer",
+                  "description": "Entrer la valeur initiale",
+                  "x-ms-powerflows-param-ispartial": false
+                },
+                "Initialiserlavariable2_Valeur": {
+                  "type": "integer",
+                  "description": "Entrer la valeur initiale",
+                  "x-ms-powerflows-param-ispartial": false
+                },
+                "Initialiserlavariable3_Valeur": {
+                  "type": "string",
+                  "description": "Entrer la valeur initiale",
+                  "x-ms-powerflows-param-ispartial": false
+                }
+              },
+              "required": [
+                "Initialiserlavariable_Valeur",
+                "Initialiserlavariable2_Valeur",
+                "Initialiserlavariable3_Valeur"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Initialiser_la_variable": {
+          "runAfter": {
+            "Initialiser_la_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "2c29cc55-7bd4-4bde-9dd7-d775d6888871"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "SortieId",
+                "type": "integer",
+                "value": "@triggerBody()['Initialiserlavariable_Valeur']"
+              }
+            ]
+          }
+        },
+        "Obtenir_l’élément": {
+          "runAfter": {
+            "Initialiser_la_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "7587baa6-5aed-4cf6-bdb5-cf0e12afa53a"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('Ev_Con_Zulaa (cm237_Ev_Con_Zulaa)')",
+              "table": "@parameters('Ev_Con_List_DemandeSortieStock (cm237_Ev_Con_List_DemandeSortieStock)')",
+              "id": "@variables('SortieId')"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        },
+        "Initialiser_la_variable_2": {
+          "runAfter": {
+            "Initialiser_la_variable_3": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e6ea18f1-95c6-499a-a2ea-bf91335f34e8"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "OTP",
+                "type": "integer",
+                "value": "@triggerBody()['Initialiserlavariable2_Valeur']"
+              }
+            ]
+          }
+        },
+        "Condition": {
+          "actions": {
+            "Mettre_à_jour_l'élément": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "b0439be4-d0b7-4298-b77c-1643d50e9364"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline",
+                  "operationId": "PatchItem",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@parameters('Ev_Con_Zulaa (cm237_Ev_Con_Zulaa)')",
+                  "table": "@parameters('Ev_Con_List_DemandeSortieStock (cm237_Ev_Con_List_DemandeSortieStock)')",
+                  "id": "@variables('SortieId')",
+                  "item/SortieUsers": "Sortie"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                }
+              }
+            },
+            "Envoyer_un_e-mail_(V2)_2": {
+              "runAfter": {
+                "Mettre_à_jour_l'élément": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "8aba6558-c2a6-404b-b633-b3134d791df7"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_office365",
+                  "operationId": "SendEmailV2",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+                },
+                "parameters": {
+                  "emailMessage/To": "@outputs('Obtenir_l’élément')?['body/Author/Email']",
+                  "emailMessage/Subject": "Succes pour la  DS : @{outputs('Mettre_à_jour_l''élément')?['body/Title']}",
+                  "emailMessage/Body": "<p>Votre sortie est correcte Code Validé<br>\n<br>\n<br>\n<span style=\"font-size: 14px\"><strong>Cordialement Zulaa</strong></span></p>",
+                  "emailMessage/Importance": "Normal"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                }
+              }
+            },
+            "Définir_une_variable": {
+              "runAfter": {
+                "Envoyer_un_e-mail_(V2)_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "6f42668b-3967-4ff7-9cbb-0656f65ab653"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "Reponse",
+                "value": "Sortie Validée"
+              }
+            }
+          },
+          "runAfter": {
+            "Obtenir_l’élément": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Envoyer_un_e-mail_(V2)": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "52da8998-8300-40c6-a1d1-30e27589af23"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_office365",
+                    "operationId": "SendEmailV2",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+                  },
+                  "parameters": {
+                    "emailMessage/To": "@outputs('Obtenir_l’élément')?['body/Author/Email']",
+                    "emailMessage/Subject": "Rejet sortir DS: @{outputs('Obtenir_l’élément')?['body/Title']}",
+                    "emailMessage/Body": "<p>Les informations fournies pour cette sortie ne sont pas correctes.<br>\n<br>\n<br>\n<span style=\"font-size: 14px\"><strong>Cordialement Zulaa</strong></span></p>",
+                    "emailMessage/Importance": "Normal"
+                  },
+                  "authentication": {
+                    "type": "Raw",
+                    "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                  }
+                }
+              },
+              "Définir_une_variable_2": {
+                "runAfter": {
+                  "Envoyer_un_e-mail_(V2)": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "aceb1eff-b681-4bee-96a9-94b918bbd39e"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "Reponse",
+                  "value": "Sortie Refusée"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@outputs('Obtenir_l’élément')?['body/Otp']",
+              "@variables('OTP')"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "73e087a5-fb97-4bb9-aa3d-082c9ded3d99"
+          },
+          "type": "If"
+        },
+        "Initialiser_la_variable_3": {
+          "runAfter": {
+            "Initialiser_la_variable_4": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "81937cd6-188d-427f-8d72-11e93fcc9da5"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Commentaire",
+                "type": "string",
+                "value": "@{triggerBody()['Initialiserlavariable3_Valeur']}"
+              }
+            ]
+          }
+        },
+        "Initialiser_la_variable_4": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "5f29a1ad-aa2d-40f2-92b2-7fd248c7008a"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Reponse",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Répondre_à_une_instance_PowerApp_ou_à_un_flux": {
+          "runAfter": {
+            "Condition": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "0b186513-351f-44e8-8578-e76a438cc023"
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "otp": "@variables('Reponse')"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "otp": {
+                  "title": "otp",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}
